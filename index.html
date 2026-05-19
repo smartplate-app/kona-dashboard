@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kona Burger — MTD מאי 2026</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; direction:rtl; min-height:100vh; }
+
+.header {
+  background: linear-gradient(135deg, #0a2342 0%, #1a4a7a 100%);
+  color: white; padding: 16px 22px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.3);
+}
+.h-title { font-size:20px; font-weight:800; }
+.h-sub { font-size:10px; opacity:0.45; margin-top:2px; }
+.h-badge { background:rgba(255,255,255,0.13); border:1px solid rgba(255,255,255,0.22); border-radius:18px; padding:5px 14px; font-size:12px; font-weight:700; text-align:center; }
+.h-date { font-size:10px; opacity:0.45; margin-top:4px; text-align:center; }
+
+.container { max-width:960px; margin:0 auto; padding:18px 14px; }
+
+/* KPI */
+.kpi-row { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+.kpi { background:white; border-radius:12px; padding:14px 16px; flex:1; min-width:135px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.07); border-top:4px solid #ddd; }
+.kpi.k-sales  { border-top-color:#1a73e8; }
+.kpi.k-net    { border-top-color:#0891b2; }
+.kpi.k-labor  { border-top-color:#34a853; }
+.kpi.k-food   { border-top-color:#ef4444; }
+.kpi.k-fore   { border-top-color:#8b5cf6; }
+.kpi-lbl { font-size:9px; color:#aaa; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; }
+.kpi-val { font-size:24px; font-weight:800; color:#0a2342; line-height:1.1; }
+.kpi-sub { font-size:10px; color:#bbb; margin-top:3px; }
+.kpi-pct { margin-top:5px; }
+.badge { display:inline-block; padding:2px 8px; border-radius:9px; font-size:10px; font-weight:700; }
+.bg { background:#e8f5e9; color:#2e7d32; }
+.br { background:#fce4ec; color:#c62828; }
+.by { background:#fff8e1; color:#e65100; }
+.bb { background:#e3f2fd; color:#1565c0; }
+.bar { background:#eee; border-radius:4px; height:6px; margin-top:7px; overflow:hidden; }
+.bf  { height:100%; border-radius:4px; }
+
+/* Sections */
+.section { background:white; border-radius:12px; padding:18px; box-shadow:0 2px 8px rgba(0,0,0,0.07); margin-bottom:14px; }
+.s-title { font-size:12px; font-weight:700; color:#444; margin-bottom:12px; padding-right:9px; border-right:3px solid #1a73e8; }
+
+.two { display:flex; gap:12px; margin-bottom:14px; }
+.two > .section { flex:1; margin-bottom:0; }
+@media(max-width:600px){ .two{flex-direction:column} }
+
+/* Hero box */
+.hero { background:linear-gradient(135deg,#0a2342,#1a4a7a); border-radius:9px; color:white; padding:13px; text-align:center; margin-bottom:11px; }
+.hero .big { font-size:28px; font-weight:800; }
+.hero .sm  { font-size:10px; opacity:0.55; margin-top:2px; }
+.pill { display:inline-block; border-radius:16px; padding:3px 12px; font-size:12px; font-weight:700; margin-top:6px; }
+.pg { background:#34a853; color:white; }
+.pr { background:#ef4444; color:white; }
+
+.sb { background:#f8f9fa; border-radius:7px; padding:10px; text-align:center; }
+.sb .v { font-size:17px; font-weight:800; color:#0a2342; }
+.sb .l { font-size:9px; color:#999; margin-bottom:3px; }
+.sb .s { font-size:10px; font-weight:600; margin-top:2px; }
+
+/* Cost rows */
+.cr { display:flex; justify-content:space-between; align-items:center; padding:9px 11px; border-radius:7px; margin-bottom:6px; }
+.cr.n { background:#f8f9fa; }
+.cr.w { background:#fff8e1; }
+.cr.d { background:#0a2342; }
+.cr .l { font-size:11px; color:#555; }
+.cr .src { font-size:9px; color:#bbb; margin-top:1px; }
+.cr.d .l { color:rgba(255,255,255,0.65); }
+.cr .v { font-size:12px; font-weight:800; color:#0a2342; }
+.cr.d .v { color:white; font-size:15px; }
+.cr.w .v { color:#e65100; }
+
+/* Supplier grid */
+.sup-grid { display:flex; flex-wrap:wrap; gap:7px; }
+.sup-box { background:#f8f9fa; border-radius:7px; padding:9px 12px; flex:1; min-width:110px; }
+.sup-box .sv { font-size:14px; font-weight:800; color:#0a2342; }
+.sup-box .sl { font-size:9px; color:#999; margin-bottom:3px; }
+
+/* Daily bars */
+.day { display:flex; align-items:center; padding:5px 0; border-bottom:1px solid #f5f5f5; gap:7px; }
+.day:last-child { border-bottom:none; }
+.dl { font-size:10px; color:#999; width:52px; flex-shrink:0; text-align:center; line-height:1.4; }
+.dbg { background:#f0f0f0; border-radius:3px; height:19px; overflow:hidden; flex:1; }
+.dbf { height:100%; border-radius:3px; display:flex; align-items:center; padding:0 6px; font-size:9px; font-weight:700; color:white; }
+.dv { font-size:11px; font-weight:700; color:#0a2342; width:65px; text-align:left; flex-shrink:0; }
+.today .dl { color:#1a73e8; font-weight:800; }
+.today .dv { color:#1a73e8; font-weight:800; }
+
+.footer { text-align:center; font-size:10px; color:#ccc; padding:12px 0 6px; line-height:1.9; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="h-title">🍔 Kona Burger</div>
+    <div class="h-sub">Tabit Chef · Smart Basic 2 · Rosa</div>
+  </div>
+  <div>
+    <div class="h-badge">MTD מאי 2026 — 1 עד 19 במאי</div>
+    <div class="h-date">עודכן: 19.05.2026 23:31 · כל הנתונים מאומתים מהמקור</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi k-sales">
+      <div class="kpi-lbl">מכירות MTD כולל מע"מ</div>
+      <div class="kpi-val">₪391,121</div>
+      <div class="kpi-sub">19 ימים · 2,325 סועדים</div>
+      <div class="kpi-pct"><span class="badge bg">▲ 10.4% vs 4W</span></div>
+    </div>
+    <div class="kpi k-net">
+      <div class="kpi-lbl">מכירות נטו (ללא מע"מ)</div>
+      <div class="kpi-val">₪334,291</div>
+      <div class="kpi-sub">בסיס לחישוב אחוזים</div>
+      <div class="kpi-pct"><span class="badge bg">▲ 66.9% vs שנה שעברה</span></div>
+    </div>
+    <div class="kpi k-labor">
+      <div class="kpi-lbl">עלות עבודה MTD</div>
+      <div class="kpi-val">₪112,622</div>
+      <div class="kpi-sub">2,218 שעות · Tabit Chef ✓</div>
+      <div class="kpi-pct"><span class="badge bg">33.7% ממכירות נטו</span></div>
+      <div class="bar"><div class="bf" style="width:56%;background:#34a853"></div></div>
+    </div>
+    <div class="kpi k-food">
+      <div class="kpi-lbl">עלות מזון MTD ללא מע"מ</div>
+      <div class="kpi-val">₪89,053</div>
+      <div class="kpi-sub">₪104,191 כולל מע"מ · Smart Basic 2 ✓</div>
+      <div class="kpi-pct"><span class="badge br">26.6% ממכירות נטו</span></div>
+      <div class="bar"><div class="bf" style="width:44%;background:#ef4444"></div></div>
+    </div>
+    <div class="kpi k-fore">
+      <div class="kpi-lbl">תחזית חודש מלא</div>
+      <div class="kpi-val">₪647,447</div>
+      <div class="kpi-sub">₪153.79 לסועד · 3,825 סועדים</div>
+      <div class="kpi-pct"><span class="badge bb">▲ 14.8% vs 4W</span></div>
+    </div>
+  </div>
+
+  <!-- Labor + Costs -->
+  <div class="two">
+    <div class="section">
+      <div class="s-title">עלות עבודה — Tabit Chef ✓</div>
+      <div class="hero">
+        <div class="big">₪112,622</div>
+        <div class="sm">2,218:04 שעות · 19 ימים</div>
+        <div><span class="pill pg">33.7% ממכירות נטו</span></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <div class="sb" style="flex:1">
+          <div class="l">היום 19/5</div>
+          <div class="v">₪4,110</div>
+          <div class="s" style="color:#34a853">23.1% · 84:42H</div>
+        </div>
+        <div class="sb" style="flex:1">
+          <div class="l">MTD מצטבר</div>
+          <div class="v">₪112,622</div>
+          <div class="s" style="color:#34a853">33.7% · 2,218H</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="s-title">סיכום עלויות MTD — מקורות מאומתים</div>
+      <div class="cr n">
+        <div><div class="l">עלות עבודה</div><div class="src">📊 Tabit Chef</div></div>
+        <span class="v">₪112,622 &nbsp;<small style="color:#34a853;font-weight:700">33.7%</small></span>
+      </div>
+      <div class="cr w">
+        <div><div class="l">עלות מזון (ללא מע"מ)</div><div class="src">🧾 Smart Basic 2 · ₪104,191 כולל מע"מ</div></div>
+        <span class="v">₪89,053 &nbsp;<small style="color:#e65100;font-weight:700">26.6%</small></span>
+      </div>
+      <div class="cr n">
+        <div><div class="l">Wolt (כולל מע"מ)</div><div class="src">📦 Rosa</div></div>
+        <span class="v">₪13,024</span>
+      </div>
+      <div class="cr n">
+        <div><div class="l">טיפים</div><div class="src">💳 Rosa</div></div>
+        <span class="v">₪14,222 &nbsp;<small style="color:#8b5cf6;font-weight:700">3.6% ממכירות כולל מע"מ</small></span>
+      </div>
+      <div class="cr d" style="margin-top:8px">
+        <span class="l" style="font-weight:700;font-size:12px">סה"כ עבודה + מזון (נטו)</span>
+        <span class="v">60.3%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supplier breakdown -->
+  <div class="section">
+    <div class="s-title">פירוט עלות מזון לפי ספק — Smart Basic 2 ✓ (סכומים כולל מע"מ)</div>
+    <div class="sup-grid">
+      <div class="sup-box"><div class="sl">מרעה גולן</div><div class="sv">₪10,964</div></div>
+      <div class="sup-box"><div class="sl">החברה המרכזית</div><div class="sv">₪4,709</div></div>
+      <div class="sup-box"><div class="sl">הכרם</div><div class="sv">₪4,661</div></div>
+      <div class="sup-box"><div class="sl">מחלבות גד</div><div class="sv">₪3,549</div></div>
+      <div class="sup-box"><div class="sl">דגי נסיב</div><div class="sv">₪3,381</div></div>
+      <div class="sup-box"><div class="sl">אלי אברהמי</div><div class="sv">₪3,291</div></div>
+      <div class="sup-box"><div class="sl">גן המלך</div><div class="sv">₪2,810</div></div>
+      <div class="sup-box"><div class="sl">ברדא פוראבר</div><div class="sv">₪2,293</div></div>
+      <div class="sup-box"><div class="sl">יוכי ירקות</div><div class="sv">₪2,047</div></div>
+      <div class="sup-box"><div class="sl">מילועוף</div><div class="sv">₪1,585</div></div>
+      <div class="sup-box"><div class="sl">פאנדנגו</div><div class="sv">₪1,180</div></div>
+      <div class="sup-box"><div class="sl">עלה עלה</div><div class="sv">₪1,051</div></div>
+    </div>
+    <div style="margin-top:10px;text-align:center;font-size:10px;color:#aaa">
+      סה"כ כולל מע"מ: <strong style="color:#0a2342">₪104,191</strong> &nbsp;·&nbsp; נטו ללא מע"מ: <strong style="color:#ef4444">₪89,053</strong>
+    </div>
+  </div>
+
+  <!-- Daily sales -->
+  <div class="section">
+    <div class="s-title">מכירות יומיות — מאי 2026 (כולל מע"מ) · Tabit Chef ✓</div>
+
+    <div class="day today"><div class="dl">19/5<br>ג׳ היום</div><div class="dbg"><div class="dbf" style="width:73%;background:#1a73e8">היום</div></div><div class="dv">₪21,030</div></div>
+    <div class="day"><div class="dl">18/5 ב׳</div><div class="dbg"><div class="dbf" style="width:65%;background:#34a853">113%</div></div><div class="dv">₪18,874</div></div>
+    <div class="day"><div class="dl">17/5 א׳</div><div class="dbg"><div class="dbf" style="width:53%;background:#f59e0b">99%</div></div><div class="dv">₪15,311</div></div>
+    <div class="day"><div class="dl">16/5 ש׳</div><div class="dbg"><div class="dbf" style="width:84%;background:#34a853">103%</div></div><div class="dv">₪24,221</div></div>
+    <div class="day"><div class="dl">15/5 ו׳</div><div class="dbg"><div class="dbf" style="width:90%;background:#34a853">103%</div></div><div class="dv">₪25,893</div></div>
+    <div class="day"><div class="dl">14/5 ה׳</div><div class="dbg"><div class="dbf" style="width:93%;background:#34a853">103%</div></div><div class="dv">₪26,679</div></div>
+    <div class="day"><div class="dl">13/5 ד׳</div><div class="dbg"><div class="dbf" style="width:59%;background:#f59e0b">94%</div></div><div class="dv">₪17,036</div></div>
+    <div class="day"><div class="dl">12/5 ג׳</div><div class="dbg"><div class="dbf" style="width:63%;background:#34a853">108%</div></div><div class="dv">₪18,144</div></div>
+    <div class="day"><div class="dl">11/5 ב׳</div><div class="dbg"><div class="dbf" style="width:69%;background:#34a853">169%</div></div><div class="dv">₪19,941</div></div>
+    <div class="day"><div class="dl">10/5 א׳</div><div class="dbg"><div class="dbf" style="width:62%;background:#34a853">114%</div></div><div class="dv">₪17,954</div></div>
+    <div class="day"><div class="dl">9/5 ש׳</div><div class="dbg"><div class="dbf" style="width:79%;background:#34a853">101%</div></div><div class="dv">₪22,845</div></div>
+    <div class="day"><div class="dl">8/5 ו׳</div><div class="dbg"><div class="dbf" style="width:96%;background:#34a853">117%</div></div><div class="dv">₪27,795</div></div>
+    <div class="day"><div class="dl">7/5 ה׳</div><div class="dbg"><div class="dbf" style="width:95%;background:#34a853">113%</div></div><div class="dv">₪27,379</div></div>
+    <div class="day"><div class="dl">6/5 ד׳</div><div class="dbg"><div class="dbf" style="width:62%;background:#34a853">104%</div></div><div class="dv">₪17,895</div></div>
+    <div class="day"><div class="dl">5/5 ג׳</div><div class="dbg"><div class="dbf" style="width:51%;background:#f59e0b">88%</div></div><div class="dv">₪14,768</div></div>
+    <div class="day"><div class="dl">4/5 ב׳</div><div class="dbg"><div class="dbf" style="width:64%;background:#34a853">158%</div></div><div class="dv">₪18,561</div></div>
+    <div class="day"><div class="dl">3/5 א׳</div><div class="dbg"><div class="dbf" style="width:48%;background:#f59e0b">86%</div></div><div class="dv">₪14,020</div></div>
+    <div class="day"><div class="dl">2/5 ש׳</div><div class="dbg"><div class="dbf" style="width:87%;background:#34a853">116%</div></div><div class="dv">₪25,186</div></div>
+    <div class="day"><div class="dl">1/5 ו׳</div><div class="dbg"><div class="dbf" style="width:88%;background:#34a853">118%</div></div><div class="dv">₪25,663</div></div>
+  </div>
+
+  <div class="footer">
+    מכירות: Tabit Chef &nbsp;·&nbsp; עלות עבודה: Tabit Chef &nbsp;·&nbsp; עלות מזון: Smart Basic 2 (421 קבלות מאומתות) &nbsp;·&nbsp; Wolt + טיפים: Rosa<br>
+    הדאשבורד יתעדכן אוטומטית כל בוקר בשעה 08:00
+  </div>
+
+</div>
+</body>
+</html>
