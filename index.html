@@ -48,7 +48,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 .day { display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:1px solid #f7f7f7; }
 .day:last-child { border-bottom:none; }
 .dl { font-size:10px; color:#888; width:54px; flex-shrink:0; }
-.dbg { flex:1; background:#f0f0f0; border-radius:4px; height:18px; overflow:hidden; position:relative; }
+.dbg { flex:1; background:#f0f0f0; border-radius:4px; height:18px; overflow:hidden; }
 .dbf { height:100%; border-radius:4px; display:flex; align-items:center; padding-right:5px; font-size:9px; color:white; font-weight:700; min-width:20px; }
 .dv { font-size:11px; font-weight:700; color:#0a2342; width:62px; text-align:left; flex-shrink:0; }
 .day.today .dl { color:#1a73e8; font-weight:700; }
@@ -63,6 +63,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 .loading { text-align:center; padding:60px; color:#aaa; font-size:14px; }
 .spinner { display:inline-block; width:32px; height:32px; border:3px solid #eee; border-top-color:#1a73e8; border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:12px; }
 @keyframes spin { to { transform:rotate(360deg); } }
+.note-box { background:#fff8e1; border-right:3px solid #f59e0b; border-radius:8px; padding:8px 12px; margin-bottom:14px; font-size:10px; color:#92400e; }
 </style>
 </head>
 <body>
@@ -70,7 +71,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 <div class="header">
   <div>
     <div class="h-title">🍔 Kona Burger</div>
-    <div class="h-sub">דוח חודשי שוטף — MTD</div>
+    <div class="h-sub">דוח חודשי שוטף — MTD · אחוזים מחושבים ממכירות נטו (ללא מע"מ 18%)</div>
   </div>
   <div class="h-badge">
     <div id="hMonth">טוען...</div>
@@ -93,11 +94,19 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 
 <script>
 const KONA_SYNC_URL = 'https://rosa-6d8ebb9e.base44.app/functions/konaSync';
-const TABIT_CLIENT_ID = 'VbXPFm2RMiq8I2eV7MP4ZQ';
-const TABIT_ORG = '64e32dad439d6dbce7f6a622';
+const VAT = 1.18; // 18% VAT
 
 function fmt(n) { return '₪' + Math.round(n).toLocaleString('he-IL'); }
 function pct(n) { return n.toFixed(1) + '%'; }
+
+// All % calculations: cost / sales_NET
+function calcPct(cost, salesNet) {
+  return salesNet > 0 ? (cost / salesNet * 100) : 0;
+}
+
+function badgeClass(p, good, warn) {
+  return p <= good ? 'bg' : p <= warn ? 'by' : 'br';
+}
 
 async function getTabitLaborLive() {
   try {
@@ -110,14 +119,15 @@ async function getTabitLaborLive() {
     const tokenRes = await fetch('https://ros-rp-beta.tabit.cloud/oauth2/token', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({client_id: TABIT_CLIENT_ID, grant_type:'password', username:'konaburgerltd@gmail.com', password:'0311Kona'})
+      body: JSON.stringify({client_id: 'VbXPFm2RMiq8I2eV7MP4ZQ', grant_type:'password', username:'konaburgerltd@gmail.com', password:'0311Kona'})
     });
     const tokenData = await tokenRes.json();
     const token = tokenData.access_token;
     if (!token) return null;
 
+    const ORG = '64e32dad439d6dbce7f6a622';
     const laborRes = await fetch(`https://ros-rp-beta.tabit.cloud/reports/labor-cost?from=${from}&to=${to}`, {
-      headers: {'Authorization': `Bearer ${token}`, 'ros-organization': TABIT_ORG}
+      headers: {'Authorization': `Bearer ${token}`, 'ros-organization': ORG}
     });
     const laborData = await laborRes.json();
     const workers = laborData.laborCost || [];
@@ -140,20 +150,24 @@ async function loadData() {
 
     const D = syncRes;
     const salesVat = D.sales_vat || 0;
-    const salesNet = D.sales_net || 0;
+    const salesNet = Math.round(salesVat / VAT);  // ÷ 1.18
     const dailySales = (D.daily_sales || []).sort((a,b) => a.date.localeCompare(b.date));
     const days = D.days_collected || dailySales.length;
     const avgDaily = days > 0 ? Math.round(salesVat / days) : 0;
-    const foodCost = D.food_cost || 0;
-    const foodPct = salesNet > 0 ? foodCost / salesNet * 100 : 0;
+    const foodCostNet = D.food_cost || 0;          // already NET from Smart Basic 2
     const tips = D.tips || 0;
-    const tipsPct = salesVat > 0 ? tips / salesVat * 100 : 0;
     const wolt = D.wolt_vat || 0;
 
+    // Labor from Tabit LIVE
     const laborCost = laborLive ? laborLive.totalCost : (D.labor_cost || 0);
     const laborHours = laborLive ? laborLive.totalHours : (D.labor_hours || 0);
-    const laborPct = salesVat > 0 ? laborCost / salesVat * 100 : 0;
     const workers = laborLive ? laborLive.workers : [];
+
+    // ALL percentages calculated from salesNet (ex-VAT)
+    const laborPct  = calcPct(laborCost,   salesNet);
+    const foodPct   = calcPct(foodCostNet, salesNet);
+    const tipsPct   = calcPct(tips,        salesVat);  // tips % of gross (industry standard)
+    const totalPct  = laborPct + foodPct;
 
     let vendors = [];
     try {
@@ -166,45 +180,47 @@ async function loadData() {
     document.getElementById('hMonth').textContent = monthName;
     document.getElementById('hDays').textContent = `${days} ימים מתוך ${new Date(now.getFullYear(), now.getMonth()+1,0).getDate()}`;
 
-    // Total costs
-    const totalCostPct = laborPct + foodPct;
     const maxSale = Math.max(...dailySales.map(d=>d.sales), 1);
-
     const DAYS_HE = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
 
     const html = `
-    <!-- KPI row -->
+    <!-- Note box -->
+    <div class="note-box">
+      ⚙️ אחוזים מחושבים ממכירות <strong>נטו ללא מע"מ</strong> (מע"מ 18%) · עלות עבודה: Tabit Chef Live · עלות מזון: Smart Basic 2
+    </div>
+
+    <!-- KPI row 1 -->
     <div class="kpi-row">
       <div class="kpi k-sales">
-        <div class="kpi-lbl">מכירות כולל מע"מ</div>
+        <div class="kpi-lbl">מכירות כולל מע"מ 18%</div>
         <div class="kpi-val">${fmt(salesVat)}</div>
         <div class="kpi-sub">ממוצע יומי ${fmt(avgDaily)}</div>
       </div>
       <div class="kpi k-net">
-        <div class="kpi-lbl">מכירות נטו</div>
+        <div class="kpi-lbl">מכירות נטו ללא מע"מ</div>
         <div class="kpi-val">${fmt(salesNet)}</div>
-        <div class="kpi-sub">ללא מע"מ 17%</div>
+        <div class="kpi-sub">בסיס לחישוב אחוזים</div>
       </div>
       <div class="kpi k-labor">
-        <div class="kpi-lbl">עלות עבודה</div>
+        <div class="kpi-lbl">עלות עבודה (מנטו)</div>
         <div class="kpi-val">${fmt(laborCost)}</div>
-        <div class="kpi-pct"><span class="badge ${laborPct<30?'bg':laborPct<35?'by':'br'}">${pct(laborPct)}</span></div>
+        <div class="kpi-pct"><span class="badge ${badgeClass(laborPct,32,36)}">${pct(laborPct)} מנטו</span></div>
         <div class="bar"><div class="bf" style="width:${Math.min(laborPct*2,100)}%;background:#34a853"></div></div>
       </div>
       <div class="kpi k-food">
-        <div class="kpi-lbl">עלות מזון</div>
-        <div class="kpi-val">${fmt(foodCost)}</div>
-        <div class="kpi-pct"><span class="badge ${foodPct<28?'bg':foodPct<33?'by':'br'}">${pct(foodPct)}</span></div>
+        <div class="kpi-lbl">עלות מזון נטו (מנטו)</div>
+        <div class="kpi-val">${fmt(foodCostNet)}</div>
+        <div class="kpi-pct"><span class="badge ${badgeClass(foodPct,26,30)}">${pct(foodPct)} מנטו</span></div>
         <div class="bar"><div class="bf" style="width:${Math.min(foodPct*2,100)}%;background:#ef4444"></div></div>
       </div>
-      <div class="kpi k-fore">
-        <div class="kpi-lbl">סה"כ עלויות</div>
-        <div class="kpi-val">${pct(totalCostPct)}</div>
-        <div class="kpi-sub">עבודה + מזון ממכירות</div>
+      <div class="kpi k-fore" style="border-top-color:${totalPct<=58?'#34a853':totalPct<=65?'#f59e0b':'#ef4444'}">
+        <div class="kpi-lbl">סה"כ עלויות (מנטו)</div>
+        <div class="kpi-val" style="color:${totalPct<=58?'#166534':totalPct<=65?'#92400e':'#7f1d1d'}">${pct(totalPct)}</div>
+        <div class="kpi-sub">עבודה ${pct(laborPct)} + מזון ${pct(foodPct)}</div>
       </div>
     </div>
 
-    <!-- Extra row -->
+    <!-- KPI row 2 -->
     <div class="kpi-row">
       <div class="kpi" style="border-top-color:#f59e0b">
         <div class="kpi-lbl">וולט (כולל מע"מ)</div>
@@ -212,36 +228,45 @@ async function loadData() {
         <div class="kpi-sub">משלוחים</div>
       </div>
       <div class="kpi" style="border-top-color:#8b5cf6">
-        <div class="kpi-lbl">טיפים</div>
+        <div class="kpi-lbl">טיפים (מברוטו)</div>
         <div class="kpi-val">${fmt(tips)}</div>
-        <div class="kpi-pct"><span class="badge bb">${pct(tipsPct)} ממכירות</span></div>
+        <div class="kpi-pct"><span class="badge bb">${pct(tipsPct)} מברוטו</span></div>
       </div>
       <div class="kpi" style="border-top-color:#34a853">
         <div class="kpi-lbl">שעות עבודה</div>
         <div class="kpi-val">${laborHours.toLocaleString()}</div>
-        <div class="kpi-sub">שעה ממוצעת: ${laborHours > 0 ? fmt(laborCost/laborHours) : '—'}</div>
+        <div class="kpi-sub">${laborHours > 0 ? fmt(laborCost/laborHours)+' לשעה' : '—'}</div>
+      </div>
+      <div class="kpi" style="border-top-color:#0891b2">
+        <div class="kpi-lbl">תחזית חודש מלא</div>
+        <div class="kpi-val">${fmt(avgDaily * 31)}</div>
+        <div class="kpi-sub">${days} ימים · ${fmt(avgDaily)} ממוצע</div>
       </div>
     </div>
 
     <div class="two">
       <!-- Cost breakdown -->
       <div class="section">
-        <div class="s-title">פירוט עלויות</div>
+        <div class="s-title">פירוט עלויות — בסיס: מכירות נטו ${fmt(salesNet)}</div>
         <div class="row">
           <div><div class="l">עלות עבודה</div><div class="src">🍳 Tabit Chef · Live</div></div>
-          <span class="v">${fmt(laborCost)} &nbsp;<small style="color:#34a853;font-weight:700">${pct(laborPct)}</small></span>
+          <span class="v">${fmt(laborCost)} &nbsp;<small style="color:#34a853;font-weight:800">${pct(laborPct)}</small></span>
         </div>
         <div class="row">
-          <div><div class="l">עלות מזון (ללא מע"מ)</div><div class="src">🧾 Smart Basic 2</div></div>
-          <span class="v">${fmt(foodCost)} &nbsp;<small style="color:#e65100;font-weight:700">${pct(foodPct)}</small></span>
+          <div><div class="l">עלות מזון (נטו ללא מע"מ)</div><div class="src">🧾 Smart Basic 2</div></div>
+          <span class="v">${fmt(foodCostNet)} &nbsp;<small style="color:#e65100;font-weight:800">${pct(foodPct)}</small></span>
         </div>
         <div class="row">
           <div><div class="l">טיפים</div><div class="src">💳 Shift</div></div>
-          <span class="v">${fmt(tips)} &nbsp;<small style="color:#8b5cf6;font-weight:700">${pct(tipsPct)} ממכירות</small></span>
+          <span class="v">${fmt(tips)} &nbsp;<small style="color:#8b5cf6;font-weight:700">${pct(tipsPct)} מברוטו</small></span>
         </div>
         <div class="row">
           <div><div class="l">וולט</div></div>
           <span class="v">${fmt(wolt)}</span>
+        </div>
+        <div class="row" style="background:#f0fdf4;padding:8px;border-radius:6px;margin-top:8px">
+          <div><div class="l" style="font-weight:700">סה"כ עבודה + מזון</div></div>
+          <span class="v" style="font-size:16px;color:${totalPct<=58?'#166534':'#7f1d1d'}">${pct(totalPct)}</span>
         </div>
       </div>
 
@@ -256,22 +281,23 @@ async function loadData() {
             </div>`).join('') : '<div style="color:#bbb;font-size:12px">אין נתוני ספקים</div>'}
         </div>
         ${vendors.length > 0 ? `<div style="font-size:10px;color:#999;margin-top:10px">
-          סה"כ כולל מע"מ: <strong style="color:#0a2342">≈${fmt(foodCost*1.17)}</strong> &nbsp;·&nbsp; נטו: <strong style="color:#ef4444">${fmt(foodCost)}</strong>
+          נטו (ללא מע"מ): <strong style="color:#ef4444">${fmt(foodCostNet)}</strong>
+          &nbsp;·&nbsp; ${pct(foodPct)} ממכירות נטו
         </div>` : ''}
       </div>
     </div>
 
     <!-- Daily sales -->
     <div class="section">
-      <div class="s-title">מכירות יומיות — ${days} ימים</div>
+      <div class="s-title">מכירות יומיות כולל מע"מ — ${days} ימים · ממוצע ${fmt(avgDaily)}</div>
       ${[...dailySales].reverse().map(d => {
         const dateObj = new Date(d.date + 'T12:00:00');
         const dayHe = DAYS_HE[dateObj.getDay()];
         const dd = String(dateObj.getDate()).padStart(2,'0');
         const mm = String(dateObj.getMonth()+1).padStart(2,'0');
         const pctWidth = Math.round(d.sales / maxSale * 96);
-        const color = d.sales >= avgDaily ? '#34a853' : d.sales >= avgDaily*0.9 ? '#f59e0b' : '#ef4444';
-        const isToday = d.date === new Date().toISOString().split('T')[0];
+        const color = d.sales >= avgDaily ? '#34a853' : d.sales >= avgDaily*0.85 ? '#f59e0b' : '#ef4444';
+        const isToday = d.date === now.toISOString().split('T')[0];
         return `<div class="day ${isToday?'today':''}">
           <div class="dl">${dd}/${mm} ${dayHe}</div>
           <div class="dbg"><div class="dbf" style="width:${pctWidth}%;background:${color}"></div></div>
@@ -283,20 +309,23 @@ async function loadData() {
     <!-- Workers -->
     ${workers.length > 0 ? `
     <div class="section">
-      <div class="s-title">פירוט עובדים — Tabit Chef Live (${workers.length} עובדים)</div>
-      ${workers.slice(0,15).map(w => `
+      <div class="s-title">פירוט עובדים — Tabit Chef Live · ${workers.length} עובדים · ${laborHours} שעות</div>
+      ${workers.slice(0,20).map(w => `
         <div class="row">
           <div><div class="l">${w.name}</div><div class="src">${w.role} · ${w.hours} שעות</div></div>
           <span class="v">${fmt(w.cost)}</span>
         </div>`).join('')}
-      ${workers.length > 15 ? `<div style="font-size:10px;color:#bbb;padding-top:8px">+ ${workers.length-15} עובדים נוספים</div>` : ''}
+      ${workers.length > 20 ? `<div style="font-size:10px;color:#bbb;padding-top:8px">+ ${workers.length-20} עובדים נוספים</div>` : ''}
+      <div style="margin-top:10px;font-size:10px;color:#999;text-align:center">
+        סה"כ: ${fmt(laborCost)} · ${pct(laborPct)} ממכירות נטו
+      </div>
     </div>` : ''}
     `;
 
     document.getElementById('mainContent').innerHTML = html;
 
     const updated = D.last_updated ? new Date(D.last_updated).toLocaleString('he-IL') : 'עכשיו';
-    const laborSource = laborLive ? '✅ Tabit Live' : '📦 Rosa';
+    const laborSource = laborLive ? '✅ Tabit Live' : '📦 Rosa Cache';
     document.getElementById('lastUpdated').textContent = `${updated} · עבודה: ${laborSource}`;
 
   } catch(e) {
@@ -305,7 +334,6 @@ async function loadData() {
   }
 }
 
-// Load on page open
 loadData();
 </script>
 </body>
