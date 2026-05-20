@@ -3,100 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kona Burger — MTD מאי 2026</title>
+<title>Kona Burger — MTD Dashboard</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; direction:rtl; min-height:100vh; }
 
-.header {
-  background: linear-gradient(135deg, #0a2342 0%, #1a4a7a 100%);
-  color: white; padding: 16px 22px;
-  display: flex; align-items: center; justify-content: space-between;
-  box-shadow: 0 3px 14px rgba(0,0,0,0.3);
+/* TRIAL BANNER */
+#trial-banner {
+  background: linear-gradient(90deg, #0a2342, #1a4a7a);
+  color: white;
+  text-align: center;
+  padding: 10px 20px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 13px;
 }
-.h-title { font-size:20px; font-weight:800; }
-.h-sub { font-size:10px; opacity:0.45; margin-top:2px; }
-.h-badge { background:rgba(255,255,255,0.13); border:1px solid rgba(255,255,255,0.22); border-radius:18px; padding:5px 14px; font-size:12px; font-weight:700; text-align:center; }
-.h-date { font-size:10px; opacity:0.45; margin-top:4px; text-align:center; }
+#trial-banner.show { display: flex; }
+#trial-countdown {
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 3px 14px;
+  font-weight: 800;
+  font-size: 14px;
+}
 
-.container { max-width:960px; margin:0 auto; padding:18px 14px; }
-
-/* KPI */
-.kpi-row { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
-.kpi { background:white; border-radius:12px; padding:14px 16px; flex:1; min-width:135px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.07); border-top:4px solid #ddd; }
-.kpi.k-sales  { border-top-color:#1a73e8; }
-.kpi.k-net    { border-top-color:#0891b2; }
-.kpi.k-labor  { border-top-color:#34a853; }
-.kpi.k-food   { border-top-color:#ef4444; }
-.kpi.k-fore   { border-top-color:#8b5cf6; }
-.kpi-lbl { font-size:9px; color:#aaa; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; }
-.kpi-val { font-size:24px; font-weight:800; color:#0a2342; line-height:1.1; }
-.kpi-sub { font-size:10px; color:#bbb; margin-top:3px; }
-.kpi-pct { margin-top:5px; }
-.badge { display:inline-block; padding:2px 8px; border-radius:9px; font-size:10px; font-weight:700; }
-.bg { background:#e8f5e9; color:#2e7d32; }
-.br { background:#fce4ec; color:#c62828; }
-.by { background:#fff8e1; color:#e65100; }
-.bb { background:#e3f2fd; color:#1565c0; }
-.bar { background:#eee; border-radius:4px; height:6px; margin-top:7px; overflow:hidden; }
-.bf  { height:100%; border-radius:4px; }
-
-/* Sections */
-.section { background:white; border-radius:12px; padding:18px; box-shadow:0 2px 8px rgba(0,0,0,0.07); margin-bottom:14px; }
-.s-title { font-size:12px; font-weight:700; color:#444; margin-bottom:12px; padding-right:9px; border-right:3px solid #1a73e8; }
-
-.two { display:flex; gap:12px; margin-bottom:14px; }
-.two > .section { flex:1; margin-bottom:0; }
-@media(max-width:600px){ .two{flex-direction:column} }
-
-/* Hero box */
-.hero { background:linear-gradient(135deg,#0a2342,#1a4a7a); border-radius:9px; color:white; padding:13px; text-align:center; margin-bottom:11px; }
-.hero .big { font-size:28px; font-weight:800; }
-.hero .sm  { font-size:10px; opacity:0.55; margin-top:2px; }
-.pill { display:inline-block; border-radius:16px; padding:3px 12px; font-size:12px; font-weight:700; margin-top:6px; }
-.pg { background:#34a853; color:white; }
-.pr { background:#ef4444; color:white; }
-
-.sb { background:#f8f9fa; border-radius:7px; padding:10px; text-align:center; }
-.sb .v { font-size:17px; font-weight:800; color:#0a2342; }
-.sb .l { font-size:9px; color:#999; margin-bottom:3px; }
-.sb .s { font-size:10px; font-weight:600; margin-top:2px; }
-
-/* Cost rows */
-.cr { display:flex; justify-content:space-between; align-items:center; padding:9px 11px; border-radius:7px; margin-bottom:6px; }
-.cr.n { background:#f8f9fa; }
-.cr.w { background:#fff8e1; }
-.cr.d { background:#0a2342; }
-.cr .l { font-size:11px; color:#555; }
-.cr .src { font-size:9px; color:#bbb; margin-top:1px; }
-.cr.d .l { color:rgba(255,255,255,0.65); }
-.cr .v { font-size:12px; font-weight:800; color:#0a2342; }
-.cr.d .v { color:white; font-size:15px; }
-.cr.w .v { color:#e65100; }
-
-/* Supplier grid */
-.sup-grid { display:flex; flex-wrap:wrap; gap:7px; }
-.sup-box { background:#f8f9fa; border-radius:7px; padding:9px 12px; flex:1; min-width:110px; }
-.sup-box .sv { font-size:14px; font-weight:800; color:#0a2342; }
-.sup-box .sl { font-size:9px; color:#999; margin-bottom:3px; }
-
-/* Daily bars */
-.day { display:flex; align-items:center; padding:5px 0; border-bottom:1px solid #f5f5f5; gap:7px; }
-.day:last-child { border-bottom:none; }
-.dl { font-size:10px; color:#999; width:52px; flex-shrink:0; text-align:center; line-height:1.4; }
-.dbg { background:#f0f0f0; border-radius:3px; height:19px; overflow:hidden; flex:1; }
-.dbf { height:100%; border-radius:3px; display:flex; align-items:center; padding:0 6px; font-size:9px; font-weight:700; color:white; }
-.dv { font-size:11px; font-weight:700; color:#0a2342; width:65px; text-align:left; flex-shrink:0; }
-.today .dl { color:#1a73e8; font-weight:800; }
-.today .dv { color:#1a73e8; font-weight:800; }
-
-.footer { text-align:center; font-size:10px; color:#ccc; padding:12px 0 6px; line-height:1.9; }
-</style>
-</head>
-<body>
-<!-- ===== PAYWALL OVERLAY ===== -->
-<style>
+/* PAYWALL OVERLAY */
 #paywall-overlay {
   display: none;
   position: fixed;
@@ -146,32 +80,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
   margin-bottom: 12px;
 }
 .pw-cta:hover { background: #1a4a7a; }
-.pw-contact { font-size: 12px; color: #999; }
-.pw-contact a { color: #1a73e8; text-decoration: none; }
-
-/* Trial banner */
-#trial-banner {
-  background: linear-gradient(90deg, #0a2342, #1a4a7a);
-  color: white;
-  text-align: center;
-  padding: 10px 20px;
-  font-size: 13px;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-#trial-banner.show { display: flex; }
-#trial-countdown {
-  background: rgba(255,255,255,0.2);
-  border-radius: 20px;
-  padding: 3px 14px;
-  font-weight: 800;
-  font-size: 14px;
-}
-
-/* Code entry */
+.pw-contact { font-size: 12px; color: #888; margin-top: 8px; line-height: 1.6; }
 .pw-code-section { margin-top: 16px; border-top: 1px solid #eee; padding-top: 16px; }
 .pw-code-section input {
   border: 1.5px solid #ddd;
@@ -195,7 +104,182 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
   cursor: pointer;
 }
 .pw-code-err { color: #ef4444; font-size: 12px; margin-top: 6px; display: none; }
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #0a2342 0%, #1a4a7a 100%);
+  color: white; padding: 16px 22px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.3);
+  flex-wrap: wrap; gap: 10px;
+}
+.h-title { font-size:20px; font-weight:800; }
+.h-sub { font-size:10px; opacity:0.45; margin-top:2px; }
+.h-badge { background:rgba(255,255,255,0.13); border:1px solid rgba(255,255,255,0.22); border-radius:18px; padding:5px 14px; font-size:12px; font-weight:700; text-align:center; }
+.h-date { font-size:10px; opacity:0.45; margin-top:4px; text-align:center; }
+
+.sync-btn {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+}
+.sync-btn:hover { background: rgba(255,255,255,0.25); }
+.sync-btn.loading { opacity: 0.6; pointer-events: none; }
+
+.container { max-width:960px; margin:0 auto; padding:18px 14px; }
+
+/* LOADING STATE */
+#loading-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid #eee;
+  border-top-color: #1a73e8;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ERROR STATE */
+#error-state {
+  display: none;
+  background: #fce4ec;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  color: #c62828;
+  margin-bottom: 16px;
+}
+
+/* KPI */
+.kpi-row { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+.kpi { background:white; border-radius:12px; padding:14px 16px; flex:1; min-width:135px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.07); border-top:4px solid #ddd; }
+.kpi.k-sales  { border-top-color:#1a73e8; }
+.kpi.k-net    { border-top-color:#0891b2; }
+.kpi.k-labor  { border-top-color:#34a853; }
+.kpi.k-food   { border-top-color:#ef4444; }
+.kpi.k-fore   { border-top-color:#8b5cf6; }
+.kpi-lbl { font-size:9px; color:#aaa; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; }
+.kpi-val { font-size:24px; font-weight:800; color:#0a2342; line-height:1.1; }
+.kpi-sub { font-size:10px; color:#bbb; margin-top:3px; }
+.kpi-pct { margin-top:5px; }
+.badge { display:inline-block; padding:2px 8px; border-radius:9px; font-size:10px; font-weight:700; }
+.bg { background:#e8f5e9; color:#2e7d32; }
+.br { background:#fce4ec; color:#c62828; }
+.by { background:#fff8e1; color:#e65100; }
+.bb { background:#e3f2fd; color:#1565c0; }
+.bar { background:#eee; border-radius:4px; height:6px; margin-top:7px; overflow:hidden; }
+.bf  { height:100%; border-radius:4px; }
+
+/* Sections */
+.section { background:white; border-radius:12px; padding:18px; box-shadow:0 2px 8px rgba(0,0,0,0.07); margin-bottom:14px; }
+.s-title { font-size:12px; font-weight:700; color:#444; margin-bottom:12px; padding-right:9px; border-right:3px solid #1a73e8; }
+.two { display:flex; gap:12px; margin-bottom:14px; }
+.two > .section { flex:1; margin-bottom:0; }
+@media(max-width:600px){ .two{flex-direction:column} }
+
+.hero { background:linear-gradient(135deg,#0a2342,#1a4a7a); border-radius:9px; color:white; padding:13px; text-align:center; margin-bottom:11px; }
+.hero .big { font-size:28px; font-weight:800; }
+.hero .sm  { font-size:10px; opacity:0.55; margin-top:2px; }
+.pill { display:inline-block; border-radius:16px; padding:3px 12px; font-size:12px; font-weight:700; margin-top:6px; }
+.pg { background:#34a853; color:white; }
+.pr { background:#ef4444; color:white; }
+
+.sb { background:#f8f9fa; border-radius:7px; padding:10px; text-align:center; }
+.sb .v { font-size:17px; font-weight:800; color:#0a2342; }
+.sb .l { font-size:9px; color:#999; margin-bottom:3px; }
+.sb .s { font-size:10px; font-weight:600; margin-top:2px; }
+
+.cr { display:flex; justify-content:space-between; align-items:center; padding:9px 11px; border-radius:7px; margin-bottom:6px; }
+.cr.n { background:#f8f9fa; }
+.cr.w { background:#fff8e1; }
+.cr.d { background:#0a2342; }
+.cr .l { font-size:11px; color:#555; }
+.cr .src { font-size:9px; color:#bbb; margin-top:1px; }
+.cr.d .l { color:rgba(255,255,255,0.65); }
+.cr .v { font-size:12px; font-weight:800; color:#0a2342; }
+.cr.d .v { color:white; font-size:15px; }
+.cr.w .v { color:#e65100; }
+
+.sup-grid { display:flex; flex-wrap:wrap; gap:7px; }
+.sup-box { background:#f8f9fa; border-radius:7px; padding:9px 12px; flex:1; min-width:110px; }
+.sup-box .sv { font-size:14px; font-weight:800; color:#0a2342; }
+.sup-box .sl { font-size:9px; color:#999; margin-bottom:3px; }
+
+.day { display:flex; align-items:center; padding:5px 0; border-bottom:1px solid #f5f5f5; gap:7px; }
+.day:last-child { border-bottom:none; }
+.dl { font-size:10px; color:#999; width:52px; flex-shrink:0; text-align:center; line-height:1.4; }
+.dbg { background:#f0f0f0; border-radius:3px; height:19px; overflow:hidden; flex:1; }
+.dbf { height:100%; border-radius:3px; display:flex; align-items:center; padding:0 6px; font-size:9px; font-weight:700; color:white; }
+.dv { font-size:11px; font-weight:700; color:#0a2342; width:65px; text-align:left; flex-shrink:0; }
+.today-bar .dl { color:#1a73e8; font-weight:800; }
+.today-bar .dv { color:#1a73e8; font-weight:800; }
+
+.footer { text-align:center; font-size:10px; color:#ccc; padding:12px 0 6px; line-height:1.9; }
+
+#dashboard-content { display: none; }
 </style>
+</head>
+<body>
+
+<!-- PAYWALL TRIAL LOGIC -->
+<script>
+(function() {
+  const TRIAL_DAYS = 4;
+  const ACCESS_CODES = ['KONA2026', 'SMARTPLATE60', 'KB-VIP'];
+  const STORAGE_KEY = 'kona_trial_start';
+  const CODE_KEY = 'kona_access_code';
+
+  const savedCode = localStorage.getItem(CODE_KEY);
+  if (ACCESS_CODES.includes(savedCode)) {
+    window._paywallActive = false;
+    return;
+  }
+
+  let trialStart = localStorage.getItem(STORAGE_KEY);
+  if (!trialStart) {
+    trialStart = Date.now().toString();
+    localStorage.setItem(STORAGE_KEY, trialStart);
+  }
+
+  const elapsed = Date.now() - parseInt(trialStart);
+  const trialMs = TRIAL_DAYS * 24 * 60 * 60 * 1000;
+  const remaining = trialMs - elapsed;
+
+  if (remaining <= 0) {
+    window._paywallActive = true;
+  } else {
+    window._paywallActive = false;
+    window._trialRemaining = remaining;
+    window._trialMs = trialMs;
+    window._trialStart = parseInt(trialStart);
+  }
+
+  window.checkCode = function() {
+    const code = document.getElementById('access-code-input').value.trim().toUpperCase();
+    if (ACCESS_CODES.includes(code)) {
+      localStorage.setItem(CODE_KEY, code);
+      document.getElementById('paywall-overlay').classList.remove('show');
+      document.getElementById('trial-banner').classList.remove('show');
+      document.getElementById('dashboard-content').style.display = 'block';
+      loadDashboard();
+    } else {
+      document.getElementById('code-err').style.display = 'block';
+    }
+  };
+})();
+</script>
 
 <!-- Trial Banner -->
 <div id="trial-banner">
@@ -210,13 +294,11 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
     <div class="pw-logo">🍔</div>
     <div class="pw-title">Kona Burger Dashboard</div>
     <div class="pw-sub">תקופת הניסיון החינמית שלך הסתיימה.<br>המשך לקבל גישה מלאה לדאשבורד.</div>
-
     <div class="pw-price">
       <div class="amount">₪60</div>
       <div class="period">לחודש · כולל מע"מ</div>
       <div class="desc">גישה מלאה · עדכון יומי אוטומטי · כל הנתונים</div>
     </div>
-
     <ul class="pw-features">
       <li>נתוני מכירות MTD בזמן אמת</li>
       <li>עלות עבודה מ-Tabit Chef</li>
@@ -224,15 +306,13 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
       <li>תחזית חודש מלא</li>
       <li>עדכון אוטומטי כל יום</li>
     </ul>
-
     <button class="pw-cta" onclick="window.open('https://wa.me/972525838483?text=%D7%94%D7%99%D7%99%2C%20%D7%AA%D7%A7%D7%95%D7%A4%D7%AA%20%D7%94%D7%A0%D7%99%D7%A1%D7%99%D7%95%D7%9F%20%D7%A9%D7%9C%D7%99%20%D7%9C%D7%93%D7%90%D7%A9%D7%91%D7%95%D7%A8%D7%93%20Kona%20%D7%94%D7%A1%D7%AA%D7%99%D7%99%D7%9E%D7%94.%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A7%D7%91%D7%9C%20%D7%97%D7%A9%D7%91%D7%95%D7%A0%D7%99%D7%AA%20%D7%9E%D7%A1%20%D7%9C%D7%AA%D7%A9%D7%9C%D7%95%D7%9D%2060%20%E2%82%AA%20%D7%9C%D7%97%D7%95%D7%93%D7%A9.', '_blank')">
       📲 שלחו לי חשבונית לתשלום
     </button>
-    <div class="pw-contact" style="font-size:12px;color:#888;margin-top:8px;line-height:1.6">
+    <div class="pw-contact">
       תקבל חשבונית של 60 ₪ ישירות ל-WhatsApp שלך.<br>
       לאחר התשלום נשלח לך קוד גישה.
     </div>
-
     <div class="pw-code-section">
       <div style="font-size:12px;color:#999;margin-bottom:10px">כבר שילמת? הזן קוד גישה:</div>
       <input type="text" id="access-code-input" placeholder="הזן קוד גישה" />
@@ -242,226 +322,293 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
   </div>
 </div>
 
-<script>
-(function() {
-  // === CONFIGURATION ===
-  const TRIAL_DAYS = 4;
-  const ACCESS_CODES = ['KONA2026', 'SMARTPLATE60', 'KB-VIP'];
-  const STORAGE_KEY = 'kona_trial_start';
-  const CODE_KEY = 'kona_access_code';
-
-  // Check if already has valid code
-  const savedCode = localStorage.getItem(CODE_KEY);
-  if (ACCESS_CODES.includes(savedCode)) return; // full access, show nothing
-
-  // Get or set trial start
-  let trialStart = localStorage.getItem(STORAGE_KEY);
-  if (!trialStart) {
-    trialStart = Date.now().toString();
-    localStorage.setItem(STORAGE_KEY, trialStart);
-  }
-
-  const elapsed = Date.now() - parseInt(trialStart);
-  const trialMs = TRIAL_DAYS * 24 * 60 * 60 * 1000;
-  const remaining = trialMs - elapsed;
-
-  if (remaining <= 0) {
-    // Trial expired — show paywall
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('paywall-overlay').classList.add('show');
-    });
-  } else {
-    // Trial active — show banner with countdown
-    document.addEventListener('DOMContentLoaded', function() {
-      const banner = document.getElementById('trial-banner');
-      banner.classList.add('show');
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-    });
-
-    function updateCountdown() {
-      const now = Date.now();
-      const left = trialMs - (now - parseInt(trialStart));
-      if (left <= 0) {
-        location.reload();
-        return;
-      }
-      const d = Math.floor(left / (1000*60*60*24));
-      const h = Math.floor((left % (1000*60*60*24)) / (1000*60*60));
-      const m = Math.floor((left % (1000*60*60)) / (1000*60));
-      const s = Math.floor((left % (1000*60)) / 1000);
-      let txt = '';
-      if (d > 0) txt = d + ' ימים ו-' + h + ' שעות';
-      else if (h > 0) txt = h + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0') + ' שעות';
-      else txt = m + ':' + String(s).padStart(2,'0') + ' דקות';
-      document.getElementById('trial-countdown').textContent = txt;
-    }
-  }
-
-  // Code check function
-  window.checkCode = function() {
-    const code = document.getElementById('access-code-input').value.trim().toUpperCase();
-    if (ACCESS_CODES.includes(code)) {
-      localStorage.setItem(CODE_KEY, code);
-      document.getElementById('paywall-overlay').classList.remove('show');
-      document.getElementById('trial-banner') && document.getElementById('trial-banner').classList.remove('show');
-    } else {
-      document.getElementById('code-err').style.display = 'block';
-    }
-  };
-})();
-</script>
-
-
+<!-- HEADER -->
 <div class="header">
   <div>
     <div class="h-title">🍔 Kona Burger</div>
     <div class="h-sub">Tabit Chef · Smart Basic 2 · Rosa</div>
   </div>
-  <div>
-    <div class="h-badge">MTD מאי 2026 — 1 עד 19 במאי</div>
-    <div class="h-date">עודכן: 19.05.2026 23:31 · כל הנתונים מאומתים מהמקור</div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="sync-btn" id="sync-btn" onclick="loadDashboard(true)">
+      <span id="sync-icon">🔄</span> סנכרן עכשיו
+    </button>
+    <div>
+      <div class="h-badge" id="h-badge">MTD טוען...</div>
+      <div class="h-date" id="h-date">מתחבר למקורות...</div>
+    </div>
   </div>
 </div>
 
-<div class="container">
+<!-- DASHBOARD CONTENT -->
+<div id="dashboard-content">
+  <div class="container">
 
-  <!-- KPIs -->
-  <div class="kpi-row">
-    <div class="kpi k-sales">
-      <div class="kpi-lbl">מכירות MTD כולל מע"מ</div>
-      <div class="kpi-val">₪391,121</div>
-      <div class="kpi-sub">19 ימים · 2,325 סועדים</div>
-      <div class="kpi-pct"><span class="badge bg">▲ 10.4% vs 4W</span></div>
-    </div>
-    <div class="kpi k-net">
-      <div class="kpi-lbl">מכירות נטו (ללא מע"מ)</div>
-      <div class="kpi-val">₪334,291</div>
-      <div class="kpi-sub">בסיס לחישוב אחוזים</div>
-      <div class="kpi-pct"><span class="badge bg">▲ 66.9% vs שנה שעברה</span></div>
-    </div>
-    <div class="kpi k-labor">
-      <div class="kpi-lbl">עלות עבודה MTD</div>
-      <div class="kpi-val">₪112,622</div>
-      <div class="kpi-sub">2,218 שעות · Tabit Chef ✓</div>
-      <div class="kpi-pct"><span class="badge bg">33.7% ממכירות נטו</span></div>
-      <div class="bar"><div class="bf" style="width:56%;background:#34a853"></div></div>
-    </div>
-    <div class="kpi k-food">
-      <div class="kpi-lbl">עלות מזון MTD ללא מע"מ</div>
-      <div class="kpi-val">₪89,053</div>
-      <div class="kpi-sub">₪104,191 כולל מע"מ · Smart Basic 2 ✓</div>
-      <div class="kpi-pct"><span class="badge br">26.6% ממכירות נטו</span></div>
-      <div class="bar"><div class="bf" style="width:44%;background:#ef4444"></div></div>
-    </div>
-    <div class="kpi k-fore">
-      <div class="kpi-lbl">תחזית חודש מלא</div>
-      <div class="kpi-val">₪647,447</div>
-      <div class="kpi-sub">₪153.79 לסועד · 3,825 סועדים</div>
-      <div class="kpi-pct"><span class="badge bb">▲ 14.8% vs 4W</span></div>
-    </div>
-  </div>
+    <div id="error-state"></div>
 
-  <!-- Labor + Costs -->
-  <div class="two">
-    <div class="section">
-      <div class="s-title">עלות עבודה — Tabit Chef ✓</div>
-      <div class="hero">
-        <div class="big">₪112,622</div>
-        <div class="sm">2,218:04 שעות · 19 ימים</div>
-        <div><span class="pill pg">33.7% ממכירות נטו</span></div>
+    <!-- KPIs -->
+    <div class="kpi-row" id="kpi-row">
+      <div class="kpi k-sales">
+        <div class="kpi-lbl">מכירות MTD כולל מע"מ</div>
+        <div class="kpi-val" id="kpi-sales">טוען...</div>
+        <div class="kpi-sub" id="kpi-sales-sub"></div>
+        <div class="kpi-pct" id="kpi-sales-pct"></div>
       </div>
-      <div style="display:flex;gap:8px">
-        <div class="sb" style="flex:1">
-          <div class="l">היום 19/5</div>
-          <div class="v">₪4,110</div>
-          <div class="s" style="color:#34a853">23.1% · 84:42H</div>
+      <div class="kpi k-net">
+        <div class="kpi-lbl">מכירות נטו (ללא מע"מ)</div>
+        <div class="kpi-val" id="kpi-net">טוען...</div>
+        <div class="kpi-sub">בסיס לחישוב אחוזים</div>
+      </div>
+      <div class="kpi k-labor">
+        <div class="kpi-lbl">עלות עבודה MTD</div>
+        <div class="kpi-val" id="kpi-labor">טוען...</div>
+        <div class="kpi-sub" id="kpi-labor-sub"></div>
+        <div class="kpi-pct" id="kpi-labor-pct"></div>
+        <div class="bar"><div class="bf" id="kpi-labor-bar" style="background:#34a853"></div></div>
+      </div>
+      <div class="kpi k-food">
+        <div class="kpi-lbl">עלות מזון MTD ללא מע"מ</div>
+        <div class="kpi-val" id="kpi-food">טוען...</div>
+        <div class="kpi-sub" id="kpi-food-sub"></div>
+        <div class="kpi-pct" id="kpi-food-pct"></div>
+        <div class="bar"><div class="bf" id="kpi-food-bar" style="background:#ef4444"></div></div>
+      </div>
+      <div class="kpi k-fore">
+        <div class="kpi-lbl">תחזית חודש מלא</div>
+        <div class="kpi-val" id="kpi-fore">טוען...</div>
+        <div class="kpi-sub" id="kpi-fore-sub"></div>
+      </div>
+    </div>
+
+    <!-- Labor + Costs -->
+    <div class="two">
+      <div class="section">
+        <div class="s-title">עלות עבודה — Tabit Chef ✓</div>
+        <div class="hero">
+          <div class="big" id="labor-hero-val">טוען...</div>
+          <div class="sm" id="labor-hero-sub"></div>
+          <div><span class="pill pg" id="labor-hero-pct"></span></div>
         </div>
-        <div class="sb" style="flex:1">
-          <div class="l">MTD מצטבר</div>
-          <div class="v">₪112,622</div>
-          <div class="s" style="color:#34a853">33.7% · 2,218H</div>
+        <div style="display:flex;gap:8px">
+          <div class="sb" style="flex:1">
+            <div class="l">היום</div>
+            <div class="v" id="labor-today-val">—</div>
+            <div class="s" id="labor-today-sub" style="color:#34a853"></div>
+          </div>
+          <div class="sb" style="flex:1">
+            <div class="l">MTD מצטבר</div>
+            <div class="v" id="labor-mtd-val">—</div>
+            <div class="s" id="labor-mtd-sub" style="color:#34a853"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="s-title">סיכום עלויות MTD — מקורות מאומתים</div>
+        <div class="cr n">
+          <div><div class="l">עלות עבודה</div><div class="src">📊 Tabit Chef</div></div>
+          <span class="v" id="cost-labor">—</span>
+        </div>
+        <div class="cr w">
+          <div><div class="l">עלות מזון (ללא מע"מ)</div><div class="src">🧾 Smart Basic 2</div></div>
+          <span class="v" id="cost-food">—</span>
+        </div>
+        <div class="cr n">
+          <div><div class="l">Wolt (כולל מע"מ)</div><div class="src">📦 Rosa</div></div>
+          <span class="v" id="cost-wolt">—</span>
+        </div>
+        <div class="cr n">
+          <div><div class="l">טיפים</div><div class="src">💳 Rosa</div></div>
+          <span class="v" id="cost-tips">—</span>
+        </div>
+        <div class="cr d" style="margin-top:8px">
+          <span class="l" style="font-weight:700;font-size:12px">סה"כ עבודה + מזון (נטו)</span>
+          <span class="v" id="cost-total">—</span>
         </div>
       </div>
     </div>
 
+    <!-- Suppliers -->
     <div class="section">
-      <div class="s-title">סיכום עלויות MTD — מקורות מאומתים</div>
-      <div class="cr n">
-        <div><div class="l">עלות עבודה</div><div class="src">📊 Tabit Chef</div></div>
-        <span class="v">₪112,622 &nbsp;<small style="color:#34a853;font-weight:700">33.7%</small></span>
+      <div class="s-title">פירוט עלות מזון לפי ספק — Smart Basic 2 ✓</div>
+      <div class="sup-grid" id="sup-grid">
+        <div style="color:#bbb;font-size:12px">טוען ספקים...</div>
       </div>
-      <div class="cr w">
-        <div><div class="l">עלות מזון (ללא מע"מ)</div><div class="src">🧾 Smart Basic 2 · ₪104,191 כולל מע"מ</div></div>
-        <span class="v">₪89,053 &nbsp;<small style="color:#e65100;font-weight:700">26.6%</small></span>
-      </div>
-      <div class="cr n">
-        <div><div class="l">Wolt (כולל מע"מ)</div><div class="src">📦 Rosa</div></div>
-        <span class="v">₪13,024</span>
-      </div>
-      <div class="cr n">
-        <div><div class="l">טיפים</div><div class="src">💳 Rosa</div></div>
-        <span class="v">₪14,222 &nbsp;<small style="color:#8b5cf6;font-weight:700">3.6% ממכירות כולל מע"מ</small></span>
-      </div>
-      <div class="cr d" style="margin-top:8px">
-        <span class="l" style="font-weight:700;font-size:12px">סה"כ עבודה + מזון (נטו)</span>
-        <span class="v">60.3%</span>
+      <div style="margin-top:10px;text-align:center;font-size:10px;color:#aaa" id="sup-total"></div>
+    </div>
+
+    <!-- Daily Sales -->
+    <div class="section">
+      <div class="s-title">מכירות יומיות — כולל מע"מ · Tabit Chef ✓</div>
+      <div id="daily-sales-list">
+        <div style="color:#bbb;font-size:12px;text-align:center;padding:20px">טוען מכירות יומיות...</div>
       </div>
     </div>
-  </div>
 
-  <!-- Supplier breakdown -->
-  <div class="section">
-    <div class="s-title">פירוט עלות מזון לפי ספק — Smart Basic 2 ✓ (סכומים כולל מע"מ)</div>
-    <div class="sup-grid">
-      <div class="sup-box"><div class="sl">מרעה גולן</div><div class="sv">₪10,964</div></div>
-      <div class="sup-box"><div class="sl">החברה המרכזית</div><div class="sv">₪4,709</div></div>
-      <div class="sup-box"><div class="sl">הכרם</div><div class="sv">₪4,661</div></div>
-      <div class="sup-box"><div class="sl">מחלבות גד</div><div class="sv">₪3,549</div></div>
-      <div class="sup-box"><div class="sl">דגי נסיב</div><div class="sv">₪3,381</div></div>
-      <div class="sup-box"><div class="sl">אלי אברהמי</div><div class="sv">₪3,291</div></div>
-      <div class="sup-box"><div class="sl">גן המלך</div><div class="sv">₪2,810</div></div>
-      <div class="sup-box"><div class="sl">ברדא פוראבר</div><div class="sv">₪2,293</div></div>
-      <div class="sup-box"><div class="sl">יוכי ירקות</div><div class="sv">₪2,047</div></div>
-      <div class="sup-box"><div class="sl">מילועוף</div><div class="sv">₪1,585</div></div>
-      <div class="sup-box"><div class="sl">פאנדנגו</div><div class="sv">₪1,180</div></div>
-      <div class="sup-box"><div class="sl">עלה עלה</div><div class="sv">₪1,051</div></div>
-    </div>
-    <div style="margin-top:10px;text-align:center;font-size:10px;color:#aaa">
-      סה"כ כולל מע"מ: <strong style="color:#0a2342">₪104,191</strong> &nbsp;·&nbsp; נטו ללא מע"מ: <strong style="color:#ef4444">₪89,053</strong>
+    <div class="footer" id="footer-txt">
+      מכירות: Tabit Chef · עלות עבודה: Tabit Chef · עלות מזון: Smart Basic 2 · Wolt + טיפים: Rosa<br>
+      הדאשבורד מתעדכן בכל טעינה ואוטומטית כל בוקר בשעה 08:00
     </div>
   </div>
-
-  <!-- Daily sales -->
-  <div class="section">
-    <div class="s-title">מכירות יומיות — מאי 2026 (כולל מע"מ) · Tabit Chef ✓</div>
-
-    <div class="day today"><div class="dl">19/5<br>ג׳ היום</div><div class="dbg"><div class="dbf" style="width:73%;background:#1a73e8">היום</div></div><div class="dv">₪21,030</div></div>
-    <div class="day"><div class="dl">18/5 ב׳</div><div class="dbg"><div class="dbf" style="width:65%;background:#34a853">113%</div></div><div class="dv">₪18,874</div></div>
-    <div class="day"><div class="dl">17/5 א׳</div><div class="dbg"><div class="dbf" style="width:53%;background:#f59e0b">99%</div></div><div class="dv">₪15,311</div></div>
-    <div class="day"><div class="dl">16/5 ש׳</div><div class="dbg"><div class="dbf" style="width:84%;background:#34a853">103%</div></div><div class="dv">₪24,221</div></div>
-    <div class="day"><div class="dl">15/5 ו׳</div><div class="dbg"><div class="dbf" style="width:90%;background:#34a853">103%</div></div><div class="dv">₪25,893</div></div>
-    <div class="day"><div class="dl">14/5 ה׳</div><div class="dbg"><div class="dbf" style="width:93%;background:#34a853">103%</div></div><div class="dv">₪26,679</div></div>
-    <div class="day"><div class="dl">13/5 ד׳</div><div class="dbg"><div class="dbf" style="width:59%;background:#f59e0b">94%</div></div><div class="dv">₪17,036</div></div>
-    <div class="day"><div class="dl">12/5 ג׳</div><div class="dbg"><div class="dbf" style="width:63%;background:#34a853">108%</div></div><div class="dv">₪18,144</div></div>
-    <div class="day"><div class="dl">11/5 ב׳</div><div class="dbg"><div class="dbf" style="width:69%;background:#34a853">169%</div></div><div class="dv">₪19,941</div></div>
-    <div class="day"><div class="dl">10/5 א׳</div><div class="dbg"><div class="dbf" style="width:62%;background:#34a853">114%</div></div><div class="dv">₪17,954</div></div>
-    <div class="day"><div class="dl">9/5 ש׳</div><div class="dbg"><div class="dbf" style="width:79%;background:#34a853">101%</div></div><div class="dv">₪22,845</div></div>
-    <div class="day"><div class="dl">8/5 ו׳</div><div class="dbg"><div class="dbf" style="width:96%;background:#34a853">117%</div></div><div class="dv">₪27,795</div></div>
-    <div class="day"><div class="dl">7/5 ה׳</div><div class="dbg"><div class="dbf" style="width:95%;background:#34a853">113%</div></div><div class="dv">₪27,379</div></div>
-    <div class="day"><div class="dl">6/5 ד׳</div><div class="dbg"><div class="dbf" style="width:62%;background:#34a853">104%</div></div><div class="dv">₪17,895</div></div>
-    <div class="day"><div class="dl">5/5 ג׳</div><div class="dbg"><div class="dbf" style="width:51%;background:#f59e0b">88%</div></div><div class="dv">₪14,768</div></div>
-    <div class="day"><div class="dl">4/5 ב׳</div><div class="dbg"><div class="dbf" style="width:64%;background:#34a853">158%</div></div><div class="dv">₪18,561</div></div>
-    <div class="day"><div class="dl">3/5 א׳</div><div class="dbg"><div class="dbf" style="width:48%;background:#f59e0b">86%</div></div><div class="dv">₪14,020</div></div>
-    <div class="day"><div class="dl">2/5 ש׳</div><div class="dbg"><div class="dbf" style="width:87%;background:#34a853">116%</div></div><div class="dv">₪25,186</div></div>
-    <div class="day"><div class="dl">1/5 ו׳</div><div class="dbg"><div class="dbf" style="width:88%;background:#34a853">118%</div></div><div class="dv">₪25,663</div></div>
-  </div>
-
-  <div class="footer">
-    מכירות: Tabit Chef &nbsp;·&nbsp; עלות עבודה: Tabit Chef &nbsp;·&nbsp; עלות מזון: Smart Basic 2 (421 קבלות מאומתות) &nbsp;·&nbsp; Wolt + טיפים: Rosa<br>
-    הדאשבורד יתעדכן אוטומטית כל בוקר בשעה 08:00
-  </div>
-
 </div>
+
+<!-- LOADING STATE -->
+<div id="loading-state">
+  <div class="spinner"></div>
+  <div style="font-size:14px;color:#888">טוען נתונים מ-Tabit Chef ו-Smart Basic 2...</div>
+</div>
+
+<script>
+const ROSA_API = 'https://69b19dfe2dea6d186d8ebb9e.base44.app/api/functions/konaSync';
+
+function fmt(n) {
+  if (n == null || isNaN(n)) return '—';
+  return '₪' + Math.round(n).toLocaleString('he-IL');
+}
+function pct(v, total) {
+  if (!total) return '—';
+  return (v / total * 100).toFixed(1) + '%';
+}
+function heDay(dateStr) {
+  const days = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
+  const d = new Date(dateStr);
+  return days[d.getDay()];
+}
+
+async function loadDashboard(manual = false) {
+  const btn = document.getElementById('sync-btn');
+  const icon = document.getElementById('sync-icon');
+  if (btn) { btn.classList.add('loading'); icon.textContent = '⏳'; }
+
+  try {
+    const res = await fetch(ROSA_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+    const d = await res.json();
+    if (!res.ok || d.error) throw new Error(d.error || 'שגיאה בטעינה');
+
+    // Hide loading, show content
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('dashboard-content').style.display = 'block';
+    document.getElementById('error-state').style.display = 'none';
+
+    // Header
+    const now = new Date();
+    const dayNum = now.getDate();
+    const monthNames = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+    document.getElementById('h-badge').textContent = `MTD ${monthNames[now.getMonth()]} ${now.getFullYear()} — 1 עד ${dayNum}`;
+    const updTime = new Date(d.last_updated);
+    document.getElementById('h-date').textContent = `עודכן: ${updTime.toLocaleString('he-IL')} · כל הנתונים מאומתים מהמקור`;
+
+    const salesVat = d.total_sales_vat || 0;
+    const salesNet = d.total_sales_net || 0;
+    const labor = d.labor_cost || 0;
+    const foodNet = d.food_cost_net || 0;
+    const foodVat = Math.round(foodNet * 1.18);
+    const tips = d.tips || 0;
+    const wolt = d.wolt_vat || 0;
+    const days = d.days_collected || 1;
+    const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+    const forecast = Math.round(salesVat / days * daysInMonth);
+
+    const laborPctNet = salesNet > 0 ? (labor / salesNet * 100).toFixed(1) : '—';
+    const foodPctNet = salesNet > 0 ? (foodNet / salesNet * 100).toFixed(1) : '—';
+    const tipsPctGross = salesVat > 0 ? (tips / salesVat * 100).toFixed(1) : '—';
+    const totalPct = salesNet > 0 ? ((labor + foodNet) / salesNet * 100).toFixed(1) : '—';
+
+    // KPIs
+    document.getElementById('kpi-sales').textContent = fmt(salesVat);
+    document.getElementById('kpi-sales-sub').textContent = `${days} ימים`;
+    document.getElementById('kpi-net').textContent = fmt(salesNet);
+    document.getElementById('kpi-labor').textContent = fmt(labor);
+    document.getElementById('kpi-labor-sub').textContent = `${d.labor_hours || 0} שעות · Tabit Chef ✓`;
+    document.getElementById('kpi-labor-pct').innerHTML = `<span class="badge bg">${laborPctNet}% ממכירות נטו</span>`;
+    document.getElementById('kpi-labor-bar').style.width = Math.min(parseFloat(laborPctNet)*2, 100) + '%';
+    document.getElementById('kpi-food').textContent = fmt(foodNet);
+    document.getElementById('kpi-food-sub').textContent = `${fmt(foodVat)} כולל מע"מ · Smart Basic 2 ✓`;
+    document.getElementById('kpi-food-pct').innerHTML = `<span class="badge br">${foodPctNet}% ממכירות נטו</span>`;
+    document.getElementById('kpi-food-bar').style.width = Math.min(parseFloat(foodPctNet)*2, 100) + '%';
+    document.getElementById('kpi-fore').textContent = fmt(forecast);
+    document.getElementById('kpi-fore-sub').textContent = `${fmt(Math.round(salesVat/days))} ממוצע יומי`;
+
+    // Labor section
+    document.getElementById('labor-hero-val').textContent = fmt(labor);
+    document.getElementById('labor-hero-sub').textContent = `${d.labor_hours || 0} שעות · ${days} ימים`;
+    document.getElementById('labor-hero-pct').textContent = `${laborPctNet}% ממכירות נטו`;
+    document.getElementById('labor-mtd-val').textContent = fmt(labor);
+    document.getElementById('labor-mtd-sub').textContent = `${laborPctNet}% · ${d.labor_hours || 0}H`;
+
+    // Cost summary
+    document.getElementById('cost-labor').innerHTML = `${fmt(labor)} &nbsp;<small style="color:#34a853;font-weight:700">${laborPctNet}%</small>`;
+    document.getElementById('cost-food').innerHTML = `${fmt(foodNet)} &nbsp;<small style="color:#e65100;font-weight:700">${foodPctNet}%</small>`;
+    document.getElementById('cost-wolt').textContent = fmt(wolt);
+    document.getElementById('cost-tips').innerHTML = `${fmt(tips)} &nbsp;<small style="color:#8b5cf6;font-weight:700">${tipsPctGross}% מכולל מע"מ</small>`;
+    document.getElementById('cost-total').textContent = totalPct + '%';
+
+    // Suppliers
+    const vendors = d.vendors || [];
+    if (vendors.length > 0) {
+      vendors.sort((a, b) => b.amount - a.amount);
+      document.getElementById('sup-grid').innerHTML = vendors.map(v =>
+        `<div class="sup-box"><div class="sl">${v.name}</div><div class="sv">${fmt(v.amount)}</div></div>`
+      ).join('');
+      document.getElementById('sup-total').innerHTML =
+        `סה"כ כולל מע"מ: <strong style="color:#0a2342">${fmt(foodVat)}</strong> &nbsp;·&nbsp; נטו ללא מע"מ: <strong style="color:#ef4444">${fmt(foodNet)}</strong>`;
+    }
+
+    // Daily sales
+    let dailySales = d.daily_sales || [];
+    if (!Array.isArray(dailySales)) dailySales = [];
+    dailySales.sort((a, b) => b.date.localeCompare(a.date));
+    const maxSale = Math.max(...dailySales.map(x => x.sales || 0), 1);
+    const todayStr = now.toISOString().split('T')[0];
+    document.getElementById('daily-sales-list').innerHTML = dailySales.map(day => {
+      const isToday = day.date === todayStr;
+      const pctWidth = Math.round((day.sales / maxSale) * 95);
+      const color = isToday ? '#1a73e8' : '#34a853';
+      const [,mm,dd] = day.date.split('-');
+      return `<div class="day ${isToday ? 'today-bar' : ''}">
+        <div class="dl">${dd}/${mm}<br>${heDay(day.date)}</div>
+        <div class="dbg"><div class="dbf" style="width:${pctWidth}%;background:${color}">${isToday ? 'היום' : ''}</div></div>
+        <div class="dv">${fmt(day.sales)}</div>
+      </div>`;
+    }).join('') || '<div style="color:#bbb;text-align:center;padding:16px">אין נתונים יומיים</div>';
+
+  } catch (err) {
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('dashboard-content').style.display = 'block';
+    const errEl = document.getElementById('error-state');
+    errEl.style.display = 'block';
+    errEl.textContent = 'שגיאה בטעינת הנתונים: ' + err.message;
+  } finally {
+    if (btn) { btn.classList.remove('loading'); icon.textContent = '🔄'; }
+  }
+}
+
+// Paywall / Trial logic on DOM ready
+document.addEventListener('DOMContentLoaded', function() {
+  if (window._paywallActive) {
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('paywall-overlay').classList.add('show');
+  } else {
+    // Show trial banner if applicable
+    if (window._trialRemaining) {
+      const banner = document.getElementById('trial-banner');
+      banner.classList.add('show');
+      function updateCountdown() {
+        const left = window._trialMs - (Date.now() - window._trialStart);
+        if (left <= 0) { location.reload(); return; }
+        const d = Math.floor(left / (1000*60*60*24));
+        const h = Math.floor((left % (1000*60*60*24)) / (1000*60*60));
+        const m = Math.floor((left % (1000*60*60)) / (1000*60));
+        const s = Math.floor((left % (1000*60)) / 1000);
+        let txt = d > 0 ? `${d} ימים ו-${h} שעות` : h > 0 ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} שעות` : `${m}:${String(s).padStart(2,'0')} דקות`;
+        document.getElementById('trial-countdown').textContent = txt;
+      }
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
+    // Load data
+    loadDashboard();
+  }
+});
+</script>
 </body>
 </html>
