@@ -132,9 +132,66 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 .footer { text-align:center; font-size:10px; color:#ccc; padding:12px 0 6px; line-height:1.9; }
 
 #dashboard-content { display: none; }
+
+/* ── PAYWALL OVERLAY ─────────────────────────────────── */
+#paywall-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(10,35,66,0.97);
+  align-items: center; justify-content: center;
+  flex-direction: column;
+}
+#paywall-overlay.show { display: flex; }
+.pw-box {
+  background: white; border-radius: 18px; padding: 36px 32px;
+  max-width: 360px; width: 90%; text-align: center;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+.pw-logo { font-size: 40px; margin-bottom: 8px; }
+.pw-title { font-size: 20px; font-weight: 800; color: #0a2342; margin-bottom: 6px; }
+.pw-sub { font-size: 13px; color: #888; margin-bottom: 20px; line-height: 1.6; }
+.pw-trial-badge {
+  background: #e8f5e9; color: #2e7d32; font-weight: 800;
+  font-size: 14px; padding: 8px 16px; border-radius: 20px;
+  display: inline-block; margin-bottom: 20px;
+}
+.pw-expired { background: #fce4ec; color: #c62828; padding: 10px 16px; border-radius: 10px; margin-bottom: 16px; font-size: 13px; font-weight: 700; }
+.pw-input {
+  width: 100%; padding: 12px 14px; border: 2px solid #e0e0e0;
+  border-radius: 10px; font-size: 15px; font-weight: 700;
+  text-align: center; letter-spacing: 2px; direction: ltr;
+  margin-bottom: 12px; outline: none;
+}
+.pw-input:focus { border-color: #1a73e8; }
+.pw-btn {
+  width: 100%; padding: 13px; border: none; border-radius: 10px;
+  background: #0a2342; color: white; font-size: 15px;
+  font-weight: 800; cursor: pointer; margin-bottom: 10px;
+}
+.pw-btn:hover { background: #1a4a7a; }
+.pw-btn.secondary { background: #25d366; font-size: 13px; padding: 10px; }
+.pw-err { color: #c62828; font-size: 12px; margin-top: 6px; display: none; }
+.pw-days-countdown {
+  font-size: 42px; font-weight: 900; color: #0a2342;
+  line-height: 1; margin-bottom: 4px;
+}
+.pw-days-label { font-size: 11px; color: #999; margin-bottom: 16px; }
+
 </style>
 </head>
 <body>
+
+<!-- PAYWALL OVERLAY -->
+<div id="paywall-overlay">
+  <div class="pw-box">
+    <div class="pw-logo">🍔</div>
+    <div class="pw-title">Kona Burger Dashboard</div>
+    <div id="pw-content">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</div>
+
 
     
     
@@ -283,6 +340,103 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 </div>
 
 <script>
+
+const CHECK_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/checkAccess';
+
+function getDeviceId() {
+  let id = localStorage.getItem('kona_device_id');
+  if (!id) {
+    id = 'dev_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('kona_device_id', id);
+  }
+  return id;
+}
+
+async function checkPaywall() {
+  const device_id = getDeviceId();
+  let accessData = null;
+  try {
+    const res = await fetch(CHECK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ device_id })
+    });
+    accessData = await res.json();
+  } catch(e) {
+    // Network error — allow access (fail open)
+    return true;
+  }
+
+  if (accessData.ok) {
+    // Access granted — show trial badge in header if trial
+    if (accessData.status === 'trial' && accessData.days_left !== undefined) {
+      const badge = document.getElementById('h-badge');
+      if (badge) badge.innerHTML = '⏳ ניסיון: ' + accessData.days_left + ' ימים';
+    }
+    return true;
+  } else {
+    // Access denied — show paywall
+    showPaywall(accessData);
+    return false;
+  }
+}
+
+function showPaywall(data) {
+  const overlay = document.getElementById('paywall-overlay');
+  const content = document.getElementById('pw-content');
+  overlay.classList.add('show');
+
+  let html = '';
+  if (data.status === 'expired') {
+    html = `
+      <div class="pw-expired">⛔ תקופת הניסיון הסתיימה</div>
+      <div class="pw-sub">להמשך גישה לדשבורד,<br>הזן קוד גישה או צור קשר</div>
+    `;
+  } else if (data.status === 'blocked') {
+    html = `
+      <div class="pw-expired">🚫 גישה חסומה</div>
+      <div class="pw-sub">צור קשר עם המנהל</div>
+    `;
+  }
+
+  html += `
+    <input class="pw-input" id="pw-code-input" placeholder="קוד גישה" maxlength="20" />
+    <button class="pw-btn" onclick="submitCode()">כניסה עם קוד</button>
+    <div class="pw-err" id="pw-err">קוד שגוי, נסה שוב</div>
+    <hr style="margin:14px 0;border:none;border-top:1px solid #eee;">
+    <button class="pw-btn secondary" onclick="window.open('https://wa.me/972525838483?text=שלום, אני מעוניין בגישה לדשבורד Kona','_blank')">
+      📞 יצירת קשר לרכישה
+    </button>
+  `;
+
+  content.innerHTML = html;
+}
+
+async function submitCode() {
+  const code = document.getElementById('pw-code-input').value.trim().toUpperCase();
+  const err = document.getElementById('pw-err');
+  if (!code) return;
+
+  try {
+    const res = await fetch(CHECK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ device_id: getDeviceId(), access_code: code })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('paywall-overlay').classList.remove('show');
+      loadDashboard();
+    } else {
+      err.style.display = 'block';
+      err.textContent = 'קוד שגוי, נסה שוב';
+    }
+  } catch(e) {
+    err.style.display = 'block';
+    err.textContent = 'שגיאת חיבור';
+  }
+}
+
 const DATA_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync';
 
 function fmt(n) {
@@ -412,8 +566,9 @@ async function loadDashboard(manual = false) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  loadDashboard();
+document.addEventListener('DOMContentLoaded', async function() {
+  const hasAccess = await checkPaywall();
+  if (hasAccess) loadDashboard();
 });
 </script>
 </body>
