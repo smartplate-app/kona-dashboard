@@ -402,11 +402,37 @@ function showPaywall(data) {
       <button class="pw-btn" onclick="submitCode()">כניסה</button>
       <div class="pw-err" id="pw-err">קוד שגוי, נסה שוב</div>
       <hr style="margin:14px 0;border:none;border-top:1px solid #eee;">
-      <button class="pw-btn secondary" onclick="window.open('https://wa.me/972525838483?text=שלום, אני מעוניין בגישה לדשבורד Kona','_blank')">📞 יצירת קשר לרכישה</button>
+      <button class="pw-btn secondary" id="invoice-btn" onclick="requestInvoice()">📧 שלח לי חשבונית וקוד גישה</button>
+      <div id="invoice-msg" style="display:none;margin-top:10px;font-size:12px;color:#2e7d32;font-weight:700;">✅ בקשתך נשלחה! נחזור אליך בהקדם.</div>
     `;
   }
 
   content.innerHTML = html;
+}
+
+
+async function requestInvoice() {
+  const btn = document.getElementById('invoice-btn');
+  const msg = document.getElementById('invoice-msg');
+  btn.disabled = true;
+  btn.textContent = '⏳ שולח...';
+
+  const device_id = getDeviceId();
+  const dashboard = 'Kona Burger Dashboard';
+  const url = window.location.href;
+
+  try {
+    await fetch('https://rosa-6d8ebb9e.base44.app/api/functions/requestInvoice', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ device_id, dashboard, url })
+    });
+    btn.style.display = 'none';
+    msg.style.display = 'block';
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = '📧 שלח לי חשבונית וקוד גישה';
+  }
 }
 
 async function submitCode() {
