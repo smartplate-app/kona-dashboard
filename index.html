@@ -370,8 +370,21 @@ async function checkPaywall() {
   if (accessData.ok) {
     // Access granted — show trial badge in header if trial
     if (accessData.status === 'trial' && accessData.days_left !== undefined) {
-      const badge = document.getElementById('h-badge');
-      if (badge) badge.innerHTML = '⏳ ניסיון: ' + accessData.days_left + ' ימים';
+      // Wait for DOM then update badge
+      const daysLeft = accessData.days_left;
+      const updateBadge = () => {
+        const badge = document.getElementById('h-badge');
+        if (badge) {
+          badge.innerHTML = '⏳ ניסיון: ' + daysLeft + ' ימים';
+          badge.style.background = 'rgba(255,200,0,0.25)';
+          badge.style.color = '#ffe066';
+        }
+      };
+      if (document.readyState === 'complete') updateBadge();
+      else window.addEventListener('load', updateBadge);
+      // Also try after short delay as fallback
+      setTimeout(updateBadge, 500);
+      setTimeout(updateBadge, 1500);
     }
     return true;
   } else {
