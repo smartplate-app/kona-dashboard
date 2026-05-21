@@ -402,7 +402,10 @@ function showPaywall(data) {
       <button class="pw-btn" onclick="submitCode()">כניסה</button>
       <div class="pw-err" id="pw-err">קוד שגוי, נסה שוב</div>
       <hr style="margin:14px 0;border:none;border-top:1px solid #eee;">
-      <button class="pw-btn secondary" id="invoice-btn" onclick="requestInvoice()">📧 שלח לי חשבונית וקוד גישה</button>
+      <div id="invoice-form" style="margin-top:4px;">
+        <input class="pw-input" id="pw-email-input" placeholder="הזן את כתובת המייל שלך" type="email" maxlength="80" style="margin-bottom:8px;" />
+        <button class="pw-btn secondary" id="invoice-btn" onclick="requestInvoice()">📧 שלח לי חשבונית וקוד גישה</button>
+      </div>
       <div id="invoice-msg" style="display:none;margin-top:10px;font-size:12px;color:#2e7d32;font-weight:700;">✅ בקשתך נשלחה! נחזור אליך בהקדם.</div>
     `;
   }
@@ -420,12 +423,24 @@ async function requestInvoice() {
   const device_id = getDeviceId();
   const dashboard = 'Kona Burger Dashboard';
   const url = window.location.href;
+  const emailInput = document.getElementById('pw-email-input');
+  const clientEmail = emailInput ? emailInput.value.trim() : '';
+
+  if (!clientEmail || !clientEmail.includes('@')) {
+    if (emailInput) {
+      emailInput.style.border = '2px solid #e53935';
+      emailInput.placeholder = '⚠️ נדרש מייל תקין';
+    }
+    const btn = document.getElementById('invoice-btn');
+    if (btn) { btn.disabled = false; btn.textContent = '📧 שלח לי חשבונית וקוד גישה'; }
+    return;
+  }
 
   try {
     await fetch('https://rosa-6d8ebb9e.base44.app/api/functions/requestInvoice', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ device_id, dashboard, url })
+      body: JSON.stringify({ device_id, dashboard, url, client_email: clientEmail })
     });
     btn.style.display = 'none';
     msg.style.display = 'block';
