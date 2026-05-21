@@ -534,6 +534,7 @@ async function loadDashboard(manual = false) {
     const foodPctNet = salesNet > 0 ? (foodNet / salesNet * 100).toFixed(1) : '—';
     const tipsPctGross = salesVat > 0 ? (tips / salesVat * 100).toFixed(1) : '—';
     const totalPct = salesNet > 0 ? ((labor + foodNet) / salesNet * 100).toFixed(1) : '—';
+    const woltPctGross = salesVat > 0 ? (wolt / salesVat * 100).toFixed(1) : '—';
 
     // KPIs
     document.getElementById('kpi-sales').textContent = fmt(salesVat);
@@ -560,7 +561,7 @@ async function loadDashboard(manual = false) {
     // Cost summary
     document.getElementById('cost-labor').innerHTML = `${fmt(labor)} &nbsp;<small style="color:#34a853;font-weight:700">${laborPctNet}%</small>`;
     document.getElementById('cost-food').innerHTML = `${fmt(foodNet)} &nbsp;<small style="color:#e65100;font-weight:700">${foodPctNet}%</small>`;
-    document.getElementById('cost-wolt').textContent = fmt(wolt);
+    document.getElementById('cost-wolt').innerHTML = `${fmt(wolt)} &nbsp;<small style="color:#1a73e8;font-weight:700">${woltPctGross}% ממכירות כולל מע"מ</small>`;
     document.getElementById('cost-tips').innerHTML = `${fmt(tips)} &nbsp;<small style="color:#8b5cf6;font-weight:700">${tipsPctGross}% מכולל מע"מ</small>`;
     document.getElementById('cost-total').textContent = totalPct + '%';
 
