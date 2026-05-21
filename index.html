@@ -283,7 +283,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 </div>
 
 <script>
-const DATA_URL = './data.json';
+const DATA_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync';
 
 function fmt(n) {
   if (n == null || isNaN(n)) return '—';
@@ -305,7 +305,11 @@ async function loadDashboard(manual = false) {
   if (btn) { btn.classList.add('loading'); icon.textContent = '⏳'; }
 
   try {
-    const res = await fetch(DATA_URL + '?t=' + Date.now());
+    const res = await fetch(DATA_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      cache: 'no-store'
+    });
     const d = await res.json();
     if (!res.ok || d.error) throw new Error(d.error || 'שגיאה בטעינה');
 
