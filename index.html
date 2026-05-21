@@ -9,19 +9,8 @@
 body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; direction:rtl; min-height:100vh; }
 
 /* TRIAL BANNER */
-#trial-banner {
-  background: linear-gradient(90deg, #0a2342, #1a4a7a);
-  color: white;
-  text-align: center;
-  padding: 10px 20px;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  font-size: 13px;
-}
-#trial-banner.show { display: flex; }
+
+
 #trial-countdown {
   background: rgba(255,255,255,0.2);
   border-radius: 20px;
@@ -30,58 +19,21 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
   font-size: 14px;
 }
 
-/* PAYWALL OVERLAY */
-#paywall-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.92);
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-  direction: rtl;
-}
-#paywall-overlay.show { display: flex; }
-.paywall-box {
-  background: white;
-  border-radius: 20px;
-  padding: 40px 36px;
-  max-width: 420px;
-  width: 92%;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-}
-.pw-logo { font-size: 36px; margin-bottom: 8px; }
-.pw-title { font-size: 22px; font-weight: 900; color: #0a2342; margin-bottom: 8px; }
-.pw-sub { font-size: 14px; color: #666; margin-bottom: 28px; line-height: 1.6; }
-.pw-price {
-  background: linear-gradient(135deg, #0a2342, #1a4a7a);
-  color: white;
-  border-radius: 14px;
-  padding: 20px;
-  margin-bottom: 24px;
-}
+
+
+
+
+
 .pw-price .amount { font-size: 42px; font-weight: 900; line-height: 1; }
 .pw-price .period { font-size: 14px; opacity: 0.7; margin-top: 4px; }
 .pw-price .desc { font-size: 12px; opacity: 0.6; margin-top: 6px; }
-.pw-features { text-align: right; margin-bottom: 24px; }
+
 .pw-features li { font-size: 13px; color: #444; padding: 5px 0; list-style: none; }
 .pw-features li::before { content: "✓ "; color: #34a853; font-weight: 700; }
-.pw-cta {
-  background: #0a2342;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 14px 28px;
-  font-size: 16px;
-  font-weight: 700;
-  width: 100%;
-  cursor: pointer;
-  margin-bottom: 12px;
-}
+
 .pw-cta:hover { background: #1a4a7a; }
-.pw-contact { font-size: 12px; color: #888; margin-top: 8px; line-height: 1.6; }
-.pw-code-section { margin-top: 16px; border-top: 1px solid #eee; padding-top: 16px; }
+
+
 .pw-code-section input {
   border: 1.5px solid #ddd;
   border-radius: 8px;
@@ -92,18 +44,8 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
   text-align: center;
   direction: ltr;
 }
-.pw-code-btn {
-  background: #34a853;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 700;
-  width: 100%;
-  cursor: pointer;
-}
-.pw-code-err { color: #ef4444; font-size: 12px; margin-top: 6px; display: none; }
+
+
 
 /* HEADER */
 .header {
@@ -233,79 +175,9 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 </head>
 <body>
 
-<!-- PAYWALL TRIAL LOGIC -->
-<script>
-(function() {
-  const TRIAL_DAYS = 4;
-  const ACCESS_CODES = ['KONA2026', 'SMARTPLATE60', 'KB-VIP'];
-  const STORAGE_KEY = 'kona_trial_start';
-  const CODE_KEY = 'kona_access_code';
 
-  const savedCode = localStorage.getItem(CODE_KEY);
-  if (ACCESS_CODES.includes(savedCode)) {
-    window._paywallActive = false;
-    return;
-  }
 
-  let trialStart = localStorage.getItem(STORAGE_KEY);
-  if (!trialStart) {
-    trialStart = Date.now().toString();
-    localStorage.setItem(STORAGE_KEY, trialStart);
-  }
-
-  const elapsed = Date.now() - parseInt(trialStart);
-  const trialMs = TRIAL_DAYS * 24 * 60 * 60 * 1000;
-  const remaining = trialMs - elapsed;
-
-  if (remaining <= 0) {
-    window._paywallActive = true;
-  } else {
-    window._paywallActive = false;
-    window._trialRemaining = remaining;
-    window._trialMs = trialMs;
-    window._trialStart = parseInt(trialStart);
-  }
-
-  window.checkCode = function() {
-    const code = document.getElementById('access-code-input').value.trim().toUpperCase();
-    if (ACCESS_CODES.includes(code)) {
-      localStorage.setItem(CODE_KEY, code);
-      document.getElementById('paywall-overlay').classList.remove('show');
-      document.getElementById('trial-banner').classList.remove('show');
-      document.getElementById('dashboard-content').style.display = 'block';
-      loadDashboard();
-    } else {
-      document.getElementById('code-err').style.display = 'block';
-    }
-  };
-})();
-</script>
-
-<!-- Trial Banner -->
-<div id="trial-banner">
-  <span>🎁 תקופת ניסיון חינם</span>
-  <span id="trial-countdown">טוען...</span>
-  <span>נותרו לגישה מלאה לדאשבורד</span>
-</div>
-
-<!-- Paywall Overlay -->
-<div id="paywall-overlay">
-  <div class="paywall-box">
-    <div class="pw-logo">🍔</div>
-    <div class="pw-title">Kona Burger Dashboard</div>
-    <div class="pw-sub">תקופת הניסיון החינמית שלך הסתיימה.<br>המשך לקבל גישה מלאה לדאשבורד.</div>
-    <div class="pw-price">
-      <div class="amount">₪60</div>
-      <div class="period">לחודש · כולל מע"מ</div>
-      <div class="desc">גישה מלאה · עדכון יומי אוטומטי · כל הנתונים</div>
-    </div>
-    <ul class="pw-features">
-      <li>נתוני מכירות MTD בזמן אמת</li>
-      <li>עלות עבודה מ-Tabit Chef</li>
-      <li>פירוט ספקים ועלות מזון</li>
-      <li>תחזית חודש מלא</li>
-      <li>עדכון אוטומטי כל יום</li>
-    </ul>
+    
     <button class="pw-cta" onclick="window.open('https://wa.me/972525838483?text=%D7%94%D7%99%D7%99%2C%20%D7%AA%D7%A7%D7%95%D7%A4%D7%AA%20%D7%94%D7%A0%D7%99%D7%A1%D7%99%D7%95%D7%9F%20%D7%A9%D7%9C%D7%99%20%D7%9C%D7%93%D7%90%D7%A9%D7%91%D7%95%D7%A8%D7%93%20Kona%20%D7%94%D7%A1%D7%AA%D7%99%D7%99%D7%9E%D7%94.%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A7%D7%91%D7%9C%20%D7%97%D7%A9%D7%91%D7%95%D7%A0%D7%99%D7%AA%20%D7%9E%D7%A1%20%D7%9C%D7%AA%D7%A9%D7%9C%D7%95%D7%9D%2060%20%E2%82%AA%20%D7%9C%D7%97%D7%95%D7%93%D7%A9.', '_blank')">
       📲 שלחו לי חשבונית לתשלום
     </button>
@@ -315,9 +187,9 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
     </div>
     <div class="pw-code-section">
       <div style="font-size:12px;color:#999;margin-bottom:10px">כבר שילמת? הזן קוד גישה:</div>
-      <input type="text" id="access-code-input" placeholder="הזן קוד גישה" />
-      <button class="pw-code-btn" onclick="checkCode()">אשר קוד</button>
-      <div class="pw-code-err" id="code-err">קוד שגוי. נסה שוב או צור קשר.</div>
+      
+      
+      
     </div>
   </div>
 </div>
@@ -583,31 +455,7 @@ async function loadDashboard(manual = false) {
   }
 }
 
-// Paywall / Trial logic on DOM ready
 document.addEventListener('DOMContentLoaded', function() {
-  if (window._paywallActive) {
-    document.getElementById('loading-state').style.display = 'none';
-    document.getElementById('paywall-overlay').classList.add('show');
-  } else {
-    // Show trial banner if applicable
-    if (window._trialRemaining) {
-      const banner = document.getElementById('trial-banner');
-      banner.classList.add('show');
-      function updateCountdown() {
-        const left = window._trialMs - (Date.now() - window._trialStart);
-        if (left <= 0) { location.reload(); return; }
-        const d = Math.floor(left / (1000*60*60*24));
-        const h = Math.floor((left % (1000*60*60*24)) / (1000*60*60));
-        const m = Math.floor((left % (1000*60*60)) / (1000*60));
-        const s = Math.floor((left % (1000*60)) / 1000);
-        let txt = d > 0 ? `${d} ימים ו-${h} שעות` : h > 0 ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} שעות` : `${m}:${String(s).padStart(2,'0')} דקות`;
-        document.getElementById('trial-countdown').textContent = txt;
-      }
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-    }
-  }
-  // Always load data (paywall overlay covers it if active)
   loadDashboard();
 });
 </script>
