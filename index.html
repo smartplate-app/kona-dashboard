@@ -341,7 +341,6 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 
 <script>
 
-let trialDaysLeft = null; // global trial state
 const CHECK_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/checkAccess';
 
 function getDeviceId() {
@@ -370,24 +369,7 @@ async function checkPaywall() {
 
   if (accessData.ok) {
     // Access granted — show trial badge in header if trial
-    if (accessData.status === 'trial' && accessData.days_left !== undefined) {
-      // Wait for DOM then update badge
-      const daysLeft = accessData.days_left;
-      trialDaysLeft = daysLeft;
-      const updateBadge = () => {
-        const badge = document.getElementById('h-badge');
-        if (badge) {
-          badge.innerHTML = '⏳ ניסיון: ' + daysLeft + ' ימים';
-          badge.style.background = 'rgba(255,200,0,0.25)';
-          badge.style.color = '#ffe066';
-        }
-      };
-      if (document.readyState === 'complete') updateBadge();
-      else window.addEventListener('load', updateBadge);
-      // Also try after short delay as fallback
-      setTimeout(updateBadge, 500);
-      setTimeout(updateBadge, 1500);
-    }
+    // No trial — access is either active or denied
     return true;
   } else {
     // Access denied — show paywall
@@ -402,27 +384,27 @@ function showPaywall(data) {
   overlay.classList.add('show');
 
   let html = '';
-  if (data.status === 'expired') {
-    html = `
-      <div class="pw-expired">⛔ תקופת הניסיון הסתיימה</div>
-      <div class="pw-sub">להמשך גישה לדשבורד,<br>הזן קוד גישה או צור קשר</div>
-    `;
-  } else if (data.status === 'blocked') {
+  if (data.status === 'blocked') {
     html = `
       <div class="pw-expired">🚫 גישה חסומה</div>
       <div class="pw-sub">צור קשר עם המנהל</div>
+      <hr style="margin:14px 0;border:none;border-top:1px solid #eee;">
+      <button class="pw-btn secondary" onclick="window.open('https://wa.me/972525838483?text=שלום, אני מעוניין בגישה לדשבורד Kona','_blank')">📞 יצירת קשר</button>
+    `;
+  } else {
+    // locked / expired — show code input
+    const msg = data.status === 'expired'
+      ? 'פג תוקף הגישה. הזן קוד חדש או צור קשר'
+      : 'לגישה לדשבורד נדרש קוד גישה';
+    html = `
+      <div class="pw-sub">${msg}</div>
+      <input class="pw-input" id="pw-code-input" placeholder="קוד גישה" maxlength="20" onkeydown="if(event.key==='Enter')submitCode()" />
+      <button class="pw-btn" onclick="submitCode()">כניסה</button>
+      <div class="pw-err" id="pw-err">קוד שגוי, נסה שוב</div>
+      <hr style="margin:14px 0;border:none;border-top:1px solid #eee;">
+      <button class="pw-btn secondary" onclick="window.open('https://wa.me/972525838483?text=שלום, אני מעוניין בגישה לדשבורד Kona','_blank')">📞 יצירת קשר לרכישה</button>
     `;
   }
-
-  html += `
-    <input class="pw-input" id="pw-code-input" placeholder="קוד גישה" maxlength="20" />
-    <button class="pw-btn" onclick="submitCode()">כניסה עם קוד</button>
-    <div class="pw-err" id="pw-err">קוד שגוי, נסה שוב</div>
-    <hr style="margin:14px 0;border:none;border-top:1px solid #eee;">
-    <button class="pw-btn secondary" onclick="window.open('https://wa.me/972525838483?text=שלום, אני מעוניין בגישה לדשבורד Kona','_blank')">
-      📞 יצירת קשר לרכישה
-    </button>
-  `;
 
   content.innerHTML = html;
 }
@@ -492,13 +474,7 @@ async function loadDashboard(manual = false) {
     const dayNum = now.getDate();
     const monthNames = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
     document.getElementById('h-badge').textContent = `MTD ${monthNames[now.getMonth()]} ${now.getFullYear()} — 1 עד ${dayNum}`;
-    // Re-apply trial badge if in trial mode
-    if (trialDaysLeft !== null) {
-      const badge = document.getElementById('h-badge');
-      badge.innerHTML = `MTD ${monthNames[now.getMonth()]} ${now.getFullYear()} &nbsp;|&nbsp; ⏳ ניסיון: ${trialDaysLeft} ימים`;
-      badge.style.background = 'rgba(255,200,0,0.2)';
-      badge.style.border = '1px solid rgba(255,200,0,0.4)';
-    }
+
     const updTime = new Date(d.last_updated);
     document.getElementById('h-date').textContent = `עודכן: ${updTime.toLocaleString('he-IL')} · כל הנתונים מאומתים מהמקור`;
 
