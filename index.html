@@ -454,11 +454,11 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 <!-- LOADING STATE -->
 <div id="loading-state">
   <div class="spinner"></div>
-  <div style="font-size:14px;color:#888">טוען נתונים מ-Tabit Chef ו-Smart Basic 2...</div>
+  <div style="font-size:14px;color:#888">טוען נתונים...</div>
 </div>
 
 <script>
-const ROSA_API = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync' /* v2 */;
+const DATA_URL = './data.json';
 
 function fmt(n) {
   if (n == null || isNaN(n)) return '—';
@@ -480,7 +480,7 @@ async function loadDashboard(manual = false) {
   if (btn) { btn.classList.add('loading'); icon.textContent = '⏳'; }
 
   try {
-    const res = await fetch(ROSA_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+    const res = await fetch(DATA_URL + '?t=' + Date.now());
     const d = await res.json();
     if (!res.ok || d.error) throw new Error(d.error || 'שגיאה בטעינה');
 
