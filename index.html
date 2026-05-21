@@ -298,10 +298,6 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
           <div><div class="l">Wolt (כולל מע"מ)</div><div class="src">📦 Rosa</div></div>
           <span class="v" id="cost-wolt">—</span>
         </div>
-        <div class="cr n">
-          <div><div class="l">טיפים</div><div class="src">💳 Rosa</div></div>
-          <span class="v" id="cost-tips">—</span>
-        </div>
         <div class="cr d" style="margin-top:8px">
           <span class="l" style="font-weight:700;font-size:12px">סה"כ עבודה + מזון (נטו)</span>
           <span class="v" id="cost-total">—</span>
@@ -327,7 +323,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
     </div>
 
     <div class="footer" id="footer-txt">
-      מכירות: Tabit Chef · עלות עבודה: Tabit Chef · עלות מזון: Smart Basic 2 · Wolt + טיפים: Rosa<br>
+      מכירות: Tabit Chef · עלות עבודה: Tabit Chef · עלות מזון: Smart Basic 2 · Wolt: Tabit Chef<br>
       הדאשבורד מתעדכן בכל טעינה ואוטומטית כל בוקר בשעה 08:00
     </div>
   </div>
@@ -524,7 +520,6 @@ async function loadDashboard(manual = false) {
     const labor = d.labor_cost || 0;
     const foodNet = d.food_cost_net || 0;
     const foodVat = Math.round(foodNet * 1.18);
-    const tips = d.tips || 0;
     const wolt = d.wolt_vat || 0;
     const days = d.days_collected || 1;
     const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
@@ -532,7 +527,6 @@ async function loadDashboard(manual = false) {
 
     const laborPctNet = salesNet > 0 ? (labor / salesNet * 100).toFixed(1) : '—';
     const foodPctNet = salesNet > 0 ? (foodNet / salesNet * 100).toFixed(1) : '—';
-    const tipsPctGross = salesVat > 0 ? (tips / salesVat * 100).toFixed(1) : '—';
     const totalPct = salesNet > 0 ? ((labor + foodNet) / salesNet * 100).toFixed(1) : '—';
     const woltPctGross = salesVat > 0 ? (wolt / salesVat * 100).toFixed(1) : '—';
 
@@ -562,7 +556,6 @@ async function loadDashboard(manual = false) {
     document.getElementById('cost-labor').innerHTML = `${fmt(labor)} &nbsp;<small style="color:#34a853;font-weight:700">${laborPctNet}%</small>`;
     document.getElementById('cost-food').innerHTML = `${fmt(foodNet)} &nbsp;<small style="color:#e65100;font-weight:700">${foodPctNet}%</small>`;
     document.getElementById('cost-wolt').innerHTML = `${fmt(wolt)} &nbsp;<small style="color:#1a73e8;font-weight:700">${woltPctGross}% ממכירות כולל מע"מ</small>`;
-    document.getElementById('cost-tips').innerHTML = `${fmt(tips)} &nbsp;<small style="color:#8b5cf6;font-weight:700">${tipsPctGross}% מכולל מע"מ</small>`;
     document.getElementById('cost-total').textContent = totalPct + '%';
 
     // Suppliers
