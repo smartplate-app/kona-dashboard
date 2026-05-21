@@ -498,7 +498,7 @@ async function loadDashboard(manual = false) {
     document.getElementById('h-date').textContent = `עודכן: ${updTime.toLocaleString('he-IL')} · כל הנתונים מאומתים מהמקור`;
 
     const salesVat = d.total_sales_vat || 0;
-    const salesNet = d.total_sales_net || 0;
+    const salesNet = d.total_sales_net || Math.round((d.total_sales_vat||0) / 1.18);
     const labor = d.labor_cost || 0;
     const foodNet = d.food_cost_net || 0;
     const foodVat = Math.round(foodNet * 1.18);
@@ -556,6 +556,7 @@ async function loadDashboard(manual = false) {
     // Daily sales
     let dailySales = d.daily_sales || [];
     if (!Array.isArray(dailySales)) dailySales = [];
+    dailySales = dailySales.filter(d => d.sales > 0);
     dailySales.sort((a, b) => b.date.localeCompare(a.date));
     const maxSale = Math.max(...dailySales.map(x => x.sales || 0), 1);
     const todayStr = now.toISOString().split('T')[0];
