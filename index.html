@@ -341,6 +341,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 
 <script>
 
+let trialDaysLeft = null; // global trial state
 const CHECK_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/checkAccess';
 
 function getDeviceId() {
@@ -372,6 +373,7 @@ async function checkPaywall() {
     if (accessData.status === 'trial' && accessData.days_left !== undefined) {
       // Wait for DOM then update badge
       const daysLeft = accessData.days_left;
+      trialDaysLeft = daysLeft;
       const updateBadge = () => {
         const badge = document.getElementById('h-badge');
         if (badge) {
@@ -490,6 +492,13 @@ async function loadDashboard(manual = false) {
     const dayNum = now.getDate();
     const monthNames = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
     document.getElementById('h-badge').textContent = `MTD ${monthNames[now.getMonth()]} ${now.getFullYear()} — 1 עד ${dayNum}`;
+    // Re-apply trial badge if in trial mode
+    if (trialDaysLeft !== null) {
+      const badge = document.getElementById('h-badge');
+      badge.innerHTML = `MTD ${monthNames[now.getMonth()]} ${now.getFullYear()} &nbsp;|&nbsp; ⏳ ניסיון: ${trialDaysLeft} ימים`;
+      badge.style.background = 'rgba(255,200,0,0.2)';
+      badge.style.border = '1px solid rgba(255,200,0,0.4)';
+    }
     const updTime = new Date(d.last_updated);
     document.getElementById('h-date').textContent = `עודכן: ${updTime.toLocaleString('he-IL')} · כל הנתונים מאומתים מהמקור`;
 
