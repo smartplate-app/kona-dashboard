@@ -226,6 +226,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
   transition: opacity 0.2s;
 }
 .last-inv-banner:hover { opacity: 0.88; }
+.last-inv-banner.hidden { display: none !important; }
 .last-inv-left { flex: 1; min-width: 0; }
 .last-inv-label { font-size: 9px; opacity: 0.55; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
 .last-inv-supplier { font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -384,7 +385,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
       </div>
       <div style="margin-top:10px;text-align:center;font-size:10px;color:#aaa" id="sup-total"></div>
       <!-- Last Invoice Banner -->
-      <a class="last-inv-banner" id="last-inv-banner" href="https://www.foodcostapp.com/Welcome" target="_blank" style="display:none;margin-top:14px;width:100%">
+      <a class="last-inv-banner" id="last-inv-banner" href="https://www.foodcostapp.com/Welcome" target="_blank" class="last-inv-banner hidden" style="margin-top:14px;width:100%">
         <div class="last-inv-left">
           <div class="last-inv-label">📄 חשבונית אחרונה שנסרקה</div>
           <div class="last-inv-supplier" id="last-inv-supplier">—</div>
@@ -678,9 +679,9 @@ async function loadDashboard(manual = false) {
         const [y,m,day] = li.date.split('-');
         document.getElementById('last-inv-date').textContent = `${day}/${m}/${y}`;
       }
-      liBanner.setAttribute('style','display:flex !important;margin-top:14px;width:100%;visibility:visible');
+      liBanner.classList.remove('hidden');
     } else {
-      if (liBanner) liBanner.setAttribute('style','display:none');
+      if (liBanner) liBanner.classList.add('hidden');
     }
 
     // Daily sales
