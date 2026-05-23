@@ -307,7 +307,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 
     <!-- Suppliers -->
     <div class="section">
-      <div class="s-title">פירוט עלות מזון לפי ספק — Smart Basic 2 ✓</div>
+      <div class="s-title">פירוט עלות מזון לפי ספק — Smart Basic 2 — חי ✓</div>
       <div class="sup-grid" id="sup-grid">
         <div style="color:#bbb;font-size:12px">טוען ספקים...</div>
       </div>
@@ -513,7 +513,7 @@ async function loadDashboard(manual = false) {
     document.getElementById('h-badge').textContent = `MTD ${monthNames[now.getMonth()]} ${now.getFullYear()} — 1 עד ${dayNum}`;
 
     const updTime = new Date(d.last_updated);
-    document.getElementById('h-date').textContent = `עודכן: ${updTime.toLocaleString('he-IL')} · כל הנתונים מאומתים מהמקור`;
+    document.getElementById('h-date').textContent = `עודכן: ${updTime.toLocaleString('he-IL')} · עלות מזון: Smart Basic 2 חי ✓`;
 
     const salesVat = d.total_sales_vat || 0;
     const salesNet = d.total_sales_net || Math.round((d.total_sales_vat||0) / 1.18);
@@ -539,7 +539,7 @@ async function loadDashboard(manual = false) {
     document.getElementById('kpi-labor-pct').innerHTML = `<span class="badge bg">${laborPctNet}% ממכירות נטו</span>`;
     document.getElementById('kpi-labor-bar').style.width = Math.min(parseFloat(laborPctNet)*2, 100) + '%';
     document.getElementById('kpi-food').textContent = fmt(foodNet);
-    document.getElementById('kpi-food-sub').textContent = `${fmt(foodVat)} כולל מע"מ · Smart Basic 2 ✓`;
+    document.getElementById('kpi-food-sub').textContent = `${fmt(foodVat)} כולל מע"מ · Smart Basic 2 — חי ✓`;
     document.getElementById('kpi-food-pct').innerHTML = `<span class="badge br">${foodPctNet}% ממכירות נטו</span>`;
     document.getElementById('kpi-food-bar').style.width = Math.min(parseFloat(foodPctNet)*2, 100) + '%';
     document.getElementById('kpi-fore').textContent = fmt(forecast);
