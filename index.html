@@ -177,6 +177,43 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 }
 .pw-days-label { font-size: 11px; color: #999; margin-bottom: 16px; }
 
+
+/* ── SYNC ERROR POPUP ─────────────────────────────────── */
+#sync-error-popup {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 8888;
+  background: rgba(0,0,0,0.65);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#sync-error-popup.show { display: flex; }
+.sep-box {
+  background: white;
+  border-radius: 18px;
+  padding: 32px 28px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.sep-icon { font-size: 48px; margin-bottom: 10px; }
+.sep-title { font-size: 18px; font-weight: 800; color: #0a2342; margin-bottom: 8px; }
+.sep-msg { font-size: 13px; color: #888; margin-bottom: 24px; line-height: 1.6; }
+.sep-btn {
+  width: 100%; padding: 14px; border: none; border-radius: 12px;
+  background: #0a2342; color: white; font-size: 15px;
+  font-weight: 800; cursor: pointer; margin-bottom: 10px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.sep-btn:hover { background: #1a4a7a; }
+.sep-dismiss {
+  background: none; border: none; color: #aaa;
+  font-size: 12px; cursor: pointer; padding: 4px;
+}
+.sep-dismiss:hover { color: #666; }
 </style>
 </head>
 <body>
@@ -201,6 +238,20 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
       
       
     </div>
+  </div>
+</div>
+
+
+<!-- SYNC ERROR POPUP -->
+<div id="sync-error-popup">
+  <div class="sep-box">
+    <div class="sep-icon">⚠️</div>
+    <div class="sep-title">הנתונים לא עודכנו</div>
+    <div class="sep-msg" id="sep-msg">לא ניתן לטעון נתונים עדכניים.<br>לחץ על סנכרן כדי לנסות שוב.</div>
+    <button class="sep-btn" onclick="dismissPopupAndSync()">
+      <span>🔄</span> סנכרן עכשיו
+    </button>
+    <button class="sep-dismiss" onclick="dismissSyncPopup()">המשך בכל זאת</button>
   </div>
 </div>
 
@@ -594,6 +645,7 @@ async function loadDashboard(manual = false) {
     const errEl = document.getElementById('error-state');
     errEl.style.display = 'block';
     errEl.textContent = 'שגיאה בטעינת הנתונים: ' + err.message;
+    showSyncErrorPopup('לא ניתן לטעון נתונים עדכניים.<br>בדוק חיבור לאינטרנט ולחץ לסנכרון מחדש.');
   } finally {
     if (btn) { btn.classList.remove('loading'); icon.textContent = '🔄'; }
   }
@@ -603,6 +655,19 @@ document.addEventListener('DOMContentLoaded', async function() {
   const hasAccess = await checkPaywall();
   if (hasAccess) loadDashboard();
 });
+
+function showSyncErrorPopup(msg) {
+  const popup = document.getElementById('sync-error-popup');
+  if (msg) document.getElementById('sep-msg').innerHTML = msg;
+  popup.classList.add('show');
+}
+function dismissSyncPopup() {
+  document.getElementById('sync-error-popup').classList.remove('show');
+}
+function dismissPopupAndSync() {
+  dismissSyncPopup();
+  loadDashboard(true);
+}
 </script>
 </body>
 </html>
