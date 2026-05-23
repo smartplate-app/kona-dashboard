@@ -657,8 +657,16 @@ async function loadDashboard(manual = false) {
         `סה"כ כולל מע"מ: <strong style="color:#0a2342">${fmt(foodVat)}</strong> &nbsp;·&nbsp; נטו ללא מע"מ: <strong style="color:#ef4444">${fmt(foodNet)}</strong>`;
     }
 
-    // Last Invoice
-    const li = d.last_invoice;
+    // Last Invoice — from API, or from entity cache, or derive from vendors
+    let li = d.last_invoice || d.last_invoice_data || null;
+    if (typeof li === 'string') { try { li = JSON.parse(li); } catch(_) { li = null; } }
+    // Fallback: find vendor with most recent last_date
+    if (!li && vendors && vendors.length > 0) {
+      const latestVendor = vendors.slice().sort((a,b) => (b.last_date||'').localeCompare(a.last_date||''))[0];
+      if (latestVendor && latestVendor.last_date) {
+        li = { supplier: latestVendor.name, invoice_number: null, date: latestVendor.last_date, amount: null };
+      }
+    }
     const liBanner = document.getElementById('last-inv-banner');
     if (li && li.supplier) {
       document.getElementById('last-inv-supplier').textContent = li.supplier;
