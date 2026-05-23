@@ -647,7 +647,11 @@ async function loadDashboard(manual = false) {
     if (vendors.length > 0) {
       vendors.sort((a, b) => b.amount - a.amount);
       document.getElementById('sup-grid').innerHTML = vendors.map(v =>
-        `<div class="sup-box"><div class="sl">${v.name}</div><div class="sv">${fmt(v.amount)}</div></div>`
+        `<div class="sup-box">
+          <div class="sl">${v.name}</div>
+          <div class="sv">${fmt(v.amount)}</div>
+          ${v.invoice_count ? `<div style="font-size:9px;color:#aaa;margin-top:3px">${v.invoice_count} חשב'</div>` : ''}
+        </div>`
       ).join('');
       document.getElementById('sup-total').innerHTML =
         `סה"כ כולל מע"מ: <strong style="color:#0a2342">${fmt(foodVat)}</strong> &nbsp;·&nbsp; נטו ללא מע"מ: <strong style="color:#ef4444">${fmt(foodNet)}</strong>`;
