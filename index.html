@@ -410,7 +410,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 </div>
 
 <!-- LOADING STATE -->
-<div id="loading-state">
+<div id="loading-state" style="display:none;">
   <div class="spinner"></div>
   <div style="font-size:14px;color:#888">טוען נתונים...</div>
 </div>
@@ -709,10 +709,7 @@ async function loadDashboard(manual = false) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('loading-state') && (document.getElementById('loading-state').style.display = 'none');
-  loadDashboard();
-});
+
 
 function submitKonaCode() {
   const KONA_CODES = ['KONA2026', 'SMARTPLATE'];
@@ -791,6 +788,7 @@ async function triggerSync() {
     }
   }, 8000);
 }
+loadDashboard();
 </script>
 </body>
 </html>
