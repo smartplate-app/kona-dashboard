@@ -533,28 +533,18 @@ async function requestInvoice() {
   }
 }
 
-async function submitCode() {
+function submitCode() {
+  const KONA_CODES = ['KONA2026', 'SMARTPLATE'];
   const code = document.getElementById('pw-code-input').value.trim().toUpperCase();
   const err = document.getElementById('pw-err');
   if (!code) return;
-
-  try {
-    const res = await fetch(CHECK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ device_id: getDeviceId(), access_code: code })
-    });
-    const data = await res.json();
-    if (data.ok) {
-      document.getElementById('paywall-overlay').classList.remove('show');
-      loadDashboard();
-    } else {
-      err.style.display = 'block';
-      err.textContent = 'קוד שגוי, נסה שוב';
-    }
-  } catch(e) {
-    err.style.display = 'block';
-    err.textContent = 'שגיאת חיבור';
+  if (KONA_CODES.includes(code)) {
+    localStorage.setItem('kona_access_v1', code);
+    const overlay = document.getElementById('paywall-overlay');
+    if (overlay) overlay.classList.remove('show');
+    loadDashboard();
+  } else {
+    if (err) { err.style.display = 'block'; err.textContent = 'קוד שגוי, נסה שוב'; }
   }
 }
 
@@ -727,9 +717,37 @@ async function loadDashboard(manual = false) {
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
-  const hasAccess = await checkPaywall();
-  if (hasAccess) loadDashboard();
+  // Simple local paywall check — no remote API call
+  const KONA_CODES = ['KONA2026', 'SMARTPLATE'];
+  const saved = localStorage.getItem('kona_access_v1');
+  if (saved && KONA_CODES.includes(saved)) {
+    document.getElementById('paywall') && (document.getElementById('paywall').style.display = 'none');
+    loadDashboard();
+  } else {
+    // Show simple paywall
+    const pw = document.getElementById('paywall');
+    if (pw) {
+      pw.style.display = 'flex';
+      document.getElementById('loading-state') && (document.getElementById('loading-state').style.display = 'none');
+    } else {
+      loadDashboard(); // No paywall element — just load
+    }
+  }
 });
+
+function submitKonaCode() {
+  const KONA_CODES = ['KONA2026', 'SMARTPLATE'];
+  const inp = document.getElementById('access-code');
+  const val = inp ? inp.value.trim().toUpperCase() : '';
+  if (KONA_CODES.includes(val)) {
+    localStorage.setItem('kona_access_v1', val);
+    document.getElementById('paywall') && (document.getElementById('paywall').style.display = 'none');
+    loadDashboard();
+  } else {
+    const err = document.getElementById('access-error');
+    if (err) err.style.display = 'block';
+  }
+}
 
 function showSyncErrorPopup(msg) {
   const popup = document.getElementById('sync-error-popup');
