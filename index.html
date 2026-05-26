@@ -428,30 +428,9 @@ function getDeviceId() {
   return id;
 }
 
-async function checkPaywall() {
-  const device_id = getDeviceId();
-  let accessData = null;
-  try {
-    const res = await fetch(CHECK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ device_id })
-    });
-    accessData = await res.json();
-  } catch(e) {
-    // Network error — allow access (fail open)
-    return true;
-  }
-
-  if (accessData.ok) {
-    // Access granted — show trial badge in header if trial
-    // No trial — access is either active or denied
-    return true;
-  } else {
-    // Access denied — show paywall
-    showPaywall(accessData);
-    return false;
-  }
+function checkPaywall() {
+  // Simple local check — no remote API
+  return true; // paywall disabled
 }
 
 function showPaywall(data) {
