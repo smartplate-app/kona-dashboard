@@ -243,15 +243,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
 <body>
 
 <!-- PAYWALL OVERLAY -->
-<div id="paywall-overlay">
-  <div class="pw-box">
-    <div class="pw-logo">🍔</div>
-    <div class="pw-title">Kona Burger Dashboard</div>
-    <div id="pw-content">
-      <!-- filled by JS -->
-    </div>
-  </div>
-</div>
+
 
 
     
@@ -717,23 +709,9 @@ async function loadDashboard(manual = false) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', async function() {
-  // Simple local paywall check — no remote API call
-  const KONA_CODES = ['KONA2026', 'SMARTPLATE'];
-  const saved = localStorage.getItem('kona_access_v1');
-  if (saved && KONA_CODES.includes(saved)) {
-    document.getElementById('paywall') && (document.getElementById('paywall').style.display = 'none');
-    loadDashboard();
-  } else {
-    // Show simple paywall
-    const pw = document.getElementById('paywall');
-    if (pw) {
-      pw.style.display = 'flex';
-      document.getElementById('loading-state') && (document.getElementById('loading-state').style.display = 'none');
-    } else {
-      loadDashboard(); // No paywall element — just load
-    }
-  }
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('loading-state') && (document.getElementById('loading-state').style.display = 'none');
+  loadDashboard();
 });
 
 function submitKonaCode() {
