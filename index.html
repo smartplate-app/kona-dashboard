@@ -285,7 +285,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
     <div class="h-sub">Tabit Chef · Smart Basic 2 · Rosa</div>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
-    <button class="sync-btn" id="sync-btn" onclick="loadDashboard(true)">
+    <button class="sync-btn" id="sync-btn" onclick="triggerSync()">
       <span id="sync-icon">🔄</span> סנכרן עכשיו
     </button>
     <div>
@@ -559,6 +559,7 @@ async function submitCode() {
 }
 
 const DATA_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync';
+const TRIGGER_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaTriggerSync';
 
 function fmt(n) {
   if (n == null || isNaN(n)) return '—';
@@ -574,20 +575,7 @@ function heDay(dateStr) {
   return days[d.getDay()];
 }
 
-async function loadDashboard(manual = false) {
-  const btn = document.getElementById('sync-btn');
-  const icon = document.getElementById('sync-icon');
-  if (btn) { btn.classList.add('loading'); icon.textContent = '⏳'; }
-
-  try {
-    const res = await fetch(DATA_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      cache: 'no-store'
-    });
-    const d = await res.json();
-    if (!res.ok || d.error) throw new Error(d.error || 'שגיאה בטעינה');
-
+function renderDashboard(d) {
     // Hide loading, show content
     document.getElementById('loading-state').style.display = 'none';
     document.getElementById('dashboard-content').style.display = 'block';
@@ -686,10 +674,21 @@ async function loadDashboard(manual = false) {
       if (liBanner) liBanner.classList.add('hidden');
     }
 
-    // Daily sales
-    let dailySales = d.daily_sales || [];
-    if (!Array.isArray(dailySales)) dailySales = [];
-    dailySales = dailySales.filter(d => d.sales > 0);
+    // Daily sales — support both {day,amount} and {date,sales}
+    let rawDaily = d.daily_sales || [];
+    if (!Array.isArray(rawDaily)) rawDaily = [];
+    // Normalize to {date, sales}
+    const now = new Date();
+    const yr = now.getFullYear();
+    const mo = String(now.getMonth()+1).padStart(2,'0');
+    let dailySales = rawDaily.map(item => {
+      if (item.date) return { date: item.date, sales: item.sales || item.amount || 0 };
+      if (item.day) {
+        const dd = String(item.day).padStart(2,'0');
+        return { date: `${yr}-${mo}-${dd}`, sales: item.amount || item.sales || 0 };
+      }
+      return null;
+    }).filter(x => x && x.sales > 0);
     dailySales.sort((a, b) => b.date.localeCompare(a.date));
     const maxSale = Math.max(...dailySales.map(x => x.sales || 0), 1);
     const todayStr = now.toISOString().split('T')[0];
@@ -705,12 +704,22 @@ async function loadDashboard(manual = false) {
       </div>`;
     }).join('') || '<div style="color:#bbb;text-align:center;padding:16px">אין נתונים יומיים</div>';
 
+}
+
+async function loadDashboard(manual = false) {
+  const btn = document.getElementById('sync-btn');
+  const icon = document.getElementById('sync-icon');
+  if (btn) { btn.classList.add('loading'); icon.textContent = '⏳'; }
+  try {
+    const res = await fetch(DATA_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, cache: 'no-store' });
+    const d = await res.json();
+    if (!res.ok || d.error) throw new Error(d.error || 'שגיאה בטעינה');
+    renderDashboard(d);
   } catch (err) {
     document.getElementById('loading-state').style.display = 'none';
     document.getElementById('dashboard-content').style.display = 'block';
     const errEl = document.getElementById('error-state');
-    errEl.style.display = 'block';
-    errEl.textContent = 'שגיאה בטעינת הנתונים: ' + err.message;
+    if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'שגיאה בטעינת הנתונים: ' + err.message; }
     showSyncErrorPopup('לא ניתן לטעון נתונים עדכניים.<br>בדוק חיבור לאינטרנט ולחץ לסנכרון מחדש.');
   } finally {
     if (btn) { btn.classList.remove('loading'); icon.textContent = '🔄'; }
@@ -732,7 +741,58 @@ function dismissSyncPopup() {
 }
 function dismissPopupAndSync() {
   dismissSyncPopup();
-  loadDashboard(true);
+  triggerSync();
+}
+
+let _syncPolling = null;
+let _lastUpdated = null;
+
+async function triggerSync() {
+  const btn = document.getElementById('sync-btn');
+  const icon = document.getElementById('sync-icon');
+  if (btn) { btn.classList.add('loading'); icon.textContent = '⏳'; }
+
+  // Get current last_updated to detect when data refreshes
+  try {
+    const cur = await fetch(DATA_URL, { method: 'POST', cache: 'no-store' });
+    const curData = await cur.json();
+    _lastUpdated = curData.last_updated || null;
+  } catch(_) {}
+
+  // Trigger the agent sync
+  try {
+    await fetch(TRIGGER_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, cache: 'no-store' });
+  } catch(e) {
+    // even if trigger fails, start polling
+  }
+
+  // Show user feedback
+  const errEl = document.getElementById('error-state');
+  if (errEl) { errEl.style.display = 'block'; errEl.textContent = '⏳ מסנכרן נתונים מ-Tabit Chef... (~30 שניות)'; }
+
+  // Poll every 8 seconds for up to 3 minutes
+  if (_syncPolling) clearInterval(_syncPolling);
+  let attempts = 0;
+  _syncPolling = setInterval(async () => {
+    attempts++;
+    try {
+      const res = await fetch(DATA_URL, { method: 'POST', cache: 'no-store' });
+      const d = await res.json();
+      if (d.ok && d.last_updated && d.last_updated !== _lastUpdated) {
+        clearInterval(_syncPolling);
+        _syncPolling = null;
+        if (btn) { btn.classList.remove('loading'); icon.textContent = '🔄'; }
+        if (errEl) errEl.style.display = 'none';
+        renderDashboard(d);
+        return;
+      }
+    } catch(_) {}
+    if (attempts >= 22) { // ~3 min
+      clearInterval(_syncPolling);
+      if (btn) { btn.classList.remove('loading'); icon.textContent = '🔄'; }
+      if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'הסנכרון לוקח יותר מהצפוי — נסה שוב בעוד דקה.'; }
+    }
+  }, 8000);
 }
 </script>
 </body>
