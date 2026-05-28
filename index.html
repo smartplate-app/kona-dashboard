@@ -680,17 +680,30 @@ async function loadDashboard(manual = false) {
   const btn = document.getElementById('sync-btn');
   const icon = document.getElementById('sync-icon');
   if (btn) { btn.classList.add('loading'); icon.textContent = '⏳'; }
+  
+  // Show header is working
+  document.getElementById('h-date').textContent = 'טוען...';
+  
   try {
-    const res = await fetch(DATA_URL + _v(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, cache: 'no-store' });
+    // Use GET with cache bust to avoid any POST issues
+    const res = await fetch(DATA_URL + _v(), { 
+      method: 'GET',
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache' }
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const d = await res.json();
-    if (!res.ok || d.error) throw new Error(d.error || 'שגיאה בטעינה');
+    if (!d.ok || d.error) throw new Error(d.error || 'שגיאת API');
     renderDashboard(d);
   } catch (err) {
     document.getElementById('loading-state').style.display = 'none';
     document.getElementById('dashboard-content').style.display = 'block';
+    document.getElementById('h-date').textContent = 'שגיאה: ' + err.message;
     const errEl = document.getElementById('error-state');
-    if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'שגיאה בטעינת הנתונים: ' + err.message; }
-    showSyncErrorPopup('לא ניתן לטעון נתונים עדכניים.<br>בדוק חיבור לאינטרנט ולחץ לסנכרון מחדש.');
+    if (errEl) { 
+      errEl.style.cssText = 'display:block;color:red;padding:12px;font-size:14px;';
+      errEl.textContent = 'שגיאה בטעינת הנתונים: ' + err.message; 
+    }
   } finally {
     if (btn) { btn.classList.remove('loading'); icon.textContent = '🔄'; }
   }
