@@ -525,6 +525,7 @@ function submitCode() {
 }
 
 const DATA_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync';
+const _v = () => '?_=' + Date.now();
 const TRIGGER_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaTriggerSync';
 
 function fmt(n) {
@@ -680,7 +681,7 @@ async function loadDashboard(manual = false) {
   const icon = document.getElementById('sync-icon');
   if (btn) { btn.classList.add('loading'); icon.textContent = '⏳'; }
   try {
-    const res = await fetch(DATA_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, cache: 'no-store' });
+    const res = await fetch(DATA_URL + _v(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, cache: 'no-store' });
     const d = await res.json();
     if (!res.ok || d.error) throw new Error(d.error || 'שגיאה בטעינה');
     renderDashboard(d);
@@ -734,7 +735,7 @@ async function triggerSync() {
 
   // Get current last_updated to detect when data refreshes
   try {
-    const cur = await fetch(DATA_URL, { method: 'POST', cache: 'no-store' });
+    const cur = await fetch(DATA_URL + _v(), { method: 'POST', cache: 'no-store' });
     const curData = await cur.json();
     _lastUpdated = curData.last_updated || null;
   } catch(_) {}
@@ -756,7 +757,7 @@ async function triggerSync() {
   _syncPolling = setInterval(async () => {
     attempts++;
     try {
-      const res = await fetch(DATA_URL, { method: 'POST', cache: 'no-store' });
+      const res = await fetch(DATA_URL + _v(), { method: 'POST', cache: 'no-store' });
       const d = await res.json();
       if (d.ok && d.last_updated && d.last_updated !== _lastUpdated) {
         clearInterval(_syncPolling);
