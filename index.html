@@ -362,11 +362,15 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#f0f2f5; di
           <span class="v" id="cost-food">—</span>
         </div>
         <div class="cr n">
-          <div><div class="l">Wolt (כולל מע"מ)</div><div class="src">📦 Rosa</div></div>
+          <div><div class="l">Wolt מכירות (כולל מע"מ)</div><div class="src">📦 Tabit Chef</div></div>
           <span class="v" id="cost-wolt">—</span>
         </div>
+        <div class="cr w">
+          <div><div class="l">עמלת Wolt 26% (נטו)</div><div class="src">📦 חישוב אוטומטי</div></div>
+          <span class="v" id="cost-wolt-fee">—</span>
+        </div>
         <div class="cr d" style="margin-top:8px">
-          <span class="l" style="font-weight:700;font-size:12px">סה"כ עבודה + מזון (נטו)</span>
+          <span class="l" style="font-weight:700;font-size:12px">סה"כ עבודה + מזון + Wolt (נטו)</span>
           <span class="v" id="cost-total">—</span>
         </div>
       </div>
@@ -564,7 +568,9 @@ function renderDashboard(d) {
 
     const laborPctNet = salesNet > 0 ? (labor / salesNet * 100).toFixed(1) : '—';
     const foodPctNet = salesNet > 0 ? (foodNet / salesNet * 100).toFixed(1) : '—';
-    const totalPct = salesNet > 0 ? ((labor + foodNet) / salesNet * 100).toFixed(1) : '—';
+    const woltFee = Math.round(wolt * 0.26);  // 26% commission on gross Wolt sales
+    const woltFeePctNet = salesNet > 0 ? (woltFee / salesNet * 100).toFixed(1) : '—';
+    const totalPct = salesNet > 0 ? ((labor + foodNet + woltFee) / salesNet * 100).toFixed(1) : '—';
     const woltPctGross = salesVat > 0 ? (wolt / salesVat * 100).toFixed(1) : '—';
 
     // KPIs
@@ -592,7 +598,8 @@ function renderDashboard(d) {
     // Cost summary
     document.getElementById('cost-labor').innerHTML = `${fmt(labor)} &nbsp;<small style="color:#34a853;font-weight:700">${laborPctNet}%</small>`;
     document.getElementById('cost-food').innerHTML = `${fmt(foodNet)} &nbsp;<small style="color:#e65100;font-weight:700">${foodPctNet}%</small>`;
-    document.getElementById('cost-wolt').innerHTML = `${fmt(wolt)} &nbsp;<small style="color:#1a73e8;font-weight:700">${woltPctGross}% ממכירות כולל מע"מ</small>`;
+    document.getElementById('cost-wolt').innerHTML = `${fmt(wolt)} &nbsp;<small style="color:#1a73e8;font-weight:700">${woltPctGross}% ממכירות</small>`;
+    document.getElementById('cost-wolt-fee').innerHTML = `${fmt(woltFee)} &nbsp;<small style="color:#e65100;font-weight:700">${woltFeePctNet}% ממכירות נטו</small>`;
     document.getElementById('cost-total').textContent = totalPct + '%';
 
     // Suppliers
