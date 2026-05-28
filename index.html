@@ -1,219 +1,176 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Kona Burger — דשבורד תפעולי</title>
-<style>
-  :root {
-    --bg: #0f0f0f;
-    --card: #1a1a1a;
-    --card2: #222;
-    --border: #2a2a2a;
-    --text: #f0f0f0;
-    --muted: #888;
-    --green: #22c55e;
-    --yellow: #eab308;
-    --red: #ef4444;
-    --blue: #3b82f6;
-    --orange: #f97316;
-    --accent: #e8a045;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kona Burger — דשבורד תפעולי</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; direction: rtl; }
 
-  /* HEADER */
-  header { background: var(--card); border-bottom: 1px solid var(--border); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-  .logo { font-size: 1.7rem; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
-  .logo span { color: var(--muted); font-weight: 400; font-size: 1rem; margin-right: 8px; }
-  .header-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .month-badge { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 5px 12px; font-size: 0.85rem; color: var(--muted); }
-  .sync-btn { background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 7px 16px; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .2s; }
-  .sync-btn:hover { background: var(--accent); color: #000; }
-  .sync-btn.loading { opacity: .5; pointer-events: none; }
-  .last-sync { font-size: 0.75rem; color: var(--muted); }
+    .header {
+      background: linear-gradient(135deg, #0a2342 0%, #1a4a7a 100%);
+      color: #fff; padding: 14px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-title { font-size: 22px; font-weight: 800; }
+    .header-sub { font-size: 13px; opacity: 0.6; margin-top: 2px; }
+    .header-right { text-align: left; }
+    .h-badge { 
+      background: rgba(255,255,255,0.15); border-radius: 20px;
+      padding: 4px 12px; font-size: 14px; font-weight: 700;
+    }
+    .h-date { font-size: 12px; opacity: 0.7; margin-top: 4px; }
 
-  /* PANEL */
-  .panel { padding: 16px; max-width: 900px; margin: 0 auto; }
+    .sync-btn {
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+      color: #fff; padding: 8px 16px; border-radius: 20px; cursor: pointer;
+      font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px;
+      margin-top: 6px;
+    }
+    .sync-btn:hover { background: rgba(255,255,255,0.25); }
 
-  /* KPI GRID */
-  .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
-  @media (min-width: 600px) { .kpi-grid { grid-template-columns: repeat(5, 1fr); } }
-  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
-  .kpi-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-  .kpi-value { font-size: 1.5rem; font-weight: 700; line-height: 1; }
-  .kpi-sub { font-size: 0.76rem; color: var(--muted); margin-top: 5px; }
-  .kpi-value.accent { color: var(--accent); }
-  .kpi-value.yellow { color: var(--yellow); }
-  .kpi-value.red { color: var(--red); }
-  .kpi-value.green { color: var(--green); }
-  .kpi-value.muted { color: var(--muted); }
+    .container { max-width: 900px; margin: 0 auto; padding: 16px; }
 
-  /* COST SECTION */
-  .cost-section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 16px; }
-  .cost-title { font-size: 0.78rem; color: var(--muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .cost-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .cost-label { font-size: 0.88rem; font-weight: 500; min-width: 130px; }
-  .cost-bar-wrap { flex: 1; margin: 0 14px; background: var(--border); border-radius: 4px; height: 8px; overflow: hidden; }
-  .cost-bar { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-  .cost-bar.labor { background: var(--blue); }
-  .cost-bar.food { background: var(--orange); }
-  .cost-bar.wolt { background: #25d366; }
-  .cost-pct { font-size: 0.95rem; font-weight: 700; min-width: 52px; text-align: left; }
-  .cost-pct.green { color: var(--green); }
-  .cost-pct.yellow { color: var(--yellow); }
-  .cost-pct.red { color: var(--red); }
-  .cost-amt { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
-  .total-line { border-top: 1px solid var(--border); padding-top: 14px; margin-top: 4px; }
-  .total-pct-value { font-size: 1.4rem; font-weight: 800; }
+    .kpi-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px; margin-bottom: 16px;
+    }
+    .kpi {
+      background: #fff; border-radius: 12px; padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      border-top: 3px solid #1a4a7a;
+    }
+    .kpi-lbl { font-size: 13px; color: #666; font-weight: 600; margin-bottom: 6px; }
+    .kpi-val { font-size: 26px; font-weight: 800; color: #0a2342; }
+    .kpi-sub { font-size: 13px; color: #999; margin-top: 4px; }
 
-  /* VENDORS */
-  .vendors-section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 16px; }
-  .vendors-title { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-  .vendor-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .vendor-name { font-size: 0.85rem; color: #ccc; width: 170px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0; }
-  .vendor-bar-wrap { flex: 1; background: #1e1e1e; border-radius: 4px; height: 7px; overflow: hidden; }
-  .vendor-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #e8c87a); border-radius: 4px; transition: width 0.7s ease; }
-  .vendor-amt { font-size: 0.85rem; color: var(--accent); font-weight: 700; width: 80px; text-align: left; flex-shrink: 0; }
-  .vendor-count { font-size: 0.72rem; color: var(--muted); width: 52px; text-align: left; flex-shrink: 0; }
+    .section {
+      background: #fff; border-radius: 12px; padding: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: 16px; font-weight: 800; color: #0a2342;
+      margin-bottom: 12px; padding-bottom: 8px;
+      border-bottom: 2px solid #f0f2f5;
+    }
 
-  /* DAILY SALES */
-  .daily-section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 16px; }
-  .daily-title { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
-  .daily-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .daily-date { font-size: 0.8rem; color: var(--muted); width: 44px; flex-shrink: 0; }
-  .daily-bar-wrap { flex: 1; background: #1e1e1e; border-radius: 4px; height: 8px; overflow: hidden; }
-  .daily-bar { height: 100%; background: linear-gradient(90deg, #1a4a7a, #3b82f6); border-radius: 4px; }
-  .daily-val { font-size: 0.85rem; font-weight: 700; color: var(--text); width: 80px; text-align: left; flex-shrink: 0; }
+    .cost-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0; border-bottom: 1px solid #f5f5f5;
+      font-size: 15px;
+    }
+    .cost-row:last-child { border-bottom: none; }
+    .cost-label { color: #555; }
+    .cost-value { font-weight: 700; color: #0a2342; }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 10px;
+      font-size: 13px; font-weight: 700; margin-right: 6px;
+    }
+    .badge-warn { background: #fff3e0; color: #e65100; }
+    .badge-ok { background: #e8f5e9; color: #2e7d32; }
+    .badge-blue { background: #e3f2fd; color: #1565c0; }
 
-  /* PAYWALL */
-  #paywall-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.96); z-index:99999; align-items:center; justify-content:center; padding:20px; }
-  #paywall-overlay.show { display:flex; }
-  .pw-box { background:#1a1a1a; border:1px solid #2a2a2a; border-radius:18px; padding:32px 28px; max-width:380px; width:100%; text-align:center; }
-  .pw-logo { font-size:2.8rem; margin-bottom:8px; }
-  .pw-title { font-size:1.3rem; font-weight:800; color:var(--accent); margin-bottom:6px; }
-  .pw-sub { font-size:0.88rem; color:var(--muted); margin-bottom:20px; line-height:1.6; }
-  .pw-input { width:100%; background:#111; border:1px solid #333; border-radius:10px; padding:12px 16px; color:var(--text); font-size:1rem; text-align:center; outline:none; margin-bottom:10px; direction:ltr; }
-  .pw-input:focus { border-color:var(--accent); }
-  .pw-btn { width:100%; background:var(--accent); color:#000; font-weight:700; font-size:1rem; border:none; border-radius:10px; padding:13px; cursor:pointer; margin-bottom:8px; }
-  .pw-btn:hover { opacity:.85; }
-  .pw-err { color:var(--red); font-size:0.82rem; margin-top:4px; display:none; }
+    .sup-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    }
+    @media(max-width: 600px) { .sup-grid { grid-template-columns: repeat(2, 1fr); } }
+    .sup-box {
+      background: #f8f9fa; border-radius: 8px; padding: 10px;
+      border-right: 3px solid #1a4a7a;
+    }
+    .sup-name { font-size: 13px; color: #333; font-weight: 700; 
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sup-amount { font-size: 16px; font-weight: 800; color: #0a2342; margin-top: 4px; }
+    .sup-count { font-size: 12px; color: #888; }
 
-  /* LOADING */
-  .loading-screen { text-align: center; padding: 60px 20px; color: var(--muted); }
-  .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+    .daily-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 5px 0; border-bottom: 1px solid #f5f5f5; font-size: 14px;
+    }
+    .daily-date { width: 40px; color: #666; }
+    .daily-bar-wrap { flex: 1; height: 16px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
+    .daily-bar { height: 100%; background: #1a4a7a; border-radius: 4px; min-width: 2px; }
+    .daily-val { width: 80px; text-align: left; font-weight: 700; color: #0a2342; }
 
-  @media(max-width: 480px) {
-    .logo { font-size: 1.45rem; }
-    .kpi-value { font-size: 1.35rem; }
-    .kpi-label { font-size: 0.76rem; }
-    .cost-label { font-size: 0.85rem; min-width: 100px; }
-    .vendor-name { width: 130px; font-size: 0.82rem; }
-    .vendor-amt { font-size: 0.82rem; }
-    .daily-val { font-size: 0.82rem; }
-  }
-</style>
+    #error-msg {
+      background: #fff3e0; border: 1px solid #ffb74d; border-radius: 8px;
+      padding: 12px; margin-bottom: 12px; color: #e65100; font-size: 15px;
+      display: none;
+    }
+
+    .loading-text { text-align: center; color: #888; padding: 40px; font-size: 16px; }
+
+    @media(max-width: 480px) {
+      .header { padding: 12px 14px; }
+      .header-title { font-size: 20px; }
+      .kpi-val { font-size: 24px; }
+      .kpi-lbl { font-size: 14px; }
+      .kpi-sub { font-size: 13px; }
+      .kpi { padding: 14px 12px; }
+      .section-title { font-size: 16px; }
+      .cost-row { font-size: 15px; padding: 10px 0; }
+      .sup-amount { font-size: 16px; }
+      .sup-name { font-size: 13px; }
+      .sup-count { font-size: 12px; }
+      .sup-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .daily-row { font-size: 14px; padding: 7px 0; }
+      .daily-date { width: 44px; font-size: 13px; }
+      .daily-val { width: 75px; font-size: 14px; }
+      .badge { font-size: 13px; padding: 3px 9px; }
+      .sync-btn { font-size: 14px; padding: 9px 16px; }
+      .h-badge { font-size: 14px; }
+      .h-date { font-size: 12px; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- PAYWALL -->
-<div id="paywall-overlay">
-  <div class="pw-box">
-    <div class="pw-logo">🍔</div>
-    <div class="pw-title">Kona Burger</div>
-    <div class="pw-sub">דשבורד תפעולי פנימי<br>נא הזן קוד גישה להמשך</div>
-    <input class="pw-input" id="pw-input" type="password" placeholder="קוד גישה" onkeydown="if(event.key==='Enter')checkPw()">
-    <button class="pw-btn" onclick="checkPw()">כניסה</button>
-    <div class="pw-err" id="pw-err">קוד שגוי, נסה שוב</div>
+<div class="header">
+  <div class="header-left">
+    <div>
+      <div class="header-title">Kona Burger 🍔</div>
+      <div class="header-sub">Tabit Chef · Smart Basic 2 · Rosa</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="h-badge" id="h-badge">MTD טוען...</div>
+    <div class="h-date" id="h-date">מתחבר...</div>
+    <button class="sync-btn" onclick="syncNow()" id="sync-btn">🔄 סנכרן עכשיו</button>
   </div>
 </div>
 
-<header>
-  <div class="logo">Kona Burger 🍔<span>דשבורד תפעולי</span></div>
-  <div class="header-meta">
-    <div class="month-badge" id="month-badge">טוען...</div>
-    <div class="last-sync" id="last-sync">מתחבר...</div>
-    <button class="sync-btn" id="sync-btn" onclick="syncNow()">🔄 סנכרן</button>
+<div class="container">
+  <div id="error-msg"></div>
+  <div id="main-content">
+    <div class="loading-text" id="loading-text">טוען נתונים...</div>
   </div>
-</header>
-
-<div class="panel" id="main-panel">
-  <div class="loading-screen" id="loading-screen">
-    <div class="spinner"></div>
-    <div>טוען נתונים...</div>
-  </div>
-  <div id="content" style="display:none"></div>
 </div>
 
 <script>
 const SYNC_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync';
 const TRIGGER_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaTriggerSync';
-const CODES = ['KONA2026','SMARTPLATE'];
 
 function fmt(n) {
   if (!n && n !== 0) return '—';
-  return '₪' + Math.round(n).toLocaleString('he-IL');
+  return '\u20AA' + Math.round(n).toLocaleString('he-IL');
 }
 
-function pctColor(p) {
-  var v = parseFloat(p);
-  if (isNaN(v)) return '';
-  if (v > 38) return 'red';
-  if (v > 33) return 'yellow';
-  return 'green';
-}
-
-function totalColor(p) {
-  var v = parseFloat(p);
-  if (isNaN(v)) return '';
-  if (v > 68) return 'red';
-  if (v > 62) return 'yellow';
-  return 'green';
-}
-
-// PAYWALL
-function checkPw() {
-  var v = document.getElementById('pw-input').value.trim().toUpperCase();
-  if (CODES.includes(v)) {
-    localStorage.setItem('kona_access', '1');
-    document.getElementById('paywall-overlay').classList.remove('show');
-    loadDashboard();
-  } else {
-    var e = document.getElementById('pw-err');
-    e.style.display = 'block';
-    e.textContent = 'קוד שגוי, נסה שוב';
-  }
-}
-
-function initPaywall() {
-  if (!localStorage.getItem('kona_access')) {
-    document.getElementById('paywall-overlay').classList.add('show');
-  } else {
-    loadDashboard();
-  }
-}
-
-async function loadDashboard() {
-  document.getElementById('loading-screen').style.display = 'block';
-  document.getElementById('content').style.display = 'none';
-  try {
-    var r = await fetch(SYNC_URL, { method: 'POST', headers: {'Content-Type':'application/json'}, body: '{}' });
-    var d = await r.json();
-    render(d);
-  } catch(e) {
-    render({});
-  }
+function showError(msg) {
+  var el = document.getElementById('error-msg');
+  el.textContent = msg;
+  el.style.display = 'block';
 }
 
 function render(d) {
-  document.getElementById('loading-screen').style.display = 'none';
-
-  var months = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
   var now = new Date();
-  document.getElementById('month-badge').textContent = 'MTD ' + months[now.getMonth()] + ' ' + now.getFullYear();
+  var months = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+  document.getElementById('h-badge').textContent = 'MTD ' + months[now.getMonth()] + ' ' + now.getFullYear();
+  
   var upd = d.last_updated ? new Date(d.last_updated).toLocaleString('he-IL') : '—';
-  document.getElementById('last-sync').textContent = 'עודכן: ' + upd;
+  document.getElementById('h-date').textContent = 'עודכן: ' + upd;
 
   var salesVat = d.total_sales_vat || 0;
   var salesNet = d.total_sales_net || Math.round(salesVat / 1.18);
@@ -224,118 +181,156 @@ function render(d) {
   var daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
   var forecast = Math.round(salesVat / days * daysInMonth);
 
-  var laborPct = salesNet > 0 ? (labor / salesNet * 100).toFixed(1) : '0';
-  var foodPct  = salesNet > 0 ? (food  / salesNet * 100).toFixed(1) : '0';
-  var woltPct  = salesVat > 0 ? (wolt  / salesVat * 100).toFixed(1) : '0';
-  var totalPct = salesNet > 0 ? ((labor + food) / salesNet * 100).toFixed(1) : '0';
+  var laborPct = salesNet > 0 ? (labor / salesNet * 100).toFixed(1) : '—';
+  var foodPct = salesNet > 0 ? (food / salesNet * 100).toFixed(1) : '—';
+  var totalPct = salesNet > 0 ? ((labor + food) / salesNet * 100).toFixed(1) : '—';
+  var woltPct = salesVat > 0 ? (wolt / salesVat * 100).toFixed(1) : '—';
 
-  var vendors = (d.vendors || []).slice().sort(function(a,b){ return b.amount - a.amount; });
-  var maxV = vendors.length > 0 ? vendors[0].amount : 1;
+  var vendors = d.vendors || [];
+  vendors.sort(function(a, b) { return b.amount - a.amount; });
+
+  var vendorsHtml = vendors.length > 0
+    ? vendors.map(function(v) {
+        return '<div class="sup-box">' +
+          '<div class="sup-name">' + v.name + '</div>' +
+          '<div class="sup-amount">' + fmt(v.amount) + '</div>' +
+          '<div class="sup-count">' + (v.invoice_count || '') + ' חשבוניות</div>' +
+          '</div>';
+      }).join('')
+    : '<div style="color:#bbb;padding:8px;">אין נתוני ספקים</div>';
 
   var dailySales = d.daily_sales || [];
-  var maxD = dailySales.length > 0 ? Math.max.apply(null, dailySales.map(function(s){ return s.sales||s.amount||0; })) : 1;
+  var maxSale = Math.max.apply(null, dailySales.map(function(s) { return s.sales || s.amount || 0; }));
+  var dailyHtml = dailySales.length > 0
+    ? dailySales.map(function(s) {
+        var val = s.sales || s.amount || 0;
+        var pct = maxSale > 0 ? Math.round(val / maxSale * 100) : 0;
+        var date = s.date || '';
+        var parts = date.split('-');
+        var label = parts.length >= 3 ? parts[2] + '/' + parts[1] : date;
+        return '<div class="daily-row">' +
+          '<div class="daily-date">' + label + '</div>' +
+          '<div class="daily-bar-wrap"><div class="daily-bar" style="width:' + pct + '%"></div></div>' +
+          '<div class="daily-val">' + fmt(val) + '</div>' +
+          '</div>';
+      }).join('')
+    : '<div style="color:#bbb;padding:8px;">אין נתוני מכירות יומיות</div>';
 
-  var html = '';
+  var html = '' +
+    '<div class="kpi-row">' +
+      '<div class="kpi"><div class="kpi-lbl">מכירות MTD כולל מע"מ</div><div class="kpi-val">' + fmt(salesVat) + '</div><div class="kpi-sub">' + days + ' ימים</div></div>' +
+      '<div class="kpi"><div class="kpi-lbl">מכירות נטו</div><div class="kpi-val">' + fmt(salesNet) + '</div><div class="kpi-sub">בסיס לאחוזים</div></div>' +
+      '<div class="kpi"><div class="kpi-lbl">עלות עבודה</div><div class="kpi-val">' + fmt(labor) + '</div><div class="kpi-sub"><span class="badge badge-warn">' + laborPct + '%</span> מנטו</div></div>' +
+      '<div class="kpi"><div class="kpi-lbl">עלות מזון</div><div class="kpi-val">' + fmt(food) + '</div><div class="kpi-sub"><span class="badge badge-warn">' + foodPct + '%</span> מנטו</div></div>' +
+      '<div class="kpi"><div class="kpi-lbl">תחזית חודש</div><div class="kpi-val">' + fmt(forecast) + '</div><div class="kpi-sub">בקצב הנוכחי</div></div>' +
+    '</div>' +
 
-  // KPI ROW
-  html += '<div class="kpi-grid">';
-  html += kpi('מכירות MTD ברוטו', fmt(salesVat), days + ' ימים', 'accent');
-  html += kpi('מכירות נטו', fmt(salesNet), 'בסיס לאחוזים', 'muted');
-  html += kpi('עלות עבודה', fmt(labor), laborPct + '% מנטו', pctColor(laborPct));
-  html += kpi('עלות מזון', fmt(food), foodPct + '% מנטו', pctColor(foodPct));
-  html += kpi('תחזית חודש', fmt(forecast), 'בקצב הנוכחי', 'muted');
-  html += '</div>';
+    '<div class="section">' +
+      '<div class="section-title">סיכום עלויות</div>' +
+      '<div class="cost-row"><span class="cost-label">עלות עבודה (Tabit Chef)</span><span class="cost-value"><span class="badge badge-warn">' + laborPct + '%</span>' + fmt(labor) + '</span></div>' +
+      '<div class="cost-row"><span class="cost-label">עלות מזון (Smart Basic 2)</span><span class="cost-value"><span class="badge badge-warn">' + foodPct + '%</span>' + fmt(food) + '</span></div>' +
+      '<div class="cost-row"><span class="cost-label">Wolt מכירות</span><span class="cost-value"><span class="badge badge-blue">' + woltPct + '%</span>' + fmt(wolt) + '</span></div>' +
+      '<div class="cost-row" style="font-weight:800;border-top:2px solid #f0f2f5;margin-top:4px;padding-top:12px;"><span class="cost-label">סה"כ עבודה + מזון</span><span class="cost-value" style="color:' + (parseFloat(totalPct) > 65 ? '#e53935' : parseFloat(totalPct) > 60 ? '#e65100' : '#2e7d32') + '">' + totalPct + '%</span></div>' +
+    '</div>' +
 
-  // COST BARS
-  html += '<div class="cost-section">';
-  html += '<div class="cost-title">עלויות רשת — מאי 2026</div>';
-  html += costRow('עלות עבודה', laborPct, 'labor', labor);
-  html += costRow('עלות מזון', foodPct, 'food', food);
-  html += costRow('מכירות Wolt', woltPct, 'wolt', wolt);
-  html += '<div class="cost-row total-line"><span class="cost-label" style="font-weight:700">סה"כ עבודה + מזון</span><span></span><span class="total-pct-value ' + totalColor(totalPct) + '">' + totalPct + '%</span></div>';
-  html += '</div>';
+    '<div class="section">' +
+      '<div class="section-title">ספקי מזון — Smart Basic 2 (' + vendors.length + ' ספקים)</div>' +
+      '<div class="sup-grid">' + vendorsHtml + '</div>' +
+    '</div>' +
 
-  // VENDORS
-  if (vendors.length > 0) {
-    html += '<div class="vendors-section">';
-    html += '<div class="vendors-title">ספקי מזון — Smart Basic 2 · ' + vendors.length + ' ספקים</div>';
-    vendors.forEach(function(v) {
-      var pct = maxV > 0 ? Math.round(v.amount / maxV * 100) : 0;
-      html += '<div class="vendor-row">' +
-        '<div class="vendor-name">' + v.name + '</div>' +
-        '<div class="vendor-bar-wrap"><div class="vendor-bar" style="width:' + pct + '%"></div></div>' +
-        '<div class="vendor-amt">' + fmt(v.amount) + '</div>' +
-        '<div class="vendor-count">' + (v.invoice_count||'') + ' חש\'</div>' +
-        '</div>';
-    });
-    html += '</div>';
-  }
+    '<div class="section">' +
+      '<div class="section-title">מכירות יומיות — Tabit Chef</div>' +
+      dailyHtml +
+    '</div>';
 
-  // DAILY SALES
-  if (dailySales.length > 0) {
-    html += '<div class="daily-section">';
-    html += '<div class="daily-title">מכירות יומיות — Tabit Chef</div>';
-    dailySales.forEach(function(s) {
-      var val = s.sales || s.amount || 0;
-      var pct = maxD > 0 ? Math.round(val / maxD * 100) : 0;
-      var parts = (s.date||'').split('-');
-      var label = parts.length >= 3 ? parts[2] + '/' + parts[1] : (s.date||'');
-      html += '<div class="daily-row">' +
-        '<div class="daily-date">' + label + '</div>' +
-        '<div class="daily-bar-wrap"><div class="daily-bar" style="width:' + pct + '%"></div></div>' +
-        '<div class="daily-val">' + fmt(val) + '</div>' +
-        '</div>';
-    });
-    html += '</div>';
-  }
-
-  var el = document.getElementById('content');
-  el.innerHTML = html;
-  el.style.display = 'block';
+  document.getElementById('loading-text').style.display = 'none';
+  document.getElementById('main-content').innerHTML = html;
 }
 
-function kpi(label, value, sub, cls) {
-  return '<div class="kpi"><div class="kpi-label">' + label + '</div>' +
-    '<div class="kpi-value ' + (cls||'') + '">' + value + '</div>' +
-    '<div class="kpi-sub">' + sub + '</div></div>';
+async function fetchLiveFoodCost(month) {
+  // Always reads LIVE from Smart Basic 2 (Base44) — never stale cache
+  var allRecords = [];
+  var skip = 0;
+  var hasMore = true;
+  while (hasMore) {
+    try {
+      var r = await fetch('https://rosa-6d8ebb9e.base44.app/api/apps/699c4d19592434b7f867b2c6/entities/SupplyReceipt/filter?skip=' + skip + '&limit=500', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ created_by: 'konaburgerltd@gmail.com' })
+      });
+      var j = await r.json();
+      if (j.records && j.records.length > 0) allRecords = allRecords.concat(j.records);
+      hasMore = j.has_more === true;
+      skip += 500;
+      if (skip > 5000) break;
+    } catch(e) { hasMore = false; }
+  }
+  var dedup = {};
+  allRecords.forEach(function(rec) {
+    if (rec.is_refund || rec.invoice_total <= 0) return;
+    var key = (rec.supplier_name||'') + '|' + (rec.invoice_number||'');
+    if (!dedup[key] || rec.invoice_total > dedup[key].invoice_total) dedup[key] = rec;
+  });
+  var vendorMap = {};
+  var totalNet = 0;
+  Object.values(dedup).forEach(function(rec) {
+    var net = rec.is_zero_vat ? rec.invoice_total : rec.invoice_total / 1.18;
+    totalNet += net;
+    var name = rec.supplier_name || 'כללי';
+    if (!vendorMap[name]) vendorMap[name] = { name: name, amount: 0, invoice_count: 0 };
+    vendorMap[name].amount += net;
+    vendorMap[name].invoice_count++;
+  });
+  return {
+    food_cost_net: Math.round(totalNet),
+    vendors: Object.values(vendorMap).sort(function(a,b){ return b.amount - a.amount; })
+  };
 }
 
-function costRow(label, pct, cls, amt) {
-  var barW = Math.min(parseFloat(pct) * 1.4, 100);
-  var pc = pctColor(pct);
-  if (cls === 'wolt') pc = 'green';
-  return '<div class="cost-row"><div style="min-width:130px"><div class="cost-label">' + label + '</div><div class="cost-amt">' + fmt(amt) + '</div></div>' +
-    '<div class="cost-bar-wrap"><div class="cost-bar ' + cls + '" style="width:' + barW + '%"></div></div>' +
-    '<div class="cost-pct ' + pc + '">' + pct + '%</div></div>';
+async function loadDashboard() {
+  try {
+    var now = new Date();
+    var month = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+    // Parallel: sales/labor from konaSync + food cost LIVE from Smart Basic 2
+    var results = await Promise.all([
+      fetch(SYNC_URL + '?_=' + Date.now(), { cache: 'no-store' }).then(function(r){ return r.json(); }).catch(function(){ return {}; }),
+      fetchLiveFoodCost(month)
+    ]);
+    var d = results[0];
+    var liveFood = results[1];
+    if (liveFood && liveFood.food_cost_net > 0) {
+      d.food_cost_net = liveFood.food_cost_net;
+      d.vendors = liveFood.vendors;
+      var sNet = d.total_sales_net || Math.round((d.total_sales_vat||0) / 1.18);
+      d.food_cost_pct = sNet > 0 ? (liveFood.food_cost_net / sNet * 100).toFixed(1) : '0';
+    }
+    render(d);
+  } catch(e) {
+    render({});
+  }
 }
 
 async function syncNow() {
   var btn = document.getElementById('sync-btn');
-  btn.classList.add('loading');
   btn.textContent = '⏳ מסנכרן...';
+  btn.disabled = true;
   try {
-    await fetch(TRIGGER_URL, { method: 'POST', headers: {'Content-Type':'application/json'}, body: '{}' });
-    var tries = 0;
-    var interval = setInterval(async function() {
-      tries++;
-      try {
-        var r = await fetch(SYNC_URL, { method: 'POST', headers: {'Content-Type':'application/json'}, body: '{}' });
-        var d = await r.json();
-        render(d);
-      } catch(e) {}
-      if (tries >= 12) {
-        clearInterval(interval);
-        btn.classList.remove('loading');
-        btn.textContent = '🔄 סנכרן';
-      }
-    }, 5000);
+    await fetch(TRIGGER_URL, { method: 'POST', cache: 'no-store' });
+    document.getElementById('error-msg').textContent = 'סנכרון הופעל — יעדכן תוך ~30 שניות';
+    document.getElementById('error-msg').style.display = 'block';
+    setTimeout(function() { loadDashboard(); }, 10000);
   } catch(e) {
-    btn.classList.remove('loading');
-    btn.textContent = '🔄 סנכרן';
+    showError('שגיאה בסנכרון: ' + e.message);
+  } finally {
+    setTimeout(function() {
+      btn.textContent = '🔄 סנכרן עכשיו';
+      btn.disabled = false;
+    }, 5000);
   }
 }
 
-document.addEventListener('DOMContentLoaded', initPaywall);
+loadDashboard();
 </script>
 </body>
 </html>
