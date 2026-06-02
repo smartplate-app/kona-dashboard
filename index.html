@@ -237,34 +237,29 @@ var JUN_BASELINE = {
 var gJunLive = null;
 
 async function loadDashboard(){
-  showL('טוען נתוני יוני...');
-  // Always render May immediately from static data
+  // Render IMMEDIATELY from static data — no loading screen
   render('may', MAY_DATA);
+  render('jun', JUN_BASELINE);
+  var now = new Date();
+  document.getElementById('h-sub').textContent = 'עודכן: '+now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear();
 
-  // Try to get live June data from konaSync
+  // Try live June data in background with short timeout
   try {
-    var r = await fetch(SYNC_URL);
+    var ctrl = new AbortController();
+    var timer = setTimeout(function(){ ctrl.abort(); }, 5000);
+    var r = await fetch(SYNC_URL, {signal: ctrl.signal});
+    clearTimeout(timer);
     if(r.ok){
       var d = await r.json();
-      // Use live data only if it has actual sales
       if(d && d.total_sales_vat > 0){
         gJunLive = d;
         gJunLive.label = 'יוני 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live';
         render('jun', gJunLive);
-      } else {
-        // konaSync returned 0 — use baseline from Tabit scrape
-        render('jun', JUN_BASELINE);
       }
-    } else {
-      render('jun', JUN_BASELINE);
     }
   } catch(e){
-    render('jun', JUN_BASELINE);
+    // Timeout or error — keep baseline, no problem
   }
-
-  hideL();
-  var now = new Date();
-  document.getElementById('h-sub').textContent = 'עודכן: '+now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear();
 }
 
 function render(tab, d){
