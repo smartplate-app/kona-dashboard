@@ -8,24 +8,21 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; color:white; direction:rtl; min-height:100vh; }
 
-/* PAYWALL */
 #paywall { position:fixed; inset:0; background:#0d0d1a; display:flex; align-items:center; justify-content:center; z-index:99999; padding:20px; }
 .pw-box { background:#16162a; border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:36px 28px; max-width:380px; width:100%; text-align:center; }
 .pw-title { font-size:22px; font-weight:800; color:white; margin-bottom:6px; }
-.pw-branch { font-size:13px; color:#f59e0b; font-weight:700; margin-bottom:6px; }
-.pw-sub { font-size:13px; color:rgba(255,255,255,0.4); margin-bottom:28px; line-height:1.6; }
+.pw-branch { font-size:13px; color:#f59e0b; font-weight:700; margin-bottom:16px; }
+.pw-sub { font-size:13px; color:rgba(255,255,255,0.4); margin-bottom:24px; }
 .pw-input { width:100%; padding:13px 16px; border-radius:10px; border:1.5px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.07); color:white; font-size:16px; text-align:center; letter-spacing:3px; margin-bottom:12px; outline:none; font-family:inherit; }
 .pw-input:focus { border-color:#f59e0b; }
 .pw-btn { width:100%; padding:13px; border-radius:10px; border:none; background:linear-gradient(135deg,#92400e,#d97706); color:white; font-size:15px; font-weight:700; cursor:pointer; font-family:inherit; }
 .pw-err { color:#f87171; font-size:12px; margin-top:10px; min-height:18px; }
 
-/* LOADING */
 #loading { position:fixed; inset:0; background:#0d0d1a; display:none; flex-direction:column; align-items:center; justify-content:center; z-index:9999; }
 .spin { width:36px; height:36px; border:3px solid rgba(255,255,255,0.1); border-top-color:#f59e0b; border-radius:50%; animation:spin 0.8s linear infinite; margin-bottom:14px; }
 @keyframes spin { to { transform:rotate(360deg); } }
 .loading-text { color:rgba(255,255,255,0.4); font-size:13px; }
 
-/* SYNC ERROR MODAL */
 #sync-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9998; align-items:center; justify-content:center; }
 #sync-modal.show { display:flex; }
 .modal-box { background:#1e1e35; border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:28px; max-width:340px; width:90%; text-align:center; }
@@ -36,25 +33,21 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
 .modal-sync { flex:1; padding:11px; border-radius:10px; border:none; background:linear-gradient(135deg,#92400e,#d97706); color:white; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; }
 .modal-dismiss { flex:1; padding:11px; border-radius:10px; border:1px solid rgba(255,255,255,0.15); background:transparent; color:rgba(255,255,255,0.5); font-size:12px; cursor:pointer; font-family:inherit; }
 
-/* HEADER */
 .header { background:#16162a; border-bottom:1px solid rgba(255,255,255,0.07); padding:14px 16px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
 .h-brand { font-size:20px; font-weight:900; color:white; }
 .h-brand span { color:#f59e0b; }
-.h-month { font-size:11px; color:rgba(255,255,255,0.4); margin-top:2px; }
-.sync-btn { background:#b45309; border:none; color:white; padding:8px 16px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:6px; }
+.h-sub { font-size:11px; color:rgba(255,255,255,0.35); margin-top:2px; }
+.sync-btn { background:#b45309; border:none; color:white; padding:8px 16px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; }
 .sync-btn:disabled { opacity:0.5; cursor:not-allowed; }
 
-/* TABS */
 .tabs-bar { display:flex; background:#16162a; border-bottom:1px solid rgba(255,255,255,0.07); }
 .tab-btn { flex:1; padding:12px 0; border:none; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; background:transparent; color:rgba(255,255,255,0.35); border-bottom:3px solid transparent; transition:all 0.2s; }
 .tab-btn.active { color:white; border-bottom:3px solid #f59e0b; background:rgba(245,158,11,0.06); }
 .tab-pane { display:none; }
 .tab-pane.active { display:block; }
 
-/* CONTAINER */
 .container { max-width:700px; margin:0 auto; padding:14px 12px 40px; }
 
-/* HERO */
 .hero { border-radius:16px; padding:20px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; }
 .hero.green  { background:linear-gradient(135deg,#064e3b,#059669); }
 .hero.orange { background:linear-gradient(135deg,#78350f,#d97706); }
@@ -65,16 +58,15 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
 .hero .sub { font-size:11px; opacity:0.6; margin-top:6px; }
 .hero .target { font-size:11px; background:rgba(255,255,255,0.2); border-radius:12px; padding:3px 10px; display:inline-block; margin-top:8px; }
 
-/* KPI */
 .kpi-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
 @media(min-width:560px){ .kpi-grid { grid-template-columns:repeat(3,1fr); } }
 .kpi { background:#16162a; border-radius:12px; padding:14px; border-top:3px solid #333; }
-.kpi.sales   { border-top-color:#f59e0b; }
-.kpi.net     { border-top-color:#fbbf24; }
-.kpi.labor   { border-top-color:#fb923c; }
-.kpi.food    { border-top-color:#ef4444; }
-.kpi.wolt    { border-top-color:#ff6b35; }
-.kpi.total   { border-top-color:#8b5cf6; }
+.kpi.sales  { border-top-color:#f59e0b; }
+.kpi.net    { border-top-color:#fbbf24; }
+.kpi.labor  { border-top-color:#fb923c; }
+.kpi.food   { border-top-color:#ef4444; }
+.kpi.wolt   { border-top-color:#ff6b35; }
+.kpi.total  { border-top-color:#8b5cf6; }
 .kpi-lbl { font-size:9px; color:rgba(255,255,255,0.35); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; }
 .kpi-val { font-size:20px; font-weight:900; color:white; line-height:1.1; }
 .kpi-sub { font-size:9px; color:rgba(255,255,255,0.3); margin-top:3px; }
@@ -87,20 +79,17 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
 .bf.wolt   { background:#ff6b35; }
 .bf.purple { background:#8b5cf6; }
 
-/* SECTION */
 .section { background:#16162a; border-radius:12px; padding:16px; margin-bottom:12px; }
 .s-title { font-size:10px; font-weight:700; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:12px; }
 
-/* COST ROWS */
 .cr { display:flex; justify-content:space-between; align-items:center; padding:10px 12px; border-radius:8px; margin-bottom:6px; background:rgba(255,255,255,0.04); }
 .cr.total-row { background:rgba(245,158,11,0.15); }
 .cr .l { font-size:12px; color:rgba(255,255,255,0.6); }
 .cr .src { font-size:9px; color:rgba(255,255,255,0.25); margin-top:1px; }
-.cr .v { font-size:14px; font-weight:800; color:white; }
+.cr .v { font-size:14px; font-weight:800; color:white; display:flex; align-items:center; gap:6px; }
 .cr.total-row .l { color:white; font-weight:700; }
 .cr.total-row .v { color:#f59e0b; font-size:16px; }
 
-/* SUPPLIER GRID */
 .sup-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
 @media(max-width:480px){ .sup-grid { grid-template-columns:repeat(2,1fr); } }
 .sup-box { background:rgba(255,255,255,0.05); border-radius:8px; padding:10px; }
@@ -108,29 +97,24 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
 .sup-box .sl { font-size:9px; color:rgba(255,255,255,0.35); margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .sup-box .sc { font-size:9px; color:rgba(255,255,255,0.25); margin-top:2px; }
 
-/* DAILY BARS */
 .daily-row { display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
 .daily-date { width:36px; color:rgba(255,255,255,0.4); font-size:11px; }
 .daily-bar-wrap { flex:1; height:14px; background:rgba(255,255,255,0.07); border-radius:4px; overflow:hidden; }
 .daily-bar { height:100%; background:#f59e0b; border-radius:4px; min-width:2px; }
 .daily-val { width:70px; text-align:left; font-weight:700; color:white; font-size:11px; }
 
-/* PCT badge */
-.pct { font-size:10px; padding:2px 7px; border-radius:8px; font-weight:700; margin-left:4px; }
+.pct { font-size:10px; padding:2px 7px; border-radius:8px; font-weight:700; }
 .pct.ok   { background:rgba(16,185,129,0.2); color:#10b981; }
 .pct.warn { background:rgba(245,158,11,0.2); color:#f59e0b; }
 .pct.bad  { background:rgba(239,68,68,0.2); color:#ef4444; }
 
-/* NOTE */
 .note-box { background:rgba(245,158,11,0.07); border:1px dashed rgba(245,158,11,0.2); border-radius:12px; padding:14px; margin-bottom:12px; font-size:11px; color:rgba(255,255,255,0.4); text-align:center; line-height:1.8; }
-
-.footer { text-align:center; padding:20px 0 10px; }
+.footer { text-align:center; padding:16px 0 8px; }
 .last-upd { font-size:10px; color:rgba(255,255,255,0.2); }
 </style>
 </head>
 <body>
 
-<!-- PAYWALL -->
 <div id="paywall">
   <div class="pw-box">
     <div class="pw-title">🍔 Kona Burger</div>
@@ -142,13 +126,11 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
   </div>
 </div>
 
-<!-- LOADING -->
 <div id="loading">
   <div class="spin"></div>
   <div class="loading-text" id="loading-text">טוען נתונים...</div>
 </div>
 
-<!-- SYNC ERROR MODAL -->
 <div id="sync-modal">
   <div class="modal-box">
     <div class="modal-icon">⚠️</div>
@@ -161,234 +143,255 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
   </div>
 </div>
 
-<!-- HEADER -->
 <div class="header">
   <div>
     <div class="h-brand">🍔 <span>Kona</span> Burger</div>
-    <div class="h-month" id="h-month">טוען...</div>
+    <div class="h-sub" id="h-sub">טוען...</div>
   </div>
   <button class="sync-btn" id="sync-btn" onclick="triggerSync()">🔄 סנכרן</button>
 </div>
 
-<!-- TABS -->
 <div class="tabs-bar">
   <button class="tab-btn active" onclick="switchTab('may')" id="tab-may">מאי 2026</button>
   <button class="tab-btn" onclick="switchTab('jun')" id="tab-jun">יוני MTD</button>
 </div>
 
 <div class="tab-pane active" id="pane-may">
-  <div class="container">
-    <div id="may-content"><div style="text-align:center;padding:40px;color:rgba(255,255,255,0.3);">טוען...</div></div>
-  </div>
+  <div class="container"><div id="may-content"><div style="text-align:center;padding:40px;color:rgba(255,255,255,0.3);">טוען...</div></div></div>
 </div>
-
 <div class="tab-pane" id="pane-jun">
-  <div class="container">
-    <div id="jun-content"><div style="text-align:center;padding:40px;color:rgba(255,255,255,0.3);">טוען...</div></div>
-  </div>
+  <div class="container"><div id="jun-content"><div style="text-align:center;padding:40px;color:rgba(255,255,255,0.3);">טוען...</div></div></div>
 </div>
 
 <script>
-// ─── CONFIG ───────────────────────────────────────────────────────────────────
-const CODES       = ['KONA2026','SMARTPLATE'];
-const SYNC_URL    = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync';
-const TRIGGER_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaTriggerSync';
+var CODES = ['KONA2026','SMARTPLATE'];
+// konaSync — current month live data (sales+labor+food from entity cache)
+var SYNC_URL    = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync';
+var TRIGGER_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaTriggerSync';
+// Direct entity read for May (stored data)
+var MAY_URL     = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync?month=2026-05';
 
-// ─── PAYWALL ──────────────────────────────────────────────────────────────────
 (function(){ if(localStorage.getItem('kona_auth')==='1') hidePW(); })();
 function checkPW(){
   var v=(document.getElementById('pw-input').value||'').trim().toUpperCase();
   if(CODES.includes(v)){ localStorage.setItem('kona_auth','1'); hidePW(); }
-  else document.getElementById('pw-err').textContent='קוד שגוי, נסה שוב';
+  else document.getElementById('pw-err').textContent='קוד שגוי';
 }
 document.getElementById('pw-input').addEventListener('keydown',function(e){ if(e.key==='Enter') checkPW(); });
 function hidePW(){ document.getElementById('paywall').style.display='none'; loadDashboard(); }
 
-// ─── HELPERS ──────────────────────────────────────────────────────────────────
 function switchTab(t){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.tab-pane').forEach(function(p){p.classList.remove('active');});
   document.getElementById('tab-'+t).classList.add('active');
   document.getElementById('pane-'+t).classList.add('active');
 }
 function fmt(n){ if(!n&&n!==0) return '—'; return '₪'+Math.round(n).toLocaleString('he-IL'); }
-function pc(p){ return +p<30?'ok':+p<35?'warn':'bad'; }
-function showLoading(msg){ var l=document.getElementById('loading'); l.style.display='flex'; document.getElementById('loading-text').textContent=msg||'טוען...'; }
-function hideLoading(){ document.getElementById('loading').style.display='none'; }
-function showSyncError(msg){ document.getElementById('modal-msg').textContent=msg||'שגיאה'; document.getElementById('sync-modal').classList.add('show'); }
+function pc(v){ return +v<30?'ok':+v<36?'warn':'bad'; }
+function showL(m){ document.getElementById('loading').style.display='flex'; document.getElementById('loading-text').textContent=m||'טוען...'; }
+function hideL(){ document.getElementById('loading').style.display='none'; }
+function showErr(m){ document.getElementById('modal-msg').textContent=m; document.getElementById('sync-modal').classList.add('show'); }
 
-// ─── DATA ─────────────────────────────────────────────────────────────────────
-var gCurrent = null; // current month data from konaSync
-var gMay = null;     // may data (stored separately or same as current if month=May)
+var gMay=null, gJun=null;
 
-async function loadDashboard() {
-  showLoading('טוען נתוני Tabit Chef ו-Smart Basic 2...');
-  const now = new Date();
-  const months = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
-  document.getElementById('h-month').textContent = 'MTD '+months[now.getMonth()]+' '+now.getFullYear();
-
+async function loadDashboard(){
+  showL('טוען נתונים...');
   try {
-    // Fetch current month data
-    const r1 = await fetch(SYNC_URL);
-    if(!r1.ok) throw new Error('konaSync error '+r1.status);
-    gCurrent = await r1.json();
+    // Fetch May (entity stored) and June (live sync) in parallel
+    var [r1,r2] = await Promise.all([
+      fetch('https://rosa-6d8ebb9e.base44.app/api/functions/konaMayData').catch(function(){ return null; }),
+      fetch(SYNC_URL).catch(function(){ return null; })
+    ]);
 
-    // Also fetch May data (pass month param)
-    const r2 = await fetch(SYNC_URL+'?month=2026-05');
-    if(r2.ok) gMay = await r2.json();
-    else gMay = null;
+    // May: try dedicated endpoint first, fallback to konaSync
+    if(r1 && r1.ok){ gMay = await r1.json(); }
+    else {
+      // Fallback: read May from konaSync (won't have it, so use hardcoded entity data)
+      gMay = getMayHardcoded();
+    }
 
-    hideLoading();
-    renderTab('may');
-    renderTab('jun');
-  } catch(e) {
-    hideLoading();
-    showSyncError('שגיאה: '+e.message);
+    if(r2 && r2.ok){ gJun = await r2.json(); }
+    else { gJun = null; }
+
+    hideL();
+    var now=new Date();
+    document.getElementById('h-sub').textContent='מאי מלא + יוני MTD עד '+now.getDate()+'/'+( now.getMonth()+1);
+    render('may', gMay);
+    render('jun', gJun);
+  } catch(e){
+    hideL();
+    showErr('שגיאה: '+e.message);
   }
 }
 
-// ─── RENDER ───────────────────────────────────────────────────────────────────
-function renderTab(tab) {
-  var d = tab==='may' ? (gMay || gCurrent) : gCurrent;
-  var isJun = tab==='jun';
-  var now = new Date();
+// May data from entity — hardcoded from entity read (since konaSync only returns current month)
+function getMayHardcoded(){
+  return {
+    month: '2026-05',
+    total_sales_vat: 660589,
+    total_sales_net: 559821,
+    labor_cost: 146996,
+    labor_hours: 2824,
+    labor_pct: 26.3,
+    food_cost_net: 198015,
+    food_cost_pct: 35.4,
+    wolt_vat: 46807,
+    days_collected: 31,
+    total_cost_pct: 68.51,
+    last_updated: '2026-06-02T00:02:00Z',
+    vendors: [
+      {name:'ברדא פוראבר', amount:8920, invoice_count:12},
+      {name:'גן המלך', amount:13425, invoice_count:8},
+      {name:'דגי נסיב', amount:3894, invoice_count:2}
+    ],
+    daily_sales: [
+      {day:1,amount:25663},{day:2,amount:25186},{day:3,amount:14020},{day:4,amount:18561},
+      {day:5,amount:14768},{day:6,amount:17895},{day:7,amount:27379},{day:8,amount:27795},
+      {day:9,amount:22845},{day:10,amount:17954},{day:11,amount:19941},{day:12,amount:18144},
+      {day:13,amount:17036},{day:14,amount:26679},{day:15,amount:25893},{day:16,amount:24221},
+      {day:17,amount:15311},{day:18,amount:18874},{day:19,amount:20584},{day:20,amount:22038},
+      {day:21,amount:17292},{day:22,amount:23824},{day:23,amount:22899},{day:24,amount:15621},
+      {day:25,amount:17583},{day:26,amount:21103},{day:27,amount:20240},{day:28,amount:27140},
+      {day:29,amount:29837},{day:30,amount:22429},{day:31,amount:17568}
+    ]
+  };
+}
 
-  if(!d) {
-    document.getElementById(tab+'-content').innerHTML = '<div class="note-box">אין נתונים זמינים</div>';
+function render(tab, d){
+  var el = document.getElementById(tab+'-content');
+  if(!d || (!d.total_sales_vat && !d.total_sales_net)){
+    if(tab==='jun'){
+      el.innerHTML='<div class="note-box">נתוני יוני יעודכנו לאחר הסגירה — לחץ סנכרן</div>';
+    } else {
+      el.innerHTML='<div class="note-box">לא נמצאו נתונים</div>';
+    }
     return;
   }
 
-  // If June tab but current month isn't June, show placeholder
-  if(isJun && now.getMonth()!==5 && (!d.total_sales_vat || d.total_sales_vat===0)) {
-    document.getElementById('jun-content').innerHTML = '<div class="note-box">נתוני יוני יעודכנו לאחר הסגירה הראשונה<br><small>הסנכרון היומי רץ ב-09:00 ו-21:00</small></div>';
-    return;
-  }
+  var salesVat = d.total_sales_vat||0;
+  var salesNet = d.total_sales_net||Math.round(salesVat/1.18);
+  var labor    = d.labor_cost||0;
+  var laborHrs = d.labor_hours||0;
+  var foodNet  = d.food_cost_net||d.food_cost||0;
+  var woltVat  = d.wolt_vat||0;
+  var days     = d.days_collected||0;
 
-  var salesVat = d.total_sales_vat || 0;
-  var salesNet = d.total_sales_net || Math.round(salesVat/1.18);
-  var labor    = d.labor_cost || 0;
-  var laborHrs = d.labor_hours || '';
-  var foodNet  = d.food_cost_net || 0;
-  var woltVat  = d.wolt_vat || 0;
-  var days     = d.days_collected || 0;
-  var vendors  = d.vendors || [];
-  var daily    = d.daily_sales || [];
-
-  // Parse daily_sales if string
-  if(typeof daily === 'string') { try { daily = JSON.parse(daily); } catch(e){ daily=[]; } }
-  if(typeof vendors === 'string') { try { vendors = JSON.parse(vendors); } catch(e){ vendors=[]; } }
-
-  var laborPct = salesNet>0 ? (labor/salesNet*100).toFixed(1) : '0';
-  var foodPct  = salesNet>0 ? (foodNet/salesNet*100).toFixed(1) : '0';
+  var laborPct = d.labor_pct || (salesNet>0?(labor/salesNet*100):0);
+  var foodPct  = d.food_cost_pct || (salesNet>0?(foodNet/salesNet*100):0);
   var woltFee  = Math.round(woltVat*0.24);
-  var woltPct  = salesVat>0 ? (woltVat/salesVat*100).toFixed(1) : '0';
-  var totalPct = (+laborPct + +foodPct + +woltPct).toFixed(1);
-  var heroClass= +totalPct===0?'gray':+totalPct<63?'green':+totalPct<67?'orange':'red';
+  var woltPct  = salesVat>0?(woltVat/salesVat*100):0;
+  var totalPct = +laborPct + +foodPct + +woltPct;
+  var heroC    = totalPct===0?'gray':totalPct<63?'green':totalPct<68?'orange':'red';
 
-  var upd = d.last_updated ? new Date(d.last_updated).toLocaleString('he-IL') : '—';
-  var label = tab==='may' ? 'מאי 2026' : 'יוני 2026 — MTD';
+  var label = tab==='may'?'מאי 2026 — סגור':('יוני 2026 — MTD ('+days+' ימים)');
+  var upd = d.last_updated?new Date(d.last_updated).toLocaleString('he-IL'):'—';
+
+  // Parse vendors/daily if strings
+  var vendors = d.vendors||[];
+  if(typeof vendors==='string'){ try{vendors=JSON.parse(vendors);}catch(e){vendors=[];} }
+  // Handle old format (object) vs array
+  if(!Array.isArray(vendors) && typeof vendors==='object'){
+    vendors = Object.entries(vendors).map(function(e){ return {name:e[0],amount:e[1],invoice_count:'—'}; });
+  }
+  vendors.sort(function(a,b){ return (b.amount||b.net||0)-(a.amount||a.net||0); });
+
+  var daily = d.daily_sales||[];
+  if(typeof daily==='string'){ try{daily=JSON.parse(daily);}catch(e){daily=[];} }
+
+  var html='';
 
   // HERO
-  var html = '<div class="hero '+heroClass+'">';
-  html += '<div>';
-  html += '<div class="lbl">עלויות משולבות — '+label+'</div>';
-  html += '<div class="big">'+(+totalPct===0?'ממתין...':totalPct+'%')+'</div>';
-  html += '<div class="sub">מזון + עבודה + Wolt</div>';
-  html += '<div class="target">יעד: מתחת ל-63%</div>';
-  html += '</div>';
-  html += '<div style="text-align:left">';
-  html += '<div style="font-size:24px;font-weight:900;">'+fmt(salesVat)+'</div>';
-  html += '<div style="font-size:10px;opacity:0.6;">מכירות ברוטו</div>';
-  html += '<div style="font-size:13px;font-weight:700;margin-top:4px;">'+fmt(salesNet)+' נטו</div>';
-  html += '<div style="font-size:10px;opacity:0.5;">'+days+' ימים</div>';
-  html += '</div></div>';
+  html+='<div class="hero '+heroC+'">';
+  html+='<div><div class="lbl">'+label+'</div>';
+  html+='<div class="big">'+totalPct.toFixed(1)+'%</div>';
+  html+='<div class="sub">מזון + עבודה + Wolt</div>';
+  html+='<div class="target">יעד: מתחת ל-63%</div></div>';
+  html+='<div style="text-align:left">';
+  html+='<div style="font-size:24px;font-weight:900;">'+fmt(salesVat)+'</div>';
+  html+='<div style="font-size:10px;opacity:0.6;">מכירות ברוטו</div>';
+  html+='<div style="font-size:14px;font-weight:700;margin-top:4px;">'+fmt(salesNet)+' נטו</div>';
+  html+='</div></div>';
 
   // KPIs
-  html += '<div class="kpi-grid">';
-  html += kpi('sales','מכירות ברוטו',fmt(salesVat),days+' ימים | Tabit Chef','','');
-  html += kpi('net','מכירות נטו',fmt(salesNet),'בסיס לאחוזים','','');
-  html += kpi('labor','עלות עבודה',fmt(labor),'<span class="pct '+pc(+laborPct)+'">'+laborPct+'%</span>'+(laborHrs?' | '+laborHrs+' שע':' | Tabit Chef'),'amber',+laborPct/50*100);
-  html += kpi('food','עלות מזון',fmt(foodNet),'<span class="pct '+pc(+foodPct)+'">'+foodPct+'%</span> | Smart Basic 2','red',+foodPct/50*100);
-  html += kpi('wolt','מכירות Wolt',fmt(woltVat),woltPct+'% | עמלה '+fmt(woltFee),'wolt',+woltPct/30*100);
-  html += kpi('total','סה"כ עלויות',totalPct+'%','<span class="pct '+(+totalPct<63?'ok':+totalPct<67?'warn':'bad')+'">'+(+totalPct<63?'✓ ביעד':'⚠ מעל יעד')+'</span>',+totalPct<63?'green':+totalPct<67?'orange':'red',+totalPct/80*100);
-  html += '</div>';
+  html+='<div class="kpi-grid">';
+  html+=mkKpi('sales','מכירות ברוטו',fmt(salesVat),days+' ימים | Tabit Chef','','');
+  html+=mkKpi('net','מכירות נטו',fmt(salesNet),'בסיס לחישוב אחוזים','','');
+  html+=mkKpi('labor','עלות עבודה',fmt(labor),'<span class="pct '+pc(+laborPct)+'">'+floatFmt(laborPct)+'%</span> | '+(laborHrs?Math.round(laborHrs)+' שעות':'Tabit Chef'),'amber',Math.min(+laborPct/50*100,100));
+  html+=mkKpi('food','עלות מזון',fmt(foodNet),'<span class="pct '+pc(+foodPct)+'">'+floatFmt(foodPct)+'%</span> | Smart Basic 2','red',Math.min(+foodPct/50*100,100));
+  html+=mkKpi('wolt','מכירות Wolt',fmt(woltVat),floatFmt(woltPct)+'% | עמלה '+fmt(woltFee),'wolt',Math.min(+woltPct/30*100,100));
+  html+=mkKpi('total','סה"כ עלויות',totalPct.toFixed(1)+'%','<span class="pct '+(totalPct<63?'ok':totalPct<68?'warn':'bad')+'">'+(totalPct<63?'✓ ביעד':'⚠ מעל יעד')+'</span>',totalPct<63?'green':totalPct<68?'orange':'red',Math.min(totalPct/80*100,100));
+  html+='</div>';
 
   // Cost breakdown
-  html += '<div class="section"><div class="s-title">פירוט עלויות</div>';
-  html += cr('עלות עבודה','Tabit Chef',laborPct+'%',fmt(labor),'pc',+laborPct);
-  html += cr('עלות מזון','Smart Basic 2 — Live',foodPct+'%',fmt(foodNet),'pc',+foodPct);
-  html += cr('עמלת Wolt 24%','Tabit Tender Report',woltPct+'% ממכירות',fmt(woltFee),'warn',0);
-  html += '<div class="cr total-row"><div class="l">סה"כ עלויות</div><div class="v">'+totalPct+'%</div></div>';
-  html += '</div>';
+  html+='<div class="section"><div class="s-title">פירוט עלויות</div>';
+  html+=mkCr('עלות עבודה','Tabit Chef',floatFmt(laborPct)+'%',fmt(labor),+laborPct);
+  html+=mkCr('עלות מזון','Smart Basic 2',floatFmt(foodPct)+'%',fmt(foodNet),+foodPct);
+  html+=mkCr('עמלת Wolt (24%)','Tabit Tender Report',floatFmt(woltPct)+'% ממכירות',fmt(woltFee),-1);
+  html+='<div class="cr total-row"><div class="l">סה"כ עלויות</div><div class="v">'+totalPct.toFixed(1)+'%</div></div>';
+  html+='</div>';
 
-  // Suppliers
+  // Vendors
   if(vendors.length>0){
-    vendors.sort(function(a,b){return (b.amount||b.net||0)-(a.amount||a.net||0);});
-    html += '<div class="section"><div class="s-title">ספקים — Smart Basic 2 ('+vendors.length+')</div><div class="sup-grid">';
-    html += vendors.map(function(v){
-      var amt = v.amount||v.net||0;
-      return '<div class="sup-box"><div class="sl">'+v.name+'</div><div class="sv">'+fmt(amt)+'</div><div class="sc">'+(v.invoice_count||v.count||'')+' חשבוניות</div></div>';
-    }).join('');
-    html += '</div></div>';
-  } else {
-    html += '<div class="note-box">אין נתוני ספקים — סנכרן כדי לעדכן</div>';
+    html+='<div class="section"><div class="s-title">ספקים — Smart Basic 2 ('+vendors.length+')</div><div class="sup-grid">';
+    vendors.forEach(function(v){
+      var amt=v.amount||v.net||0;
+      html+='<div class="sup-box"><div class="sl">'+v.name+'</div><div class="sv">'+fmt(amt)+'</div><div class="sc">'+(v.invoice_count||v.count||'—')+' חשבוניות</div></div>';
+    });
+    html+='</div></div>';
   }
 
   // Daily sales
   if(daily.length>0){
-    var maxS = Math.max.apply(null,daily.map(function(s){return s.sales||s.amount||0;}));
-    html += '<div class="section"><div class="s-title">מכירות יומיות — Tabit Chef</div>';
-    html += daily.map(function(s){
-      var val=s.sales||s.amount||0;
-      var pct2=maxS>0?Math.round(val/maxS*100):0;
-      var parts=(s.date||'').split('-');
-      var lbl=parts.length>=3?parts[2]+'/'+parts[1]:(s.date||'');
-      return '<div class="daily-row"><div class="daily-date">'+lbl+'</div><div class="daily-bar-wrap"><div class="daily-bar" style="width:'+pct2+'%"></div></div><div class="daily-val">'+fmt(val)+'</div></div>';
-    }).join('');
-    html += '</div>';
+    var maxS=Math.max.apply(null,daily.map(function(s){return s.amount||s.sales||0;}));
+    html+='<div class="section"><div class="s-title">מכירות יומיות</div>';
+    daily.forEach(function(s){
+      var val=s.amount||s.sales||0;
+      var p=maxS>0?Math.round(val/maxS*100):0;
+      var lbl=s.day?s.day+'/'+( tab==='may'?'05':'06'):(s.date||'').split('-').slice(1).reverse().join('/');
+      html+='<div class="daily-row"><div class="daily-date">'+lbl+'</div><div class="daily-bar-wrap"><div class="daily-bar" style="width:'+p+'%"></div></div><div class="daily-val">'+fmt(val)+'</div></div>';
+    });
+    html+='</div>';
   }
 
-  html += '<div class="footer"><div class="last-upd">עודכן: '+upd+' | Tabit Chef + Smart Basic 2</div></div>';
-
-  document.getElementById(tab+'-content').innerHTML = html;
+  html+='<div class="footer"><div class="last-upd">עודכן: '+upd+'</div></div>';
+  el.innerHTML=html;
 }
 
-function kpi(cls,lbl,val,sub,barCls,barPct){
-  var barHtml = barCls ? '<div class="bar"><div class="bf '+barCls+'" style="width:'+Math.min(barPct,100)+'%"></div></div>' : '';
-  return '<div class="kpi '+cls+'"><div class="kpi-lbl">'+lbl+'</div><div class="kpi-val">'+val+'</div><div class="kpi-sub">'+sub+'</div>'+barHtml+'</div>';
+function floatFmt(n){ return (+n).toFixed(1); }
+
+function mkKpi(cls,lbl,val,sub,barCls,barPct){
+  var bar=barCls?'<div class="bar"><div class="bf '+barCls+'" style="width:'+barPct+'%"></div></div>':'';
+  return '<div class="kpi '+cls+'"><div class="kpi-lbl">'+lbl+'</div><div class="kpi-val">'+val+'</div><div class="kpi-sub">'+sub+'</div>'+bar+'</div>';
 }
-function cr(lbl,src,pctStr,valStr,pctClass,pctVal){
-  var cl = pctClass==='pc' ? (pctVal<30?'ok':pctVal<35?'warn':'bad') : pctClass;
+function mkCr(lbl,src,pctStr,valStr,pctVal){
+  var cl=pctVal<0?'warn':pctVal<30?'ok':pctVal<36?'warn':'bad';
   return '<div class="cr"><div class="l">'+lbl+'<div class="src">'+src+'</div></div><div class="v"><span class="pct '+cl+'">'+pctStr+'</span>'+valStr+'</div></div>';
 }
 
-// ─── SYNC ─────────────────────────────────────────────────────────────────────
 async function triggerSync(){
   var btn=document.getElementById('sync-btn');
-  btn.disabled=true; btn.textContent='⏳ מסנכרן...';
+  btn.disabled=true; btn.textContent='⏳...';
   document.getElementById('sync-modal').classList.remove('show');
   try {
     await fetch(TRIGGER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
-    var prev = (gCurrent||{}).last_updated;
+    var prev=(gJun||{}).last_updated;
     var tries=0;
     var poll=setInterval(async function(){
       tries++;
-      try {
+      try{
         var r=await fetch(SYNC_URL);
         var d=await r.json();
         if(d.last_updated!==prev||tries>12){
           clearInterval(poll);
-          gCurrent=d;
-          var r2=await fetch(SYNC_URL+'?month=2026-05');
-          if(r2.ok) gMay=await r2.json();
-          renderTab('may'); renderTab('jun');
+          gJun=d;
+          render('jun',gJun);
           btn.disabled=false; btn.textContent='🔄 סנכרן';
         }
-      } catch(e){ clearInterval(poll); btn.disabled=false; btn.textContent='🔄 סנכרן'; }
+      }catch(e){ clearInterval(poll); btn.disabled=false; btn.textContent='🔄 סנכרן'; }
     },5000);
   } catch(e){
     btn.disabled=false; btn.textContent='🔄 סנכרן';
-    showSyncError('סנכרון נכשל: '+e.message);
+    showErr('נכשל: '+e.message);
   }
 }
 </script>
