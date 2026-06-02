@@ -281,7 +281,7 @@ function render(tab, d){
   var woltFee  = Math.round(woltVat*0.24);
   var woltPct  = salesVat>0?woltVat/salesVat*100:0;
   var totalPct = +laborPct + +foodPct + +woltPct;
-  var heroC    = totalPct===0?'gray':totalPct<63?'green':totalPct<68?'orange':'red';
+  var heroC    = totalPct===0?'gray':totalPct<70?"green":totalPct<75?"orange":"red";
   var label    = d.label||(tab==='may'?'מאי 2026':'יוני 2026 MTD');
   var upd      = d.last_updated?new Date(d.last_updated).toLocaleString('he-IL'):'—';
 
@@ -302,7 +302,7 @@ function render(tab, d){
   html+='<div><div class="lbl">'+label+'</div>';
   html+='<div class="big">'+totalPct.toFixed(1)+'%</div>';
   html+='<div class="sub">מזון + עבודה + Wolt</div>';
-  html+='<div class="target">יעד: מתחת ל-63%</div></div>';
+  html+='<div class="target">יעד: מתחת ל-70%</div></div>';
   html+='<div style="text-align:left">';
   html+='<div style="font-size:24px;font-weight:900;">'+fmt(salesVat)+'</div>';
   html+='<div style="font-size:10px;opacity:0.6;">מכירות ברוטו</div>';
@@ -317,7 +317,7 @@ function render(tab, d){
   html+=mkKpi('labor','עלות עבודה',fmt(labor),'<span class="pct '+pc(+laborPct)+'">'+f1(laborPct)+'%</span> | '+(laborHrs?Math.round(laborHrs)+' שעות':'Tabit Chef'),'amber',Math.min(+laborPct/50*100,100));
   html+=mkKpi('food','עלות מזון',fmt(foodNet),'<span class="pct '+pc(+foodPct)+'">'+f1(foodPct)+'%</span> | Smart Basic 2','red',Math.min(+foodPct/50*100,100));
   html+=mkKpi('wolt','מכירות Wolt',fmt(woltVat),f1(woltPct)+'% | עמלה '+fmt(woltFee),'wolt',Math.min(+woltPct/30*100,100));
-  html+=mkKpi('total','סה"כ עלויות',totalPct.toFixed(1)+'%','<span class="pct '+(totalPct<63?'ok':totalPct<68?'warn':'bad')+'">'+(totalPct<63?'✓ ביעד':'⚠ מעל יעד')+'</span>',totalPct<63?'green':totalPct<68?'orange':'red',Math.min(totalPct/80*100,100));
+  html+=mkKpi('total','סה"כ עלויות',totalPct.toFixed(1)+'%','<span class="pct '+(totalPct<70?'ok':totalPct<75?'warn':'bad')+'">'+(totalPct<70?'✓ ביעד':'⚠ מעל יעד')+'</span>',totalPct<70?"green":totalPct<75?"orange":"red",Math.min(totalPct/90*100,100));
   html+='</div>';
 
   // Cost breakdown
