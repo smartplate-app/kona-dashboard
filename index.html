@@ -170,7 +170,6 @@ var SYNC_URL    = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync';
 var TRIGGER_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaTriggerSync';
 
 // ── PAYWALL ──────────────────────────────────────────────────────────────────
-(function(){ if(localStorage.getItem('kona_auth')==='1') hidePW(); })();
 function checkPW(){
   var v=(document.getElementById('pw-input').value||'').trim().toUpperCase();
   if(CODES.includes(v)){ localStorage.setItem('kona_auth','1'); hidePW(); }
@@ -178,6 +177,10 @@ function checkPW(){
 }
 document.getElementById('pw-input').addEventListener('keydown',function(e){ if(e.key==='Enter') checkPW(); });
 function hidePW(){ document.getElementById('paywall').style.display='none'; loadDashboard(); }
+// Auto-login if already authenticated
+document.addEventListener('DOMContentLoaded', function(){
+  if(localStorage.getItem('kona_auth')==='1') hidePW();
+});
 
 function switchTab(t){
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
