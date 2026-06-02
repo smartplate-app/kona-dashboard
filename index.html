@@ -38,7 +38,6 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
 
 /* HEADER */
 .header { background:#16162a; border-bottom:1px solid rgba(255,255,255,0.07); padding:14px 16px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
-.h-left { display:flex; align-items:center; gap:12px; }
 .h-brand { font-size:20px; font-weight:900; color:white; }
 .h-brand span { color:#f59e0b; }
 .h-month { font-size:11px; color:rgba(255,255,255,0.4); margin-top:2px; }
@@ -46,7 +45,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
 .sync-btn:disabled { opacity:0.5; cursor:not-allowed; }
 
 /* TABS */
-.tabs-bar { display:flex; gap:0; background:#16162a; border-bottom:1px solid rgba(255,255,255,0.07); }
+.tabs-bar { display:flex; background:#16162a; border-bottom:1px solid rgba(255,255,255,0.07); }
 .tab-btn { flex:1; padding:12px 0; border:none; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; background:transparent; color:rgba(255,255,255,0.35); border-bottom:3px solid transparent; transition:all 0.2s; }
 .tab-btn.active { color:white; border-bottom:3px solid #f59e0b; background:rgba(245,158,11,0.06); }
 .tab-pane { display:none; }
@@ -68,7 +67,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
 
 /* KPI */
 .kpi-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
-@media(min-width:560px){ .kpi-grid { grid-template-columns:repeat(4,1fr); } }
+@media(min-width:560px){ .kpi-grid { grid-template-columns:repeat(3,1fr); } }
 .kpi { background:#16162a; border-radius:12px; padding:14px; border-top:3px solid #333; }
 .kpi.sales   { border-top-color:#f59e0b; }
 .kpi.net     { border-top-color:#fbbf24; }
@@ -76,8 +75,6 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
 .kpi.food    { border-top-color:#ef4444; }
 .kpi.wolt    { border-top-color:#ff6b35; }
 .kpi.total   { border-top-color:#8b5cf6; }
-.kpi.days    { border-top-color:#06b6d4; }
-.kpi.forecast{ border-top-color:#10b981; }
 .kpi-lbl { font-size:9px; color:rgba(255,255,255,0.35); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; }
 .kpi-val { font-size:20px; font-weight:900; color:white; line-height:1.1; }
 .kpi-sub { font-size:9px; color:rgba(255,255,255,0.3); margin-top:3px; }
@@ -88,6 +85,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
 .bf.red    { background:#ef4444; }
 .bf.amber  { background:#fb923c; }
 .bf.wolt   { background:#ff6b35; }
+.bf.purple { background:#8b5cf6; }
 
 /* SECTION */
 .section { background:#16162a; border-radius:12px; padding:16px; margin-bottom:12px; }
@@ -111,27 +109,23 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
 .sup-box .sc { font-size:9px; color:rgba(255,255,255,0.25); margin-top:2px; }
 
 /* DAILY BARS */
-.daily-row { display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:12px; }
-.daily-date { width:36px; color:rgba(255,255,255,0.4); }
+.daily-row { display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.daily-date { width:36px; color:rgba(255,255,255,0.4); font-size:11px; }
 .daily-bar-wrap { flex:1; height:14px; background:rgba(255,255,255,0.07); border-radius:4px; overflow:hidden; }
 .daily-bar { height:100%; background:#f59e0b; border-radius:4px; min-width:2px; }
-.daily-val { width:75px; text-align:left; font-weight:700; color:white; font-size:11px; }
-
-/* WOLT CARD */
-.wolt-card { background:rgba(255,107,53,0.1); border:1px solid rgba(255,107,53,0.3); border-radius:10px; padding:14px; }
-
-/* FOOTER */
-.footer { text-align:center; padding:20px 0 10px; }
-.last-upd { font-size:10px; color:rgba(255,255,255,0.2); }
-
-/* NOTE BOX */
-.note-box { background:rgba(245,158,11,0.07); border:1px dashed rgba(245,158,11,0.2); border-radius:12px; padding:14px; margin-bottom:12px; font-size:11px; color:rgba(255,255,255,0.4); text-align:center; line-height:1.8; }
+.daily-val { width:70px; text-align:left; font-weight:700; color:white; font-size:11px; }
 
 /* PCT badge */
-.pct { font-size:10px; padding:2px 7px; border-radius:8px; font-weight:700; margin-right:4px; }
-.pct.ok  { background:rgba(16,185,129,0.2); color:#10b981; }
+.pct { font-size:10px; padding:2px 7px; border-radius:8px; font-weight:700; margin-left:4px; }
+.pct.ok   { background:rgba(16,185,129,0.2); color:#10b981; }
 .pct.warn { background:rgba(245,158,11,0.2); color:#f59e0b; }
-.pct.bad { background:rgba(239,68,68,0.2); color:#ef4444; }
+.pct.bad  { background:rgba(239,68,68,0.2); color:#ef4444; }
+
+/* NOTE */
+.note-box { background:rgba(245,158,11,0.07); border:1px dashed rgba(245,158,11,0.2); border-radius:12px; padding:14px; margin-bottom:12px; font-size:11px; color:rgba(255,255,255,0.4); text-align:center; line-height:1.8; }
+
+.footer { text-align:center; padding:20px 0 10px; }
+.last-upd { font-size:10px; color:rgba(255,255,255,0.2); }
 </style>
 </head>
 <body>
@@ -159,7 +153,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
   <div class="modal-box">
     <div class="modal-icon">⚠️</div>
     <div class="modal-title">שגיאת סנכרון</div>
-    <div class="modal-msg" id="modal-msg">לא ניתן לטעון נתונים כרגע. ניתן לסנכרן ידנית.</div>
+    <div class="modal-msg" id="modal-msg">לא ניתן לטעון נתונים כרגע.</div>
     <div class="modal-btns">
       <button class="modal-sync" onclick="triggerSync()">🔄 סנכרן עכשיו</button>
       <button class="modal-dismiss" onclick="document.getElementById('sync-modal').classList.remove('show')">המשך בכל זאת</button>
@@ -169,11 +163,9 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
 
 <!-- HEADER -->
 <div class="header">
-  <div class="h-left">
-    <div>
-      <div class="h-brand">🍔 <span>Kona</span> Burger</div>
-      <div class="h-month" id="h-month">טוען...</div>
-    </div>
+  <div>
+    <div class="h-brand">🍔 <span>Kona</span> Burger</div>
+    <div class="h-month" id="h-month">טוען...</div>
   </div>
   <button class="sync-btn" id="sync-btn" onclick="triggerSync()">🔄 סנכרן</button>
 </div>
@@ -184,14 +176,12 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
   <button class="tab-btn" onclick="switchTab('jun')" id="tab-jun">יוני MTD</button>
 </div>
 
-<!-- MAY TAB -->
 <div class="tab-pane active" id="pane-may">
   <div class="container">
     <div id="may-content"><div style="text-align:center;padding:40px;color:rgba(255,255,255,0.3);">טוען...</div></div>
   </div>
 </div>
 
-<!-- JUN TAB -->
 <div class="tab-pane" id="pane-jun">
   <div class="container">
     <div id="jun-content"><div style="text-align:center;padding:40px;color:rgba(255,255,255,0.3);">טוען...</div></div>
@@ -200,363 +190,203 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
 
 <script>
 // ─── CONFIG ───────────────────────────────────────────────────────────────────
-const CODES = ['KONA2026','SMARTPLATE'];
+const CODES       = ['KONA2026','SMARTPLATE'];
 const SYNC_URL    = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync';
 const TRIGGER_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaTriggerSync';
 
-// Smart Basic 2 — Base44 app for food cost
-const SB2_APP_ID   = '699c4d19592434b7f867b2c6';
-const SB2_ENTITY   = 'SupplyReceipt';
-const SB2_USER     = 'konaburgerltd@gmail.com';
-const BASE44_API   = 'https://api.base44.com/api/apps/' + SB2_APP_ID + '/entities/' + SB2_ENTITY;
-
 // ─── PAYWALL ──────────────────────────────────────────────────────────────────
-(function(){
-  if(localStorage.getItem('kona_auth')==='1'){ hidePW(); }
-})();
+(function(){ if(localStorage.getItem('kona_auth')==='1') hidePW(); })();
 function checkPW(){
   var v=(document.getElementById('pw-input').value||'').trim().toUpperCase();
   if(CODES.includes(v)){ localStorage.setItem('kona_auth','1'); hidePW(); }
-  else { document.getElementById('pw-err').textContent='קוד שגוי, נסה שוב'; }
+  else document.getElementById('pw-err').textContent='קוד שגוי, נסה שוב';
 }
 document.getElementById('pw-input').addEventListener('keydown',function(e){ if(e.key==='Enter') checkPW(); });
 function hidePW(){ document.getElementById('paywall').style.display='none'; loadDashboard(); }
 
-// ─── TAB SWITCH ───────────────────────────────────────────────────────────────
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
 function switchTab(t){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');
   document.getElementById('pane-'+t).classList.add('active');
 }
-
-// ─── HELPERS ──────────────────────────────────────────────────────────────────
 function fmt(n){ if(!n&&n!==0) return '—'; return '₪'+Math.round(n).toLocaleString('he-IL'); }
-function pctColor(p){ return p<30?'ok':p<35?'warn':'bad'; }
-function showLoading(msg){ var l=document.getElementById('loading'); l.style.display='flex'; document.getElementById('loading-text').textContent=msg||'טוען נתונים...'; }
+function pc(p){ return +p<30?'ok':+p<35?'warn':'bad'; }
+function showLoading(msg){ var l=document.getElementById('loading'); l.style.display='flex'; document.getElementById('loading-text').textContent=msg||'טוען...'; }
 function hideLoading(){ document.getElementById('loading').style.display='none'; }
-function showSyncError(msg){ document.getElementById('modal-msg').textContent=msg||'שגיאה בטעינת הנתונים'; document.getElementById('sync-modal').classList.add('show'); }
+function showSyncError(msg){ document.getElementById('modal-msg').textContent=msg||'שגיאה'; document.getElementById('sync-modal').classList.add('show'); }
 
-// ─── FETCH FOOD COST FROM SMART BASIC 2 ───────────────────────────────────────
-async function fetchFoodCost(monthPrefix) {
-  // monthPrefix e.g. "2026-05" or "2026-06"
-  let allRecords = [], skip = 0, hasMore = true;
-  while(hasMore) {
-    const url = BASE44_API + '?limit=500&skip='+skip+'&created_by='+encodeURIComponent(SB2_USER);
-    const r = await fetch(url, { headers:{ 'x-api-key': 'none' } });
-    if(!r.ok) throw new Error('Smart Basic 2 fetch failed: '+r.status);
-    const data = await r.json();
-    const records = data.records || data || [];
-    allRecords = allRecords.concat(records);
-    hasMore = data.has_more === true && records.length > 0;
-    skip += records.length;
-    if(records.length === 0) break;
-  }
-
-  // Filter current month, exclude refunds & zero totals
-  const monthRecords = allRecords.filter(r =>
-    (r.invoice_date||'').startsWith(monthPrefix) &&
-    !r.is_refund &&
-    (r.invoice_total||0) > 0
-  );
-
-  // Dedup by (supplier_name, invoice_number) — keep MAX
-  const seen = {};
-  monthRecords.forEach(r => {
-    const key = (r.supplier_name||'') + '||' + (r.invoice_number||'');
-    if(!seen[key] || r.invoice_total > seen[key].invoice_total) seen[key] = r;
-  });
-  const deduped = Object.values(seen);
-
-  // Aggregate by supplier
-  const supMap = {};
-  let totalNet = 0, totalGross = 0;
-  deduped.forEach(r => {
-    const gross = r.invoice_total || 0;
-    const net   = r.is_zero_vat ? gross : gross / 1.18;
-    totalGross += gross;
-    totalNet   += net;
-    const name = r.supplier_name || 'לא ידוע';
-    if(!supMap[name]) supMap[name] = { name, gross:0, net:0, count:0, last_date:'' };
-    supMap[name].gross += gross;
-    supMap[name].net   += net;
-    supMap[name].count += 1;
-    if((r.invoice_date||'') > supMap[name].last_date) supMap[name].last_date = r.invoice_date;
-  });
-
-  const vendors = Object.values(supMap).sort((a,b)=>b.net-a.net);
-  return { totalNet: Math.round(totalNet), totalGross: Math.round(totalGross), vendors, invoiceCount: deduped.length };
-}
-
-// ─── MAIN LOAD ────────────────────────────────────────────────────────────────
-var gData = null;
-var gMayFood = null;
-var gJunFood = null;
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+var gCurrent = null; // current month data from konaSync
+var gMay = null;     // may data (stored separately or same as current if month=May)
 
 async function loadDashboard() {
-  showLoading('טוען נתוני מכירות ולייבור...');
+  showLoading('טוען נתוני Tabit Chef ו-Smart Basic 2...');
   const now = new Date();
-  const monthNames = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
-  document.getElementById('h-month').textContent = 'MTD '+monthNames[now.getMonth()]+' '+now.getFullYear();
+  const months = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+  document.getElementById('h-month').textContent = 'MTD '+months[now.getMonth()]+' '+now.getFullYear();
 
   try {
-    // 1) Fetch konaSync (sales + labor from Tabit Chef cache)
-    showLoading('טוען מכירות ולייבור (Tabit Chef)...');
-    const syncRes = await fetch(SYNC_URL);
-    if(!syncRes.ok) throw new Error('konaSync failed: '+syncRes.status);
-    gData = await syncRes.json();
+    // Fetch current month data
+    const r1 = await fetch(SYNC_URL);
+    if(!r1.ok) throw new Error('konaSync error '+r1.status);
+    gCurrent = await r1.json();
 
-    // 2) Fetch food cost for May and June in parallel from Smart Basic 2
-    showLoading('טוען עלות מזון (Smart Basic 2)...');
-    const [mayFood, junFood] = await Promise.all([
-      fetchFoodCost('2026-05').catch(e=>({ totalNet:0, totalGross:0, vendors:[], invoiceCount:0, error:e.message })),
-      fetchFoodCost('2026-06').catch(e=>({ totalNet:0, totalGross:0, vendors:[], invoiceCount:0, error:e.message }))
-    ]);
-    gMayFood = mayFood;
-    gJunFood = junFood;
+    // Also fetch May data (pass month param)
+    const r2 = await fetch(SYNC_URL+'?month=2026-05');
+    if(r2.ok) gMay = await r2.json();
+    else gMay = null;
 
     hideLoading();
-    renderMay();
-    renderJun();
-
+    renderTab('may');
+    renderTab('jun');
   } catch(e) {
     hideLoading();
     showSyncError('שגיאה: '+e.message);
   }
 }
 
-// ─── RENDER MAY ───────────────────────────────────────────────────────────────
-function renderMay() {
-  const d = gData || {};
-  const food = gMayFood || {};
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function renderTab(tab) {
+  var d = tab==='may' ? (gMay || gCurrent) : gCurrent;
+  var isJun = tab==='jun';
+  var now = new Date();
 
-  // May data from konaSync (may_* fields or fallback to current if month is May)
-  const salesVat = d.may_sales_vat || d.total_sales_vat || 0;
-  const salesNet = d.may_sales_net || d.total_sales_net || Math.round(salesVat/1.18);
-  const labor    = d.may_labor_cost || d.labor_cost || 0;
-  const laborHrs = d.may_labor_hours || d.labor_hours || '';
-  const woltVat  = d.may_wolt_vat || d.wolt_vat || 0;
-  const days     = d.may_days || d.days_collected || 31;
-  const dailySales = d.may_daily_sales || d.daily_sales || [];
-
-  const foodNet  = food.totalNet  || 0;
-  const vendors  = food.vendors   || [];
-
-  const laborPct = salesNet>0 ? (labor/salesNet*100).toFixed(1) : 0;
-  const foodPct  = salesNet>0 ? (foodNet/salesNet*100).toFixed(1) : 0;
-  const woltFee  = Math.round(woltVat * 0.24);
-  const woltPct  = salesVat>0 ? (woltVat/salesVat*100).toFixed(1) : 0;
-  const totalPct = (+laborPct + +foodPct + +woltPct).toFixed(1);
-  const heroClass = totalPct < 63 ? 'green' : totalPct < 67 ? 'orange' : 'red';
-
-  const upd = d.last_updated ? new Date(d.last_updated).toLocaleString('he-IL') : '—';
-
-  document.getElementById('may-content').innerHTML = buildContent({
-    salesVat, salesNet, labor, laborHrs, laborPct, foodNet, foodPct,
-    woltVat, woltFee, woltPct, totalPct, heroClass, days,
-    vendors, dailySales, upd,
-    label: 'מאי 2026', isComplete: true
-  });
-}
-
-// ─── RENDER JUN ───────────────────────────────────────────────────────────────
-function renderJun() {
-  const d = gData || {};
-  const food = gJunFood || {};
-
-  const now = new Date();
-  const isJun = now.getMonth() === 5;
-
-  const salesVat = isJun ? (d.total_sales_vat||0) : 0;
-  const salesNet = isJun ? (d.total_sales_net||Math.round(salesVat/1.18)) : 0;
-  const labor    = isJun ? (d.labor_cost||0) : 0;
-  const laborHrs = isJun ? (d.labor_hours||'') : '';
-  const woltVat  = isJun ? (d.wolt_vat||0) : 0;
-  const days     = isJun ? (d.days_collected||1) : 0;
-  const dailySales = isJun ? (d.daily_sales||[]) : [];
-
-  const foodNet  = food.totalNet  || 0;
-  const vendors  = food.vendors   || [];
-
-  const laborPct = salesNet>0 ? (labor/salesNet*100).toFixed(1) : 0;
-  const foodPct  = salesNet>0 ? (foodNet/salesNet*100).toFixed(1) : 0;
-  const woltFee  = Math.round(woltVat * 0.24);
-  const woltPct  = salesVat>0 ? (woltVat/salesVat*100).toFixed(1) : 0;
-  const totalPct = (+laborPct + +foodPct + +woltPct).toFixed(1);
-  const heroClass = totalPct < 63 ? 'green' : totalPct < 67 ? 'orange' : 'red';
-
-  const upd = d.last_updated ? new Date(d.last_updated).toLocaleString('he-IL') : '—';
-
-  if(!isJun || salesVat === 0) {
-    document.getElementById('jun-content').innerHTML = `
-      <div class="note-box">
-        📊 נתוני יוני יעודכנו לאחר הסגירה הראשונה<br>
-        <small>עלות מזון: ${foodNet>0 ? fmt(foodNet)+' ('+food.invoiceCount+' חשבוניות)' : 'טרם נקלטו חשבוניות'}</small>
-      </div>`;
+  if(!d) {
+    document.getElementById(tab+'-content').innerHTML = '<div class="note-box">אין נתונים זמינים</div>';
     return;
   }
 
-  document.getElementById('jun-content').innerHTML = buildContent({
-    salesVat, salesNet, labor, laborHrs, laborPct, foodNet, foodPct,
-    woltVat, woltFee, woltPct, totalPct, heroClass, days,
-    vendors, dailySales, upd,
-    label: 'יוני 2026 — MTD', isComplete: false
-  });
-}
+  // If June tab but current month isn't June, show placeholder
+  if(isJun && now.getMonth()!==5 && (!d.total_sales_vat || d.total_sales_vat===0)) {
+    document.getElementById('jun-content').innerHTML = '<div class="note-box">נתוני יוני יעודכנו לאחר הסגירה הראשונה<br><small>הסנכרון היומי רץ ב-09:00 ו-21:00</small></div>';
+    return;
+  }
 
-// ─── BUILD CONTENT ────────────────────────────────────────────────────────────
-function buildContent(o) {
-  const { salesVat, salesNet, labor, laborHrs, laborPct, foodNet, foodPct,
-          woltVat, woltFee, woltPct, totalPct, heroClass, days,
-          vendors, dailySales, upd, label, isComplete } = o;
+  var salesVat = d.total_sales_vat || 0;
+  var salesNet = d.total_sales_net || Math.round(salesVat/1.18);
+  var labor    = d.labor_cost || 0;
+  var laborHrs = d.labor_hours || '';
+  var foodNet  = d.food_cost_net || 0;
+  var woltVat  = d.wolt_vat || 0;
+  var days     = d.days_collected || 0;
+  var vendors  = d.vendors || [];
+  var daily    = d.daily_sales || [];
 
-  // Hero
-  const heroHtml = `
-    <div class="hero ${heroClass}">
-      <div>
-        <div class="lbl">עלויות משולבות — ${label}</div>
-        <div class="big">${totalPct}%</div>
-        <div class="sub">מזון + עבודה + Wolt</div>
-        <div class="target">יעד: מתחת ל-63%</div>
-      </div>
-      <div style="text-align:left">
-        <div style="font-size:24px;font-weight:900;">${fmt(salesVat)}</div>
-        <div style="font-size:10px;opacity:0.6;">מכירות ברוטו</div>
-        <div style="font-size:13px;font-weight:700;margin-top:4px;">${fmt(salesNet)} נטו</div>
-        <div style="font-size:10px;opacity:0.5;">${days} ימים</div>
-      </div>
-    </div>`;
+  // Parse daily_sales if string
+  if(typeof daily === 'string') { try { daily = JSON.parse(daily); } catch(e){ daily=[]; } }
+  if(typeof vendors === 'string') { try { vendors = JSON.parse(vendors); } catch(e){ vendors=[]; } }
+
+  var laborPct = salesNet>0 ? (labor/salesNet*100).toFixed(1) : '0';
+  var foodPct  = salesNet>0 ? (foodNet/salesNet*100).toFixed(1) : '0';
+  var woltFee  = Math.round(woltVat*0.24);
+  var woltPct  = salesVat>0 ? (woltVat/salesVat*100).toFixed(1) : '0';
+  var totalPct = (+laborPct + +foodPct + +woltPct).toFixed(1);
+  var heroClass= +totalPct===0?'gray':+totalPct<63?'green':+totalPct<67?'orange':'red';
+
+  var upd = d.last_updated ? new Date(d.last_updated).toLocaleString('he-IL') : '—';
+  var label = tab==='may' ? 'מאי 2026' : 'יוני 2026 — MTD';
+
+  // HERO
+  var html = '<div class="hero '+heroClass+'">';
+  html += '<div>';
+  html += '<div class="lbl">עלויות משולבות — '+label+'</div>';
+  html += '<div class="big">'+(+totalPct===0?'ממתין...':totalPct+'%')+'</div>';
+  html += '<div class="sub">מזון + עבודה + Wolt</div>';
+  html += '<div class="target">יעד: מתחת ל-63%</div>';
+  html += '</div>';
+  html += '<div style="text-align:left">';
+  html += '<div style="font-size:24px;font-weight:900;">'+fmt(salesVat)+'</div>';
+  html += '<div style="font-size:10px;opacity:0.6;">מכירות ברוטו</div>';
+  html += '<div style="font-size:13px;font-weight:700;margin-top:4px;">'+fmt(salesNet)+' נטו</div>';
+  html += '<div style="font-size:10px;opacity:0.5;">'+days+' ימים</div>';
+  html += '</div></div>';
 
   // KPIs
-  const kpiHtml = `
-    <div class="kpi-grid">
-      <div class="kpi sales">
-        <div class="kpi-lbl">מכירות ברוטו</div>
-        <div class="kpi-val">${fmt(salesVat)}</div>
-        <div class="kpi-sub">${days} ימים | Tabit Chef</div>
-      </div>
-      <div class="kpi net">
-        <div class="kpi-lbl">מכירות נטו</div>
-        <div class="kpi-val">${fmt(salesNet)}</div>
-        <div class="kpi-sub">בסיס לחישוב %</div>
-      </div>
-      <div class="kpi labor">
-        <div class="kpi-lbl">עלות עבודה</div>
-        <div class="kpi-val">${fmt(labor)}</div>
-        <div class="kpi-sub"><span class="pct ${pctColor(+laborPct)}">${laborPct}%</span>${laborHrs ? laborHrs+' שעות' : ''}</div>
-        <div class="bar"><div class="bf amber" style="width:${Math.min(+laborPct/50*100,100)}%"></div></div>
-      </div>
-      <div class="kpi food">
-        <div class="kpi-lbl">עלות מזון</div>
-        <div class="kpi-val">${fmt(foodNet)}</div>
-        <div class="kpi-sub"><span class="pct ${pctColor(+foodPct)}">${foodPct}%</span>Smart Basic 2</div>
-        <div class="bar"><div class="bf red" style="width:${Math.min(+foodPct/50*100,100)}%"></div></div>
-      </div>
-      <div class="kpi wolt">
-        <div class="kpi-lbl">מכירות Wolt</div>
-        <div class="kpi-val">${fmt(woltVat)}</div>
-        <div class="kpi-sub">${woltPct}% מברוטו | עמלה ${fmt(woltFee)}</div>
-        <div class="bar"><div class="bf wolt" style="width:${Math.min(+woltPct/30*100,100)}%"></div></div>
-      </div>
-      <div class="kpi total">
-        <div class="kpi-lbl">סה"כ עלויות</div>
-        <div class="kpi-val">${totalPct}%</div>
-        <div class="kpi-sub"><span class="pct ${+totalPct<63?'ok':+totalPct<67?'warn':'bad'}">${+totalPct<63?'✓ ביעד':'⚠ מעל יעד'}</span></div>
-        <div class="bar"><div class="bf ${+totalPct<63?'green':+totalPct<67?'orange':'red'}" style="width:${Math.min(+totalPct/80*100,100)}%"></div></div>
-      </div>
-    </div>`;
+  html += '<div class="kpi-grid">';
+  html += kpi('sales','מכירות ברוטו',fmt(salesVat),days+' ימים | Tabit Chef','','');
+  html += kpi('net','מכירות נטו',fmt(salesNet),'בסיס לאחוזים','','');
+  html += kpi('labor','עלות עבודה',fmt(labor),'<span class="pct '+pc(+laborPct)+'">'+laborPct+'%</span>'+(laborHrs?' | '+laborHrs+' שע':' | Tabit Chef'),'amber',+laborPct/50*100);
+  html += kpi('food','עלות מזון',fmt(foodNet),'<span class="pct '+pc(+foodPct)+'">'+foodPct+'%</span> | Smart Basic 2','red',+foodPct/50*100);
+  html += kpi('wolt','מכירות Wolt',fmt(woltVat),woltPct+'% | עמלה '+fmt(woltFee),'wolt',+woltPct/30*100);
+  html += kpi('total','סה"כ עלויות',totalPct+'%','<span class="pct '+(+totalPct<63?'ok':+totalPct<67?'warn':'bad')+'">'+(+totalPct<63?'✓ ביעד':'⚠ מעל יעד')+'</span>',+totalPct<63?'green':+totalPct<67?'orange':'red',+totalPct/80*100);
+  html += '</div>';
 
   // Cost breakdown
-  const costsHtml = `
-    <div class="section">
-      <div class="s-title">פירוט עלויות</div>
-      <div class="cr">
-        <div class="l">עלות עבודה<div class="src">Tabit Chef</div></div>
-        <div class="v"><span class="pct ${pctColor(+laborPct)}">${laborPct}%</span>${fmt(labor)}</div>
-      </div>
-      <div class="cr">
-        <div class="l">עלות מזון<div class="src">Smart Basic 2 — חי</div></div>
-        <div class="v"><span class="pct ${pctColor(+foodPct)}">${foodPct}%</span>${fmt(foodNet)}</div>
-      </div>
-      <div class="cr">
-        <div class="l">עמלת Wolt (24%)<div class="src">Tabit Chef — Tender Report</div></div>
-        <div class="v"><span class="pct warn">${woltPct}%</span>${fmt(woltFee)}</div>
-      </div>
-      <div class="cr total-row">
-        <div class="l">סה"כ עלויות משולבות</div>
-        <div class="v">${totalPct}%</div>
-      </div>
-    </div>`;
+  html += '<div class="section"><div class="s-title">פירוט עלויות</div>';
+  html += cr('עלות עבודה','Tabit Chef',laborPct+'%',fmt(labor),'pc',+laborPct);
+  html += cr('עלות מזון','Smart Basic 2 — Live',foodPct+'%',fmt(foodNet),'pc',+foodPct);
+  html += cr('עמלת Wolt 24%','Tabit Tender Report',woltPct+'% ממכירות',fmt(woltFee),'warn',0);
+  html += '<div class="cr total-row"><div class="l">סה"כ עלויות</div><div class="v">'+totalPct+'%</div></div>';
+  html += '</div>';
 
   // Suppliers
-  const supHtml = vendors.length > 0 ? `
-    <div class="section">
-      <div class="s-title">ספקים — Smart Basic 2 (${vendors.length} ספקים)</div>
-      <div class="sup-grid">
-        ${vendors.map(v=>`
-          <div class="sup-box">
-            <div class="sl">${v.name}</div>
-            <div class="sv">${fmt(v.net)}</div>
-            <div class="sc">${v.count} חשבוניות</div>
-          </div>`).join('')}
-      </div>
-    </div>` : `
-    <div class="note-box">אין נתוני ספקים לחודש זה ב-Smart Basic 2</div>`;
+  if(vendors.length>0){
+    vendors.sort(function(a,b){return (b.amount||b.net||0)-(a.amount||a.net||0);});
+    html += '<div class="section"><div class="s-title">ספקים — Smart Basic 2 ('+vendors.length+')</div><div class="sup-grid">';
+    html += vendors.map(function(v){
+      var amt = v.amount||v.net||0;
+      return '<div class="sup-box"><div class="sl">'+v.name+'</div><div class="sv">'+fmt(amt)+'</div><div class="sc">'+(v.invoice_count||v.count||'')+' חשבוניות</div></div>';
+    }).join('');
+    html += '</div></div>';
+  } else {
+    html += '<div class="note-box">אין נתוני ספקים — סנכרן כדי לעדכן</div>';
+  }
 
   // Daily sales
-  const maxSale = dailySales.length > 0 ? Math.max(...dailySales.map(s=>s.sales||s.amount||0)) : 1;
-  const dailyHtml = dailySales.length > 0 ? `
-    <div class="section">
-      <div class="s-title">מכירות יומיות</div>
-      ${dailySales.map(s=>{
-        const val = s.sales||s.amount||0;
-        const pct2 = maxSale>0?Math.round(val/maxSale*100):0;
-        const d2 = (s.date||'').split('-');
-        const lbl = d2.length>=3?d2[2]+'/'+d2[1]:s.date||'';
-        return `<div class="daily-row">
-          <div class="daily-date">${lbl}</div>
-          <div class="daily-bar-wrap"><div class="daily-bar" style="width:${pct2}%"></div></div>
-          <div class="daily-val">${fmt(val)}</div>
-        </div>`;
-      }).join('')}
-    </div>` : '';
+  if(daily.length>0){
+    var maxS = Math.max.apply(null,daily.map(function(s){return s.sales||s.amount||0;}));
+    html += '<div class="section"><div class="s-title">מכירות יומיות — Tabit Chef</div>';
+    html += daily.map(function(s){
+      var val=s.sales||s.amount||0;
+      var pct2=maxS>0?Math.round(val/maxS*100):0;
+      var parts=(s.date||'').split('-');
+      var lbl=parts.length>=3?parts[2]+'/'+parts[1]:(s.date||'');
+      return '<div class="daily-row"><div class="daily-date">'+lbl+'</div><div class="daily-bar-wrap"><div class="daily-bar" style="width:'+pct2+'%"></div></div><div class="daily-val">'+fmt(val)+'</div></div>';
+    }).join('');
+    html += '</div>';
+  }
 
-  const footerHtml = `<div class="footer"><div class="last-upd">עודכן: ${upd}</div></div>`;
+  html += '<div class="footer"><div class="last-upd">עודכן: '+upd+' | Tabit Chef + Smart Basic 2</div></div>';
 
-  return heroHtml + kpiHtml + costsHtml + supHtml + dailyHtml + footerHtml;
+  document.getElementById(tab+'-content').innerHTML = html;
+}
+
+function kpi(cls,lbl,val,sub,barCls,barPct){
+  var barHtml = barCls ? '<div class="bar"><div class="bf '+barCls+'" style="width:'+Math.min(barPct,100)+'%"></div></div>' : '';
+  return '<div class="kpi '+cls+'"><div class="kpi-lbl">'+lbl+'</div><div class="kpi-val">'+val+'</div><div class="kpi-sub">'+sub+'</div>'+barHtml+'</div>';
+}
+function cr(lbl,src,pctStr,valStr,pctClass,pctVal){
+  var cl = pctClass==='pc' ? (pctVal<30?'ok':pctVal<35?'warn':'bad') : pctClass;
+  return '<div class="cr"><div class="l">'+lbl+'<div class="src">'+src+'</div></div><div class="v"><span class="pct '+cl+'">'+pctStr+'</span>'+valStr+'</div></div>';
 }
 
 // ─── SYNC ─────────────────────────────────────────────────────────────────────
-async function triggerSync() {
-  const btn = document.getElementById('sync-btn');
-  btn.disabled = true;
-  btn.textContent = '⏳ מסנכרן...';
+async function triggerSync(){
+  var btn=document.getElementById('sync-btn');
+  btn.disabled=true; btn.textContent='⏳ מסנכרן...';
   document.getElementById('sync-modal').classList.remove('show');
   try {
-    await fetch(TRIGGER_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:'{}' });
-    // Poll konaSync every 5s up to 60s
-    let tries = 0;
-    const poll = setInterval(async () => {
+    await fetch(TRIGGER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+    var prev = (gCurrent||{}).last_updated;
+    var tries=0;
+    var poll=setInterval(async function(){
       tries++;
       try {
-        const r = await fetch(SYNC_URL);
-        const d = await r.json();
-        if(d.last_updated !== (gData||{}).last_updated || tries > 10) {
+        var r=await fetch(SYNC_URL);
+        var d=await r.json();
+        if(d.last_updated!==prev||tries>12){
           clearInterval(poll);
-          gData = d;
-          showLoading('מעדכן עלות מזון...');
-          const [mf,jf] = await Promise.all([
-            fetchFoodCost('2026-05').catch(()=>gMayFood),
-            fetchFoodCost('2026-06').catch(()=>gJunFood)
-          ]);
-          gMayFood = mf; gJunFood = jf;
-          hideLoading();
-          renderMay(); renderJun();
-          btn.disabled = false; btn.textContent = '🔄 סנכרן';
+          gCurrent=d;
+          var r2=await fetch(SYNC_URL+'?month=2026-05');
+          if(r2.ok) gMay=await r2.json();
+          renderTab('may'); renderTab('jun');
+          btn.disabled=false; btn.textContent='🔄 סנכרן';
         }
-      } catch(e) { clearInterval(poll); btn.disabled=false; btn.textContent='🔄 סנכרן'; }
-    }, 5000);
-  } catch(e) {
+      } catch(e){ clearInterval(poll); btn.disabled=false; btn.textContent='🔄 סנכרן'; }
+    },5000);
+  } catch(e){
     btn.disabled=false; btn.textContent='🔄 סנכרן';
     showSyncError('סנכרון נכשל: '+e.message);
   }
