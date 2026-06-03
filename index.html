@@ -226,10 +226,10 @@ var MAY_DATA = {
 var JUN_BASELINE = {
   month:'2026-06', label:'יוני 2026 — MTD (2 ימים)',
   total_sales_vat:37500, total_sales_net:31780,
-  labor_cost:9679, labor_hours:213, labor_pct:30.5,
+  labor_cost:10740, labor_hours:225, labor_pct:33.8,
   food_cost_net:0, food_cost_pct:0,
   wolt_vat:0, days_collected:2,
-  last_updated:'2026-06-02T23:50:00Z',
+  last_updated:'2026-06-03',
   vendors:[],
   daily_sales:[
     {day:'1/06',amount:21193},
@@ -245,6 +245,8 @@ async function loadDashboard(){
   render('jun', JUN_BASELINE);
   var now = new Date();
   document.getElementById('h-sub').textContent = 'עודכן: '+now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear();
+  // Auto-switch to current month (June) — don't make user wait on May
+  switchTab('jun');
 
   // Try live June data in background with short timeout
   try {
