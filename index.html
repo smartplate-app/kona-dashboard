@@ -279,7 +279,7 @@ function render(tab, d){
   var laborPct = d.labor_pct||(salesNet>0?labor/salesNet*100:0);
   var foodPct  = d.food_cost_pct||(salesNet>0?foodNet/salesNet*100:0);
   var woltFee  = Math.round(woltVat*0.24);
-  var woltPct  = salesVat>0?woltVat/salesVat*100:0;
+  var woltPct  = salesNet>0?(woltVat*0.24)/salesNet*100:0;
   var totalPct = +laborPct + +foodPct + +woltPct;
   var heroC    = totalPct===0?'gray':totalPct<70?"green":totalPct<75?"orange":"red";
   var label    = d.label||(tab==='may'?'מאי 2026':'יוני 2026 MTD');
