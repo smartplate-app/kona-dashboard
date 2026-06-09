@@ -112,6 +112,52 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
 .footer { text-align:center; padding:16px 0 8px; }
 .last-upd { font-size:10px; color:rgba(255,255,255,0.2); }
 .live-badge { display:inline-block; background:rgba(16,185,129,0.15); color:#10b981; font-size:9px; padding:2px 7px; border-radius:8px; margin-right:6px; font-weight:700; }
+
+/* ── LIGHT MODE ─────────────────────────────────────────────────────────── */
+body.light { background:#f4f5f7; color:#1a1a2e; }
+body.light #paywall { background:#f4f5f7; }
+body.light .pw-box { background:#ffffff; border-color:rgba(0,0,0,0.1); box-shadow:0 4px 24px rgba(0,0,0,0.08); }
+body.light .pw-title { color:#1a1a2e; }
+body.light .pw-sub { color:rgba(0,0,0,0.45); }
+body.light .pw-input { background:#f9fafb; border-color:rgba(0,0,0,0.15); color:#1a1a2e; }
+body.light #loading { background:#f4f5f7; }
+body.light .loading-text { color:rgba(0,0,0,0.4); }
+body.light .modal-box { background:#ffffff; border-color:rgba(0,0,0,0.1); }
+body.light .modal-title { color:#1a1a2e; }
+body.light .modal-msg { color:rgba(0,0,0,0.5); }
+body.light .modal-dismiss { border-color:rgba(0,0,0,0.15); color:rgba(0,0,0,0.5); }
+body.light .header { background:#ffffff; border-bottom-color:rgba(0,0,0,0.08); box-shadow:0 1px 8px rgba(0,0,0,0.06); }
+body.light .h-brand { color:#1a1a2e; }
+body.light .h-sub { color:rgba(0,0,0,0.35); }
+body.light .tabs-bar { background:#ffffff; border-bottom-color:rgba(0,0,0,0.08); }
+body.light .tab-btn { color:rgba(0,0,0,0.35); }
+body.light .tab-btn.active { color:#1a1a2e; background:rgba(245,158,11,0.06); }
+body.light .kpi { background:#ffffff; box-shadow:0 1px 6px rgba(0,0,0,0.06); }
+body.light .kpi-lbl { color:rgba(0,0,0,0.35); }
+body.light .kpi-val { color:#1a1a2e; }
+body.light .kpi-sub { color:rgba(0,0,0,0.3); }
+body.light .bar { background:rgba(0,0,0,0.07); }
+body.light .section { background:#ffffff; box-shadow:0 1px 6px rgba(0,0,0,0.06); }
+body.light .s-title { color:rgba(0,0,0,0.3); }
+body.light .cr { background:rgba(0,0,0,0.03); }
+body.light .cr.total-row { background:rgba(245,158,11,0.1); }
+body.light .cr .l { color:rgba(0,0,0,0.6); }
+body.light .cr .src { color:rgba(0,0,0,0.25); }
+body.light .cr .v { color:#1a1a2e; }
+body.light .sup-box { background:rgba(0,0,0,0.04); }
+body.light .sup-box .sv { color:#1a1a2e; }
+body.light .sup-box .sl { color:rgba(0,0,0,0.4); }
+body.light .sup-box .sc { color:rgba(0,0,0,0.3); }
+body.light .daily-date { color:rgba(0,0,0,0.4); }
+body.light .daily-bar-wrap { background:rgba(0,0,0,0.07); }
+body.light .daily-val { color:#1a1a2e; }
+body.light .note-box { background:rgba(245,158,11,0.05); }
+body.light .last-upd { color:rgba(0,0,0,0.2); }
+body.light #sync-modal { background:rgba(0,0,0,0.4); }
+
+/* theme toggle button */
+.theme-btn { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); color:white; padding:7px 12px; border-radius:20px; font-size:13px; cursor:pointer; font-family:inherit; margin-left:8px; transition:all 0.2s; }
+body.light .theme-btn { background:rgba(0,0,0,0.07); border-color:rgba(0,0,0,0.15); color:#1a1a2e; }
 </style>
 </head>
 <body>
@@ -149,7 +195,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; co
     <div class="h-brand">🍔 <span>Kona</span> Burger</div>
     <div class="h-sub" id="h-sub">מאי סגור | יוני MTD</div>
   </div>
-  <button class="sync-btn" id="sync-btn" onclick="triggerSync()">🔄 סנכרן</button>
+  <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">☀️</button><button class="sync-btn" id="sync-btn" onclick="triggerSync()">🔄 סנכרן</button>
 </div>
 
 <div class="tabs-bar">
@@ -392,6 +438,24 @@ async function triggerSync(){
     showErr('נכשל: '+e.message);
   }
 }
+
+// ── THEME TOGGLE ─────────────────────────────────────────────────────────────
+function toggleTheme(){
+  var isLight = document.body.classList.toggle('light');
+  document.getElementById('theme-btn').textContent = isLight ? '🌙' : '☀️';
+  localStorage.setItem('kona_theme', isLight ? 'light' : 'dark');
+}
+// Restore saved theme on load
+(function(){
+  if(localStorage.getItem('kona_theme')==='light'){
+    document.body.classList.add('light');
+    document.addEventListener('DOMContentLoaded', function(){
+      var btn = document.getElementById('theme-btn');
+      if(btn) btn.textContent = '🌙';
+    });
+  }
+})();
+
 </script>
 </body>
 </html>
