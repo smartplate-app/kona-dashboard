@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kona Burger — Dashboard v2</title>
+<title>Kona Burger — Dashboard</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: system-ui, -apple-system, sans-serif; background:#0d0d1a; color:white; direction:rtl; min-height:100vh; }
@@ -195,7 +195,7 @@ body.light .theme-btn { background:rgba(0,0,0,0.07); border-color:rgba(0,0,0,0.1
     <div class="h-brand">🍔 <span>Kona</span> Burger</div>
     <div class="h-sub" id="h-sub">מאי סגור | יוני MTD</div>
   </div>
-  <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">☀️</button><button class="sync-btn" id="sync-btn" onclick="triggerSync()">🔄 סנכרן</button>
+  <div style="display:flex;gap:8px;align-items:center;"><button class="theme-btn" id="theme-btn" onclick="toggleTheme()">☀️</button><button class="sync-btn" id="sync-btn" onclick="triggerSync()">🔄 סנכרן</button></div>
 </div>
 
 <div class="tabs-bar">
