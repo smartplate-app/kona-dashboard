@@ -336,6 +336,11 @@ function render(tab, d){
   if(!Array.isArray(vendors)&&typeof vendors==='object'){
     vendors=Object.entries(vendors).map(function(e){return {name:e[0],amount:e[1],invoice_count:'—'};});
   }
+  // Normalize [[name,amount]] tuple format from konaSync
+  vendors=vendors.map(function(v){
+    if(Array.isArray(v)) return {name:v[0],amount:v[1],invoice_count:'—'};
+    return v;
+  });
   vendors.sort(function(a,b){return (b.amount||b.net||0)-(a.amount||a.net||0);});
 
   var daily = d.daily_sales||[];
