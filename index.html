@@ -325,9 +325,11 @@ function render(tab, d){
   var laborPct = d.labor_pct||(salesNet>0?labor/salesNet*100:0);
   var foodPct  = d.food_cost_pct||(salesNet>0?foodNet/salesNet*100:0);
   var woltFee  = Math.round(woltVat*0.24);
-  var woltPct  = salesNet>0?(woltVat*0.24)/salesNet*100:0;
-  var totalPct = +laborPct + +foodPct + +woltPct;
-  var heroC    = totalPct===0?'gray':totalPct<70?"green":totalPct<75?"orange":"red";
+  var woltPct  = salesVat>0?(woltVat*0.24)/salesVat*100:0;
+  var primeCost = +laborPct + +foodPct;  // Prime Cost = עבודה + מזון בלבד (ללא וולט)
+  var totalPct = primeCost;  // alias for display
+  var GOAL = 60;
+  var heroC    = totalPct===0?'gray':totalPct<=GOAL?"green":totalPct<=65?"orange":"red";
   var label    = d.label||(tab==='may'?'מאי 2026':'יוני 2026 MTD');
   var upd      = d.last_updated?new Date(d.last_updated).toLocaleString('he-IL'):'—';
 
@@ -352,8 +354,8 @@ function render(tab, d){
   html+='<div class="hero '+heroC+'">';
   html+='<div><div class="lbl">'+label+'</div>';
   html+='<div class="big">'+totalPct.toFixed(1)+'%</div>';
-  html+='<div class="sub">מזון + עבודה + Wolt</div>';
-  html+='<div class="target">יעד: מתחת ל-70%</div></div>';
+  html+='<div class="sub">Prime Cost — מזון + עבודה</div>';
+  html+='<div class="target">יעד: עד 60%</div></div>';
   html+='<div style="text-align:left">';
   html+='<div style="font-size:24px;font-weight:900;">'+fmt(salesVat)+'</div>';
   html+='<div style="font-size:10px;opacity:0.6;">מכירות ברוטו</div>';
@@ -368,7 +370,7 @@ function render(tab, d){
   html+=mkKpi('labor','עלות עבודה',fmt(labor),'<span class="pct '+pc(+laborPct)+'">'+f1(laborPct)+'%</span> | '+(laborHrs?Math.round(laborHrs)+' שעות':'Tabit Chef'),'amber',Math.min(+laborPct/50*100,100));
   html+=mkKpi('food','עלות מזון',fmt(foodNet),'<span class="pct '+pc(+foodPct)+'">'+f1(foodPct)+'%</span> | Smart Basic 2','red',Math.min(+foodPct/50*100,100));
   html+=mkKpi('wolt','מכירות Wolt',fmt(woltVat),f1(woltPct)+'% | עמלה '+fmt(woltFee),'wolt',Math.min(+woltPct/30*100,100));
-  html+=mkKpi('total','סה"כ עלויות',totalPct.toFixed(1)+'%','<span class="pct '+(totalPct<70?'ok':totalPct<75?'warn':'bad')+'">'+(totalPct<70?'✓ ביעד':'⚠ מעל יעד')+'</span>',totalPct<70?"green":totalPct<75?"orange":"red",Math.min(totalPct/90*100,100));
+  html+=mkKpi('total','Prime Cost',primeCost.toFixed(1)+'%','<span class="pct '+(primeCost<=GOAL?'ok':primeCost<=65?'warn':'bad')+'">'+(primeCost<=GOAL?'✓ ביעד':'⚠ מעל יעד')+'</span>',primeCost<=GOAL?"green":primeCost<=65?"orange":"red",Math.min(primeCost/80*100,100));
   html+='</div>';
 
   // Cost breakdown
@@ -376,7 +378,7 @@ function render(tab, d){
   html+=mkCr('עלות עבודה','Tabit Chef',f1(laborPct)+'%',fmt(labor),+laborPct);
   html+=mkCr('עלות מזון','Smart Basic 2',f1(foodPct)+'%',fmt(foodNet),+foodPct);
   html+=mkCr('עמלת Wolt (24%)','Tabit Tender Report',f1(woltPct)+'% ממכירות',fmt(woltFee),-1);
-  html+='<div class="cr total-row"><div class="l">סה"כ עלויות</div><div class="v">'+totalPct.toFixed(1)+'%</div></div>';
+  html+='<div class="cr total-row"><div class="l">Prime Cost (מזון + עבודה)</div><div class="v">'+primeCost.toFixed(1)+'% <span style="font-size:10px;opacity:0.6;">יעד: 60%</span></div></div>';
   html+='</div>';
 
   // Vendors
