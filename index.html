@@ -277,7 +277,28 @@ var JUN_BASELINE = {
   food_cost_net:0, food_cost_pct:0,
   wolt_vat:0, days_collected:2,
   last_updated:'2026-06-03',
-  vendors:[],
+  vendors:[
+    {name:"הכרם - משקאות חריפים בע״מ",amount:16195,amount_gross:19110,invoice_count:2},
+    {name:"אלי אברהמי שווק בע״מ",amount:11688,amount_gross:13792,invoice_count:4},
+    {name:"מרעה גולן - אגודה שיתופית חקלאית בע״מ",amount:11589,amount_gross:13675,invoice_count:2},
+    {name:"מחלבות גד",amount:8049,amount_gross:9498,invoice_count:3},
+    {name:"גן המלך-לפרי וירק בע״מ",amount:7417,amount_gross:7622,invoice_count:15},
+    {name:"דגי נסיב בע״מ",amount:6478,amount_gross:7644,invoice_count:10},
+    {name:"ברדא פוראבר בע״מ",amount:4997,amount_gross:5896,invoice_count:12},
+    {name:"יוכי אספרגוס ושאר ירקות",amount:3376,amount_gross:3376,invoice_count:3},
+    {name:"ארגל פוד סרוויס בע״מ",amount:2342,amount_gross:2764,invoice_count:5},
+    {name:"כרם תדהר בע״מ",amount:2100,amount_gross:2478,invoice_count:1},
+    {name:"אקרמן",amount:1997,amount_gross:2356,invoice_count:2},
+    {name:"החברה המרכזית",amount:1299,amount_gross:1533,invoice_count:1},
+    {name:"טובי 60 בע״מ",amount:1017,amount_gross:1200,invoice_count:1},
+    {name:"מילועוף אינטגרצית פטם",amount:873,amount_gross:1030,invoice_count:2},
+    {name:"בר בכפר בע״מ",amount:737,amount_gross:870,invoice_count:1},
+    {name:"עלה עלה בע״מ",amount:713,amount_gross:713,invoice_count:2},
+    {name:"רדקס יבוא ושיווק בע״מ",amount:657,amount_gross:775,invoice_count:1},
+    {name:"טאיו אשיאן פוד חיפה",amount:268,amount_gross:316,invoice_count:1},
+    {name:"אחים מרסל מרקט",amount:106,amount_gross:125,invoice_count:1},
+    {name:"נעמה סוידאן",amount:100,amount_gross:120,invoice_count:2}
+  ],
   daily_sales:[
     {day:'1/06',amount:21193},
     {day:'2/06',amount:16307}
@@ -304,6 +325,10 @@ async function loadDashboard(){
     if(r.ok){
       var d = await r.json();
       if(d && d.total_sales_vat > 0){
+        // If konaSync returns too few vendors, preserve baseline vendors
+        if(!d.vendors || d.vendors.length < 5){
+          d.vendors = JUN_BASELINE.vendors;
+        }
         gJunLive = d;
         gJunLive.label = 'יוני 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live';
         render('jun', gJunLive);
@@ -436,7 +461,10 @@ async function triggerSync(){
         var changed=d.last_updated!==prev||tries>12;
         if(changed){
           clearInterval(poll);
-          if(d.total_sales_vat>0){ gJunLive=d; d.label='יוני 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live'; render('jun',d); }
+          if(d.total_sales_vat>0){ 
+            if(!d.vendors || d.vendors.length < 5){ d.vendors = JUN_BASELINE.vendors; }
+            gJunLive=d; d.label='יוני 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live'; render('jun',d); 
+          }
           btn.disabled=false; btn.textContent='🔄 סנכרן';
         }
       }catch(e){ clearInterval(poll); btn.disabled=false; btn.textContent='🔄 סנכרן'; }
