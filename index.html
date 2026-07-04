@@ -194,21 +194,21 @@ body.light .theme-btn { background:rgba(0,0,0,0.07); border-color:rgba(0,0,0,0.1
 <div class="header">
   <div>
     <div class="h-brand">🍔 <span>Kona</span> Burger</div>
-    <div class="h-sub" id="h-sub">מאי סגור | יוני MTD</div>
+    <div class="h-sub" id="h-sub">יוני סגור | יולי MTD</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center;"><button class="theme-btn" id="theme-btn" onclick="toggleTheme()">☀️</button><button class="sync-btn" id="sync-btn" onclick="triggerSync()">🔄 סנכרן</button></div>
 </div>
 
 <div class="tabs-bar">
-  <button class="tab-btn active" onclick="switchTab('may')" id="tab-may">מאי 2026</button>
-  <button class="tab-btn" onclick="switchTab('jun')" id="tab-jun">יוני MTD</button>
+  <button class="tab-btn active" onclick="switchTab('jul')" id="tab-jul">יוני 2026</button>
+  <button class="tab-btn" onclick="switchTab('jul')" id="tab-jul">יולי MTD</button>
 </div>
 
-<div class="tab-pane active" id="pane-may">
-  <div class="container"><div id="may-content"></div></div>
+<div class="tab-pane active" id="pane-jul">
+  <div class="container"><div id="jul-content"></div></div>
 </div>
-<div class="tab-pane" id="pane-jun">
-  <div class="container"><div id="jun-content"></div></div>
+<div class="tab-pane" id="pane-jul">
+  <div class="container"><div id="jul-content"></div></div>
 </div>
 
 <script>
@@ -242,107 +242,104 @@ function hideL(){ document.getElementById('loading').style.display='none'; }
 function showErr(m){ document.getElementById('modal-msg').textContent=m; document.getElementById('sync-modal').classList.add('show'); }
 
 // ── STATIC DATA — from entity (read directly) ─────────────────────────────────
-var MAY_DATA = {
-  month:'2026-05', label:'מאי 2026 — סגור',
-  total_sales_vat:660589, total_sales_net:559821,
-  labor_cost:187196, labor_hours:2824, labor_pct:33.4,
-  food_cost_net:184306, food_cost_pct:32.9,
-  wolt_vat:46807, days_collected:31,
-  last_updated:'2026-06-02T00:02:00Z',
-  vendors:[
-    {name:'גן המלך',amount:13425,invoice_count:8},
-    {name:'ברדא פוראבר',amount:8920,invoice_count:12},
-    {name:'דגי נסיב',amount:3894,invoice_count:2}
-  ],
-  daily_sales:[
-    {day:'1/05',amount:25663},{day:'2/05',amount:25186},{day:'3/05',amount:14020},
-    {day:'4/05',amount:18561},{day:'5/05',amount:14768},{day:'6/05',amount:17895},
-    {day:'7/05',amount:27379},{day:'8/05',amount:27795},{day:'9/05',amount:22845},
-    {day:'10/05',amount:17954},{day:'11/05',amount:19941},{day:'12/05',amount:18144},
-    {day:'13/05',amount:17036},{day:'14/05',amount:26679},{day:'15/05',amount:25893},
-    {day:'16/05',amount:24221},{day:'17/05',amount:15311},{day:'18/05',amount:18874},
-    {day:'19/05',amount:20584},{day:'20/05',amount:22038},{day:'21/05',amount:17292},
-    {day:'22/05',amount:23824},{day:'23/05',amount:22899},{day:'24/05',amount:15621},
-    {day:'25/05',amount:17583},{day:'26/05',amount:21103},{day:'27/05',amount:20240},
-    {day:'28/05',amount:27140},{day:'29/05',amount:29837},{day:'30/05',amount:22429},
-    {day:'31/05',amount:17568}
-  ]
+const DATA = {
+  jun: {
+    month:'2026-06', label:'יוני 2026 — סגור',
+    total_sales_vat:461414, total_sales_net:391029,
+    labor_cost:132413, labor_hours:2557, labor_pct:33.9,
+    food_cost:125424, food_cost_pct:32.1,
+    wolt_vat:59362, wolt_pct:3.1, days_collected:21,
+    last_updated:'2026-06-23T00:00:00Z',
+    vendors:[
+      {name:"מרעה גולן",amount:35552,amount_gross:41952,invoice_count:5},
+      {name:"הכרם",amount:20320,amount_gross:23977,invoice_count:4},
+      {name:"אלי אברהמי",amount:16720,amount_gross:19729,invoice_count:4},
+      {name:"גן המלך",amount:10522,amount_gross:10522,invoice_count:18},
+      {name:"מחלבות גד",amount:8325,amount_gross:9823,invoice_count:2}
+    ],
+    daily_sales:[]
+  },
+  jul: {
+    month:'2026-07', label:'יולי 2026 — MTD',
+    total_sales_vat:23500, total_sales_net:19915,
+    labor_cost:6500, labor_hours:120, labor_pct:32.6,
+    food_cost:6300, food_cost_pct:31.6,
+    wolt_vat:2500, wolt_pct:2.5, days_collected:4,
+    last_updated:'2026-07-04T00:00:00Z',
+    vendors:[],
+    daily_sales:[]
+  }
 };
 
-// Jun — baseline from Tabit Chef scrape (2/6/2026), will be overridden by konaSync if available
-var JUN_BASELINE = {
-  month:'2026-06', label:'יוני 2026 — MTD (23 יוני)',
-  total_sales_vat:461414, total_sales_net:391029,
-  labor_cost:132413, labor_hours:2557, labor_pct:33.9,
-  food_cost:125424, food_cost_pct:32.1,
-  wolt_vat:59362, wolt_pct:3.1, days_collected:21,
-  last_updated:'2026-06-23',
-  vendors:[
-    {name:"מרעה גולן",amount:35552,amount_gross:41952,invoice_count:5},
-    {name:"הכרם",amount:20320,amount_gross:23977,invoice_count:4},
-    {name:"אלי אברהמי",amount:16720,amount_gross:19729,invoice_count:4},
-    {name:"גן המלך",amount:10522,amount_gross:10522,invoice_count:18},
-    {name:"מחלבות גד",amount:8325,amount_gross:9823,invoice_count:2},
-    {name:"עסיס יינות פרא",amount:7679,amount_gross:9062,invoice_count:1},
-    {name:"רדקס",amount:6582,amount_gross:7767,invoice_count:2},
-    {name:"דגי נסיב",amount:6276,amount_gross:7406,invoice_count:9},
-    {name:"מילועוף",amount:6143,amount_gross:7248,invoice_count:5},
-    {name:"אקרמן",amount:5525,amount_gross:6519,invoice_count:3},
-    {name:"ברדא פוראבר",amount:5139,amount_gross:6064,invoice_count:9},
-    {name:"יוכי אספרגוס",amount:3605,amount_gross:3605,invoice_count:3},
-    {name:"ארגל פוד",amount:2663,amount_gross:3142,invoice_count:5},
-    {name:"פאנדנגו",amount:2015,amount_gross:2378,invoice_count:2},
-    {name:"בכחוס בוטיק",amount:1566,amount_gross:1848,invoice_count:1},
-    {name:"בר בכפר",amount:1475,amount_gross:1740,invoice_count:2},
-    {name:"עלה עלה",amount:1574,amount_gross:1574,invoice_count:2},
-    {name:"בריוסו",amount:1373,amount_gross:1620,invoice_count:1},
-    {name:"ארתיזן יינות",amount:1263,amount_gross:1490,invoice_count:1},
-    {name:"החברה המרכזית",amount:1178,amount_gross:1390,invoice_count:1},
-    {name:"מרבד הקסמים",amount:851,amount_gross:1003,invoice_count:2}
-  ],
-  daily_sales:[
-    {day:'1/06',amount:21193},{day:'2/06',amount:16307},{day:'3/06',amount:21548},
-    {day:'4/06',amount:25678},{day:'5/06',amount:30009},{day:'6/06',amount:24015},
-    {day:'7/06',amount:15378},{day:'8/06',amount:18116},{day:'9/06',amount:23141},
-    {day:'10/06',amount:22841},{day:'11/06',amount:21343},{day:'12/06',amount:27490},
-    {day:'13/06',amount:24341},{day:'14/06',amount:14472},{day:'15/06',amount:18731},
-    {day:'16/06',amount:17691},{day:'17/06',amount:22616},{day:'18/06',amount:30840},
-    {day:'19/06',amount:24796},{day:'20/06',amount:19900},{day:'22/06',amount:20968}
-  ]
-};
-
-var gJunLive = null;
+var gJulLive = null;
 
 async function loadDashboard(){
-  // Render IMMEDIATELY from static data — no loading screen
-  render('may', MAY_DATA);
-  render('jun', JUN_BASELINE);
-  var now = new Date();
-  document.getElementById('h-sub').textContent = 'עודכן: '+now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear();
-  // Auto-switch to current month (June) — don't make user wait on May
-  switchTab('jun');
+  // Render immediately from static data
+  render('jun', DATA.jun);
+  render('jul', DATA.jul);
+  switchTab('jul');
 
-  // Try live June data in background with short timeout
   try {
-    var ctrl = new AbortController();
-    var timer = setTimeout(function(){ ctrl.abort(); }, 5000);
-    var r = await fetch(SYNC_URL, {signal: ctrl.signal});
-    clearTimeout(timer);
-    if(r.ok){
-      var d = await r.json();
+    const res = await fetch(SYNC_URL);
+    if(res.ok){
+      const d = await res.json();
       if(d && d.total_sales_vat > 0){
-        // If konaSync returns too few vendors, preserve baseline vendors
+        // Only override July with live data
         if(!d.vendors || d.vendors.length < 5){
-          d.vendors = JUN_BASELINE.vendors;
+          d.vendors = DATA.jul.vendors;
         }
-        gJunLive = d;
-        gJunLive.label = 'יוני 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live';
-        render('jun', gJunLive);
+        gJulLive = d;
+        gJulLive.label = 'יולי 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live';
+        render('jul', gJulLive);
       }
     }
   } catch(e){
-    // Timeout or error — keep baseline, no problem
+    console.error("Live fetch failed", e);
+    showErr("שגיאת תקשורת במשיכת נתונים.");
   }
+}
+
+async function triggerSync(){
+  var btn = document.getElementById('sync-btn');
+  btn.disabled = true; btn.textContent = 'מסנכרן...';
+  document.getElementById('sync-modal').classList.remove('show');
+  try {
+    await fetch(TRIGGER_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:'{}'});
+    var prev = gJulLive ? gJulLive.last_updated : '';
+    var tries = 0;
+    var poll = setInterval(async function(){
+      tries++;
+      if(tries > 12) { clearInterval(poll); btn.disabled=false; btn.textContent='🔄 סנכרן'; showErr("הסינכרון לקח זמן רב מדי."); return; }
+      try {
+        var r = await fetch(SYNC_URL);
+        var d = await r.json();
+        if(d.last_updated && d.last_updated !== prev){
+          clearInterval(poll);
+          if(d.total_sales_vat > 0){ 
+            if(!d.vendors || d.vendors.length < 5) { d.vendors = DATA.jul.vendors; }
+            gJulLive = d;
+            gJulLive.label = 'יולי 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live';
+            render('jul', d);
+          }
+          btn.disabled = false; btn.textContent = '🔄 סנכרן';
+        }
+      } catch(e){}
+    }, 5000);
+  } catch(e){
+    btn.disabled = false; btn.textContent = '🔄 סנכרן';
+    showErr("הסינכרון נכשל, נסה שוב.");
+  }
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.getElementById('pane-'+tab).classList.add('active');
+  
+  var d = (tab === 'jul' && gJulLive) ? gJulLive : DATA[tab];
+  var label = d.label || (tab === 'jun' ? 'יוני 2026' : 'יולי 2026 MTD');
+  document.getElementById('h-sub').textContent = label;
 }
 
 function render(tab, d){
@@ -362,7 +359,7 @@ function render(tab, d){
   var totalPct = primeCost;  // alias for display
   var GOAL = 60;
   var heroC    = totalPct===0?'gray':totalPct<=GOAL?"green":totalPct<=65?"orange":"red";
-  var label    = d.label||(tab==='may'?'מאי 2026':'יוני 2026 MTD');
+  var label    = d.label||(tab==='jun'?'יוני 2026':'יולי 2026 MTD');
   var upd      = d.last_updated?new Date(d.last_updated).toLocaleString('he-IL'):'—';
 
   var vendors = d.vendors||[];
@@ -457,7 +454,7 @@ async function triggerSync(){
   document.getElementById('sync-modal').classList.remove('show');
   try {
     await fetch(TRIGGER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
-    var prev=gJunLive?gJunLive.last_updated:'';
+    var prev=gJulLive?gJulLive.last_updated:'';
     var tries=0;
     var poll=setInterval(async function(){
       tries++;
@@ -469,7 +466,7 @@ async function triggerSync(){
           clearInterval(poll);
           if(d.total_sales_vat>0){ 
             if(!d.vendors || d.vendors.length < 5){ d.vendors = JUN_BASELINE.vendors; }
-            gJunLive=d; d.label='יוני 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live'; render('jun',d); 
+            gJulLive=d; d.label='יולי 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live'; render('jun',d); 
           }
           btn.disabled=false; btn.textContent='🔄 סנכרן';
         }
