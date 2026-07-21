@@ -250,7 +250,9 @@ function hideL(){ document.getElementById('loading').style.display='none'; }
 function showErr(m){ document.getElementById('modal-msg').textContent=m; document.getElementById('sync-modal').classList.add('show'); }
 
 // ── STATIC DATA — from entity (read directly) ─────────────────────────────────
-const TOP_ITEMS = [{"name": "קריספי פיש", "sold": 1154, "amountVat": 79458.53}, {"name": "רוטב הבית", "sold": 982, "amountVat": 5268.42}, {"name": "תוספת צ׳יפס", "sold": 801, "amountVat": 19634.57}, {"name": "סמאש בורגר", "sold": 734, "amountVat": 37415.96}, {"name": "טרטר דג", "sold": 608, "amountVat": 40208.76}, {"name": "קולה זירו", "sold": 570, "amountVat": 7877.2}, {"name": "ירוקים שרופים באש", "sold": 554, "amountVat": 28179.3}, {"name": "פרייד ווינגס", "sold": 488, "amountVat": 19444.78}, {"name": "ציזבורגר", "sold": 486, "amountVat": 26534.19}, {"name": "תוספת פירה", "sold": 470, "amountVat": 8523.130000000001}, {"name": "סלט חסות", "sold": 454, "amountVat": 20999.06}, {"name": "סלט אפרסקים", "sold": 444, "amountVat": 26913.48}, {"name": "שיפוד שייטל", "sold": 435, "amountVat": 39288.44}, {"name": "בריוש סינטה", "sold": 431, "amountVat": 25359.449999999997}, {"name": "ציפס", "sold": 401, "amountVat": 13280.81}, {"name": "מנת לחם", "sold": 387, "amountVat": 7911.58}, {"name": "אוקלהומה סמאש בורגר", "sold": 360, "amountVat": 23740.629999999997}, {"name": "חבית 1/3", "sold": 356, "amountVat": 10628.8}, {"name": "דאבל צ'יזבורגר", "sold": 298, "amountVat": 19522.28}, {"name": "Boss Spritz", "sold": 296, "amountVat": 14404.84}];
+
+const TOP_ITEMS_JUL = [{"name": "קריספי פיש", "sold": 1154, "amountVat": 79458.53}, {"name": "רוטב הבית", "sold": 982, "amountVat": 5268.42}, {"name": "תוספת צ׳יפס", "sold": 801, "amountVat": 19634.57}, {"name": "סמאש בורגר", "sold": 734, "amountVat": 37415.96}, {"name": "טרטר דג", "sold": 608, "amountVat": 40208.76}, {"name": "קולה זירו", "sold": 570, "amountVat": 7877.2}, {"name": "ירוקים שרופים באש", "sold": 554, "amountVat": 28179.3}, {"name": "פרייד ווינגס", "sold": 488, "amountVat": 19444.78}, {"name": "ציזבורגר", "sold": 486, "amountVat": 26534.19}, {"name": "תוספת פירה", "sold": 470, "amountVat": 8523.130000000001}, {"name": "סלט חסות", "sold": 454, "amountVat": 20999.06}, {"name": "סלט אפרסקים", "sold": 444, "amountVat": 26913.48}, {"name": "שיפוד שייטל", "sold": 435, "amountVat": 39288.44}, {"name": "בריוש סינטה", "sold": 431, "amountVat": 25359.449999999997}, {"name": "ציפס", "sold": 401, "amountVat": 13280.81}, {"name": "מנת לחם", "sold": 387, "amountVat": 7911.58}, {"name": "אוקלהומה סמאש בורגר", "sold": 360, "amountVat": 23740.629999999997}, {"name": "חבית 1/3", "sold": 356, "amountVat": 10628.8}, {"name": "דאבל צ'יזבורגר", "sold": 298, "amountVat": 19522.28}, {"name": "Boss Spritz", "sold": 296, "amountVat": 14404.84}];
+const TOP_ITEMS_JUN = [{"name": "תוספת צ׳יפס", "sold": 1754, "amountVat": 43411.8}, {"name": "קריספי פיש", "sold": 1523, "amountVat": 105441.98999999999}, {"name": "ציזבורגר", "sold": 1431, "amountVat": 82106.14000000001}, {"name": "ציפס", "sold": 1335, "amountVat": 45721.84}, {"name": "רוטב הבית", "sold": 1260, "amountVat": 6668.04}, {"name": "טרטר דג", "sold": 883, "amountVat": 57189.36}, {"name": "פסטה שמנמנה", "sold": 767, "amountVat": 50906}, {"name": "שיפוד שייטל", "sold": 711, "amountVat": 63245.64}, {"name": "פרייד ווינגס", "sold": 676, "amountVat": 26887.620000000003}, {"name": "סלט חסות", "sold": 672, "amountVat": 30785.68}, {"name": "בריוש סינטה", "sold": 651, "amountVat": 38330.259999999995}, {"name": "תוספת פירה", "sold": 586, "amountVat": 9922.060000000001}, {"name": "אוקלהומה סמאש בורגר", "sold": 578, "amountVat": 38664.63}, {"name": "סלט אפרסקים", "sold": 550, "amountVat": 32456.519999999997}, {"name": "סמאש בורגר", "sold": 538, "amountVat": 24937.72}, {"name": "מנת לחם", "sold": 526, "amountVat": 10413.46}, {"name": "חבית 1/2", "sold": 504, "amountVat": 15128.54}, {"name": "שניצל עם פירה", "sold": 490, "amountVat": 33822.28}, {"name": "חבית 1/3", "sold": 464, "amountVat": 12041.12}, {"name": "קולה", "sold": 436, "amountVat": 5538.76}];
 const DATA = {
   jun: {
     month:'2026-06', label:'יוני 2026 — סגור',
@@ -439,10 +441,17 @@ function render(tab, d){
   }
 
 
+
+
   // Top Items
-  if (typeof TOP_ITEMS !== 'undefined' && TOP_ITEMS.length > 0 && tab === 'jul') {
-    html += '<div class="section"><div class="s-title">הפריטים הנמכרים ביותר (MTD)</div><div class="sup-grid" style="grid-template-columns:repeat(2,1fr);">';
-    TOP_ITEMS.forEach(function(item) {
+  var itemsList = [];
+  if (tab === 'jul' && typeof TOP_ITEMS_JUL !== 'undefined') itemsList = TOP_ITEMS_JUL;
+  if (tab === 'jun' && typeof TOP_ITEMS_JUN !== 'undefined') itemsList = TOP_ITEMS_JUN;
+  
+  if (itemsList.length > 0) {
+    var title = tab === 'jul' ? 'הפריטים הנמכרים ביותר (MTD)' : 'הפריטים הנמכרים ביותר (חודש סגור)';
+    html += '<div class="section"><div class="s-title">' + title + '</div><div class="sup-grid" style="grid-template-columns:repeat(2,1fr);">';
+    itemsList.forEach(function(item) {
       var amt = item.amountVat;
       html += '<div class="sup-box"><div class="sl">' + item.name + '</div><div class="sv">' + item.sold + ' יח׳</div><div class="sc">' + fmt(Math.round(amt)) + ' ₪ ברוטו</div></div>';
     });
