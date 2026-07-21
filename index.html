@@ -171,16 +171,7 @@ body.light .theme-btn { background:rgba(0,0,0,0.07); border-color:rgba(0,0,0,0.1
 </head>
 <body>
 
-<div id="paywall">
-  <div class="pw-box">
-    <div class="pw-title">🍔 Kona Burger</div>
-    <div class="pw-branch">דשבורד תפעולי</div>
-    <div class="pw-sub">הכנס קוד גישה להמשך</div>
-    <input class="pw-input" id="pw-input" type="password" placeholder="קוד גישה" autocomplete="off" />
-    <button class="pw-btn" onclick="checkPW()">כניסה</button>
-    <div class="pw-err" id="pw-err"></div>
-  </div>
-</div>
+
 
 <div id="loading">
   <div class="spin"></div>
@@ -220,21 +211,11 @@ body.light .theme-btn { background:rgba(0,0,0,0.07); border-color:rgba(0,0,0,0.1
 </div>
 
 <script>
-var CODES = ['KONA2026','SMARTPLATE'];
 var SYNC_URL    = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync';
 var TRIGGER_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaTriggerSync';
 
-// ── PAYWALL ──────────────────────────────────────────────────────────────────
-function checkPW(){
-  var v=(document.getElementById('pw-input').value||'').trim().toUpperCase();
-  if(CODES.includes(v)){ localStorage.setItem('kona_auth','1'); hidePW(); }
-  else document.getElementById('pw-err').textContent='קוד שגוי';
-}
-document.getElementById('pw-input').addEventListener('keydown',function(e){ if(e.key==='Enter') checkPW(); });
-function hidePW(){ document.getElementById('paywall').style.display='none'; loadDashboard(); }
-
 document.addEventListener('DOMContentLoaded', function(){
-  if(localStorage.getItem('kona_auth')==='1') hidePW();
+  loadDashboard();
 });
 
 // ── STATIC DATA ──────────────────────────────────────────────────────────────
