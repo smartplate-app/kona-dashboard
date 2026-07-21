@@ -340,10 +340,16 @@ async function loadFromRosa(){
 }
 
 async function loadDashboard(){
-  document.getElementById('loading').style.display='flex';
+  var ld = document.getElementById('loading');
+  if(ld) ld.style.display='flex';
   render('jun', DATA.jun);
-  await loadFromRosa();
-  document.getElementById('loading').style.display='none';
+  try {
+    await loadFromRosa();
+  } catch(e) {
+    console.log(e);
+  } finally {
+    if(ld) ld.style.display='none';
+  }
 }
 
 function switchTab(tab){
