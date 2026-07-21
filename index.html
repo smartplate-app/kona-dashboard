@@ -250,6 +250,7 @@ function hideL(){ document.getElementById('loading').style.display='none'; }
 function showErr(m){ document.getElementById('modal-msg').textContent=m; document.getElementById('sync-modal').classList.add('show'); }
 
 // ── STATIC DATA — from entity (read directly) ─────────────────────────────────
+const TOP_ITEMS = [{"name": "קריספי פיש", "sold": 1154, "amountVat": 79458.53}, {"name": "רוטב הבית", "sold": 982, "amountVat": 5268.42}, {"name": "תוספת צ׳יפס", "sold": 801, "amountVat": 19634.57}, {"name": "סמאש בורגר", "sold": 734, "amountVat": 37415.96}, {"name": "טרטר דג", "sold": 608, "amountVat": 40208.76}, {"name": "קולה זירו", "sold": 570, "amountVat": 7877.2}, {"name": "ירוקים שרופים באש", "sold": 554, "amountVat": 28179.3}, {"name": "פרייד ווינגס", "sold": 488, "amountVat": 19444.78}, {"name": "ציזבורגר", "sold": 486, "amountVat": 26534.19}, {"name": "תוספת פירה", "sold": 470, "amountVat": 8523.130000000001}, {"name": "סלט חסות", "sold": 454, "amountVat": 20999.06}, {"name": "סלט אפרסקים", "sold": 444, "amountVat": 26913.48}, {"name": "שיפוד שייטל", "sold": 435, "amountVat": 39288.44}, {"name": "בריוש סינטה", "sold": 431, "amountVat": 25359.449999999997}, {"name": "ציפס", "sold": 401, "amountVat": 13280.81}, {"name": "מנת לחם", "sold": 387, "amountVat": 7911.58}, {"name": "אוקלהומה סמאש בורגר", "sold": 360, "amountVat": 23740.629999999997}, {"name": "חבית 1/3", "sold": 356, "amountVat": 10628.8}, {"name": "דאבל צ'יזבורגר", "sold": 298, "amountVat": 19522.28}, {"name": "Boss Spritz", "sold": 296, "amountVat": 14404.84}];
 const DATA = {
   jun: {
     month:'2026-06', label:'יוני 2026 — סגור',
@@ -435,6 +436,17 @@ function render(tab, d){
       html+='<div class="sup-box"><div class="sl">'+v.name+'</div><div class="sv">'+fmt(amt)+'</div><div class="sc">'+(v.invoice_count||v.count||'—')+' חשבוניות</div></div>';
     });
     html+='</div></div>';
+  }
+
+
+  // Top Items
+  if (typeof TOP_ITEMS !== 'undefined' && TOP_ITEMS.length > 0 && tab === 'jul') {
+    html += '<div class="section"><div class="s-title">הפריטים הנמכרים ביותר (MTD)</div><div class="sup-grid" style="grid-template-columns:repeat(2,1fr);">';
+    TOP_ITEMS.forEach(function(item) {
+      var amt = item.amountVat;
+      html += '<div class="sup-box"><div class="sl">' + item.name + '</div><div class="sv">' + item.sold + ' יח׳</div><div class="sc">' + fmt(Math.round(amt)) + ' ₪ ברוטו</div></div>';
+    });
+    html += '</div></div>';
   }
 
   // Daily
