@@ -318,24 +318,22 @@ function render(tab, d){
   document.getElementById(tab+'-content').innerHTML = html;
 }
 
-function showErr(msg){ document.getElementById('sync-err').textContent=msg; document.getElementById('sync-modal').classList.add('show'); }
+function showErr(msg){ var el=document.getElementById('modal-msg'); if(el) el.textContent=msg; var sm=document.getElementById('sync-modal'); if(sm) sm.classList.add('show'); }
 
 async function loadFromRosa(){
   try {
     var r = await fetch(SYNC_URL);
     var d = await r.json();
     if(d.total_sales_vat > 0){
-      if(!d.vendors || d.vendors.length < 5) d.vendors = DATA.jul ? DATA.jul.vendors : [];
+      if(!d.vendors || d.vendors.length < 5) d.vendors = DATA.jun ? DATA.jun.vendors : [];
       d.label = 'יולי 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live';
       gJulLive = d;
       render('jul', d);
-      document.getElementById('h-sub').textContent = 'יוני סגור | יולי MTD';
-    } else {
-      throw new Error("No data");
+      var sub = document.getElementById('h-sub');
+      if (sub) sub.textContent = 'יוני סגור | יולי MTD';
     }
   } catch(e) {
-    if(DATA.jul) render('jul', DATA.jul);
-    showErr('הסינכרון נכשל, מציג נתונים אחרונים.');
+    if(typeof DATA !== 'undefined' && DATA.jul) render('jul', DATA.jul);
   }
 }
 
