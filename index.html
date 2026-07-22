@@ -262,6 +262,8 @@ function render(tab, d){
   var sales = d.total_sales_net || 0;
   
   html += '<div class="kpi-grid">';
+  var salesVat = d.total_sales_vat || 0;
+  html += '<div class="kpi-card"><div class="kpi-lbl">מכירות ברוטו</div><div class="kpi-val">'+fmt(salesVat)+' ₪</div></div>';
   html += '<div class="kpi-card"><div class="kpi-lbl">מכירות נטו</div><div class="kpi-val">'+fmt(sales)+' ₪</div></div>';
   
   var wolt = d.wolt_vat || 0;
