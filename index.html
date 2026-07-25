@@ -211,7 +211,7 @@ body.light .theme-btn { background:rgba(0,0,0,0.07); border-color:rgba(0,0,0,0.1
 </div>
 
 <script>
-var SYNC_URL    = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync';
+var SYNC_URL    = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaDashboardApi';
 var TRIGGER_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaTriggerSync';
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -294,7 +294,7 @@ function render(tab, d){
     html += '</div></div>';
   }
 
-  var itemsList = tab === 'jul' ? TOP_ITEMS_JUL : TOP_ITEMS_JUN;
+  var itemsList = (d.sold_items && d.sold_items.length > 0) ? d.sold_items.slice(0, 40) : (tab === 'jul' ? TOP_ITEMS_JUL : TOP_ITEMS_JUN);
   if (itemsList && itemsList.length > 0) {
     var title = tab === 'jul' ? 'הפריטים הנמכרים ביותר (MTD)' : 'הפריטים הנמכרים ביותר (חודש סגור)';
     html += '<div class="section"><div class="s-title">' + title + '</div><div class="sup-grid" style="grid-template-columns:repeat(2,1fr);">';
@@ -325,14 +325,23 @@ function showErr(msg){ var el=document.getElementById('modal-msg'); if(el) el.te
 async function loadFromRosa(){
   try {
     var r = await fetch(SYNC_URL);
-    var d = await r.json();
-    if(d.total_sales_vat > 0){
-      if(!d.vendors || d.vendors.length < 5) d.vendors = DATA.jun ? DATA.jun.vendors : [];
-      d.label = 'יולי 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live';
-      gJulLive = d;
-      render('jul', d);
-      var sub = document.getElementById('h-sub');
-      if (sub) sub.textContent = 'יוני סגור | יולי MTD';
+    var resp = await r.json();
+    if (resp.success && resp.data) {
+      var d = resp.data.find(x => x.month === '2026-07');
+      if (d) {
+        if(!d.vendors || d.vendors.length < 5) d.vendors = DATA.jun ? DATA.jun.vendors : [];
+        d.label = 'יולי 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live';
+        gJulLive = d;
+        render('jul', d);
+        var sub = document.getElementById('h-sub');
+        if (sub) sub.textContent = 'יוני סגור | יולי MTD';
+      }
+      
+      var dJun = resp.data.find(x => x.month === '2026-06');
+      if (dJun) {
+        if(!dJun.vendors || dJun.vendors.length < 5) dJun.vendors = DATA.jun ? DATA.jun.vendors : [];
+        render('jun', dJun);
+      }
     }
   } catch(e) {
     if(typeof DATA !== 'undefined' && DATA.jul) render('jul', DATA.jul);
