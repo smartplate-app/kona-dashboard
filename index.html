@@ -211,7 +211,7 @@ body.light .theme-btn { background:rgba(0,0,0,0.07); border-color:rgba(0,0,0,0.1
 </div>
 
 <script>
-var SYNC_URL    = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaDashboardApi';
+var SYNC_URL    = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaSync';
 var TRIGGER_URL = 'https://rosa-6d8ebb9e.base44.app/api/functions/konaTriggerSync';
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -245,7 +245,7 @@ const DATA = {
     food_cost:6300, food_cost_pct:31.6,
     wolt_vat:2500, wolt_pct:2.5, days_collected:4,
     last_updated:'2026-07-04T00:00:00Z',
-    vendors: [{"name":"מרעה גולן - אגודה שיתופית חקלאית בע״מ","amount":41134},{"name":"מילועוף אינטגרצית פטם אגש״ח בע״מ","amount":8239},{"name":"דגי נסיב בע״מ","amount":7620},{"name":"גן המלך-לפרי וירק בע״מ","amount":7273},{"name":"הכרם - משקאות חריפים בע״מ","amount":5641},{"name":"אלי אברהמי שווק בע״מ","amount":5501},{"name":"רדקס יבוא ושיווק בע\"מ","amount":5019},{"name":"יוכי אספרגוס ושאר ירקות","amount":4955},{"name":"מחלבות גד","amount":4873},{"name":"החברה המרכזית","amount":3798},{"name":"ברדא פוראבר בע״מ","amount":3116},{"name":"בר בכפר בע״מ","amount":1876},{"name":"עלה עלה בע״מ","amount":1577},{"name":"סופרנוב בע״מ","amount":1041},{"name":"ארגל פוד סרוויס בע״מ","amount":903},{"name":"פפירוס בע״מ","amount":783},{"name":"מרבד הקסמים שרותי נקיון בע״מ","amount":720},{"name":"אחים מרסל מרקט","amount":244},{"name":"נעמה סוידאן ","amount":104}],
+    vendors: [{"name": "\u05de\u05e8\u05e2\u05d4 \u05d2\u05d5\u05dc\u05df - \u05d0\u05d2\u05d5\u05d3\u05d4 \u05e9\u05d9\u05ea\u05d5\u05e4\u05d9\u05ea \u05d7\u05e7\u05dc\u05d0\u05d9\u05ea \u05d1\u05e2\u05f4\u05de", "amount": 34707, "invoice_count": 3}, {"name": "\u05d2\u05df \u05d4\u05de\u05dc\u05da-\u05dc\u05e4\u05e8\u05d9 \u05d5\u05d9\u05e8\u05e7 \u05d1\u05e2\u05f4\u05de", "amount": 9249, "invoice_count": 28}, {"name": "\u05d0\u05dc\u05d9 \u05d0\u05d1\u05e8\u05d4\u05de\u05d9 \u05e9\u05d5\u05d5\u05e7 \u05d1\u05e2\u05f4\u05de", "amount": 7686, "invoice_count": 2}, {"name": "\u05d3\u05d2\u05d9 \u05e0\u05e1\u05d9\u05d1 \u05d1\u05e2\u05f4\u05de", "amount": 7114, "invoice_count": 13}, {"name": "\u05de\u05d7\u05dc\u05d1\u05d5\u05ea \u05d2\u05d3", "amount": 6546, "invoice_count": 3}, {"name": "\u05de\u05d9\u05dc\u05d5\u05e2\u05d5\u05e3 \u05d0\u05d9\u05e0\u05d8\u05d2\u05e8\u05e6\u05d9\u05ea \u05e4\u05d8\u05dd \u05d0\u05d2\u05e9\u05f4\u05d7 \u05d1\u05e2\u05f4\u05de", "amount": 5814, "invoice_count": 3}, {"name": "\u05d4\u05db\u05e8\u05dd - \u05de\u05e9\u05e7\u05d0\u05d5\u05ea \u05d7\u05e8\u05d9\u05e4\u05d9\u05dd \u05d1\u05e2\u05f4\u05de", "amount": 5212, "invoice_count": 1}, {"name": "\u05d9\u05d5\u05db\u05d9 \u05d0\u05e1\u05e4\u05e8\u05d2\u05d5\u05e1 \u05d5\u05e9\u05d0\u05e8 \u05d9\u05e8\u05e7\u05d5\u05ea", "amount": 4993, "invoice_count": 4}, {"name": "\u05e8\u05e1\u05d8\u05e8\u05d8\u05d5 \u05d9\u05d1\u05d5\u05d0 \u05d5\u05e9\u05d9\u05d5\u05d5\u05e7 \u05d1\u05e2\u05f4\u05de", "amount": 4420, "invoice_count": 1}, {"name": "\u05d1\u05e8\u05d3\u05d0 \u05e4\u05d5\u05e8\u05d0\u05d1\u05e8 \u05d1\u05e2\u05f4\u05de", "amount": 3846, "invoice_count": 11}, {"name": "\u05d4\u05d7\u05d1\u05e8\u05d4 \u05d4\u05de\u05e8\u05db\u05d6\u05d9\u05ea", "amount": 3540, "invoice_count": 2}, {"name": "\u05e2\u05e1\u05d9\u05e1 \u05d9\u05d9\u05e0\u05d5\u05ea \u05e4\u05e8\u05d0 \u05d1\u05e2\u05f4\u05de", "amount": 2952, "invoice_count": 1}, {"name": "\u05d1\u05db\u05d7\u05d5\u05e1 \u05d1\u05d5\u05d8\u05d9\u05e7 \u05d1\u05e2\u05f4\u05de", "amount": 2018, "invoice_count": 1}, {"name": "\u05d1\u05e8 \u05d1\u05db\u05e4\u05e8 \u05d1\u05e2\u05f4\u05de", "amount": 1988, "invoice_count": 3}, {"name": "\u05e2\u05dc\u05d4 \u05e2\u05dc\u05d4 \u05d1\u05e2\u05f4\u05de", "amount": 1947, "invoice_count": 4}, {"name": "\u05e4\u05e4\u05d9\u05e8\u05d5\u05e1 \u05d1\u05e2\u05f4\u05de", "amount": 1766, "invoice_count": 2}, {"name": "\u05d0\u05e7\u05e8\u05de\u05df", "amount": 1574, "invoice_count": 1}, {"name": "\u05d0\u05e8\u05d2\u05dc \u05e4\u05d5\u05d3 \u05e1\u05e8\u05d5\u05d5\u05d9\u05e1 \u05d1\u05e2\u05f4\u05de", "amount": 1187, "invoice_count": 3}, {"name": "\u05e1\u05d5\u05e4\u05e8\u05e0\u05d5\u05d1 \u05d1\u05e2\u05f4\u05de", "amount": 1041, "invoice_count": 1}, {"name": "\u05e4\u05d0\u05e0\u05d3\u05e0\u05d2\u05d5 \u05d0\u05d9\u05e1\u05d5\u05e3 \u05d5\u05de\u05d7\u05d6\u05d5\u05e8 \u05d1\u05e2\u05f4\u05de", "amount": 1008, "invoice_count": 1}, {"name": "\u05db\u05dc\u05dc\u05d9", "amount": 854, "invoice_count": 1}, {"name": "\u05d2\u05dc\u05d5\u05d1\u05dc \u05d5\u05d5\u05d9\u05df \u05d0\u05e0\u05d3 \u05e1\u05e4\u05d9\u05e8\u05d9\u05d8", "amount": 731, "invoice_count": 1}, {"name": "\u05de\u05e8\u05d1\u05d3 \u05d4\u05e7\u05e1\u05de\u05d9\u05dd \u05e9\u05e8\u05d5\u05ea\u05d9 \u05e0\u05e7\u05d9\u05d5\u05df \u05d1\u05e2\u05f4\u05de", "amount": 720, "invoice_count": 1}, {"name": "\u05d0\u05d7\u05d9\u05dd \u05de\u05e8\u05e1\u05dc \u05de\u05e8\u05e7\u05d8", "amount": 108, "invoice_count": 1}, {"name": "\u05e0\u05e2\u05de\u05d4 \u05e1\u05d5\u05d9\u05d3\u05d0\u05df ", "amount": 65, "invoice_count": 2}, {"name": "\u05d0\u05d7\u05ea \u05e9\u05ea\u05d9\u05d9\u05dd \u05e9\u05dc\u05d5\u05e9 \u05d1\u05e2\u05f4\u05de", "amount": 40, "invoice_count": 1}],
     daily_sales:[]
   }
 };
@@ -294,7 +294,7 @@ function render(tab, d){
     html += '</div></div>';
   }
 
-  var itemsList = (d.sold_items && d.sold_items.length > 0) ? d.sold_items.slice(0, 40) : (tab === 'jul' ? TOP_ITEMS_JUL : TOP_ITEMS_JUN);
+  var itemsList = tab === 'jul' ? TOP_ITEMS_JUL : TOP_ITEMS_JUN;
   if (itemsList && itemsList.length > 0) {
     var title = tab === 'jul' ? 'הפריטים הנמכרים ביותר (MTD)' : 'הפריטים הנמכרים ביותר (חודש סגור)';
     html += '<div class="section"><div class="s-title">' + title + '</div><div class="sup-grid" style="grid-template-columns:repeat(2,1fr);">';
@@ -325,23 +325,14 @@ function showErr(msg){ var el=document.getElementById('modal-msg'); if(el) el.te
 async function loadFromRosa(){
   try {
     var r = await fetch(SYNC_URL);
-    var resp = await r.json();
-    if (resp.success && resp.data) {
-      var d = resp.data.find(x => x.month === '2026-07');
-      if (d) {
-        if(!d.vendors || d.vendors.length < 5) d.vendors = DATA.jun ? DATA.jun.vendors : [];
-        d.label = 'יולי 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live';
-        gJulLive = d;
-        render('jul', d);
-        var sub = document.getElementById('h-sub');
-        if (sub) sub.textContent = 'יוני סגור | יולי MTD';
-      }
-      
-      var dJun = resp.data.find(x => x.month === '2026-06');
-      if (dJun) {
-        if(!dJun.vendors || dJun.vendors.length < 5) dJun.vendors = DATA.jun ? DATA.jun.vendors : [];
-        render('jun', dJun);
-      }
+    var d = await r.json();
+    if(d.total_sales_vat > 0){
+      if(!d.vendors || d.vendors.length < 5) d.vendors = DATA.jul ? DATA.jul.vendors : [];
+      d.label = 'יולי 2026 — MTD ('+d.days_collected+' ימים) 🟢 Live';
+      gJulLive = d;
+      render('jul', d);
+      var sub = document.getElementById('h-sub');
+      if (sub) sub.textContent = 'יוני סגור | יולי MTD';
     }
   } catch(e) {
     if(typeof DATA !== 'undefined' && DATA.jul) render('jul', DATA.jul);
